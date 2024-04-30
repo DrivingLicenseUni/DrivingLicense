@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "486459417909",
+    "project_id": "drivinglicense-437ff",
+    "storage_bucket": "drivinglicense-437ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486459417909:android:d9f6011ad27e7f79f5587c",
+        "android_client_info": {
+          "package_name": "com.example.license"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjHqEsPzBzePyIdPu9S17ehvrHSb2deOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
