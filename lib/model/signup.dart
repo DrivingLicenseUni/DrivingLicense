@@ -32,7 +32,6 @@ class SignUpModel {
 
     if (doesIdExist) {
       await _userRepository.removeUserFromAuth();
-      print("you suck");
       throw Exception("User already exists");
     }
 
