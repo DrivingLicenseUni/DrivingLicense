@@ -175,7 +175,7 @@ class _SignUpFormState extends State<SignUp> {
                   onChanged: (value) {
                     setState(() {
                       _fullNameError =
-                          value.isEmpty ? "Full name is required" : null;
+                          value.trim().isEmpty ? "Full name is required" : null;
                     });
                   },
                   onSubmitted: (_) => _phoneNumberNode.requestFocus(),
@@ -226,7 +226,8 @@ class _SignUpFormState extends State<SignUp> {
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (value) {
                     setState(() {
-                      _emailError = value.isEmpty ? "Email is required" : null;
+                      _emailError =
+                          value.trim().isEmpty ? "Email is required" : null;
                     });
 
                     if (_emailError == null) {
@@ -321,7 +322,7 @@ class _SignUpFormState extends State<SignUp> {
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     setState(() {
-                      _idError = value.isEmpty ? "ID is required" : null;
+                      _idError = value.trim().isEmpty ? "ID is required" : null;
                     });
 
                     if (_idError == null) {
