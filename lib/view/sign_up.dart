@@ -119,7 +119,9 @@ class _SignUpFormState extends State<SignUp> {
 
     _createAccountViewModel
         .createUserWithEmailAndPassword(
-            email: _emailController.text, password: _passwordController.text)
+            email: _emailController.text,
+            password: _passwordController.text,
+            id: _idController.text)
         .then((value) {
       setState(() {
         _loading = false;
@@ -130,7 +132,7 @@ class _SignUpFormState extends State<SignUp> {
       setState(() {
         _loading = false;
         _signUpButton = "Sign up";
-        _emailError = e.toString().split(":")[1].trim();
+        _message = e.toString().split(":")[1].trim();
         hasError = true;
       });
     });

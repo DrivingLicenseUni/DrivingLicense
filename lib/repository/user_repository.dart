@@ -9,6 +9,23 @@ class UserRepository {
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
+  Future<bool> isUserInDatabase(String id) async {
+    try {
+      final doc = await _firestore.collection("users").doc(id).get();
+      return doc.exists;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> removeUserFromAuth() async {
+    try {
+      await _auth.currentUser!.delete();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> createUserWithEmailAndPassword({
     required String email,
     required String password,
@@ -30,7 +47,6 @@ class UserRepository {
     required String id,
   }) async {
     try {
-      // create collection if it doesn't exist
       await _firestore.collection("users").doc(id).set({
         "email": email,
         "fullName": fullName,
