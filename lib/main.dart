@@ -24,29 +24,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const SignUp(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const IconButton(
-          icon: Icon(Icons.arrow_left_sharp),
-          onPressed: null,
-        ),
-        title: Text(widget.title),
-      ),
+      routes: {
+        "/signup": (context) => const SignUp(),
+      },
     );
   }
 }
