@@ -1,8 +1,8 @@
-import 'package:license/model/select_instructor_model.dart';
+import 'package:license/model/instructor_model.dart';
 import 'package:license/res/types.dart';
 
 class InstructorSelectionViewModel {
-  final SelectInstructorModel _selectInstructorModel = SelectInstructorModel();
+  final InstructorModel _selectInstructorModel = InstructorModel();
 
   Future<List<Instructor>> getInstructors() async {
     try {
