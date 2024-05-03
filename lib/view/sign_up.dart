@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:license/res/colors.dart';
+import 'package:license/res/types.dart';
 import 'package:license/view_model/create_account.dart';
 
 class SignUp extends StatefulWidget {
@@ -77,14 +79,14 @@ class _SignUpFormState extends State<SignUp> {
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(
-          color: errorText == null ? const Color.fromRGBO(73, 69, 79, 1) : null,
+          color: errorText == null ? AppColors.placeholder : null,
           fontWeight: FontWeight.w500,
         ),
-        focusColor: const Color(0xFF2E60F7),
+        focusColor: AppColors.primary,
         hintText: hintText,
         border: const OutlineInputBorder(),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF2E60F7), width: 2),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primary, width: 2),
         ),
         errorText: errorText,
       ),
@@ -106,43 +108,49 @@ class _SignUpFormState extends State<SignUp> {
         _passwordController.text.isEmpty ||
         _idController.text.isEmpty ||
         _fullNameController.text.isEmpty ||
+        _passwordController.text != _confirmPasswordController.text ||
         _phoneNumberController.text.isEmpty;
   }
 
-  void _submitSignUp() {
+  Future<void> _submitSignUp() async {
     setState(() {
       _loading = true;
       _signUpButton = "Loading...";
     });
 
-    bool hasError = false;
-
-    _createAccountViewModel
-        .createUserWithEmailAndPassword(
-            email: _emailController.text,
-            password: _passwordController.text,
-            id: _idController.text)
-        .then((value) {
-      setState(() {
-        _loading = false;
-        _signUpButton = "Sign up";
-        hasError = false;
-      });
-    }).catchError((e) {
+    try {
+      await _createAccountViewModel.createStudentWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+          id: _idController.text);
+    } catch (e) {
       setState(() {
         _loading = false;
         _signUpButton = "Sign up";
         _message = e.toString().split(":")[1].trim();
-        hasError = true;
       });
-    });
 
-    if (!hasError) {
-      _createAccountViewModel.addUserToDatabase(
-          email: _emailController.text,
-          fullName: _fullNameController.text,
-          phoneNumber: _phoneNumberController.text,
-          id: _idController.text);
+      return;
+    }
+
+    try {
+      Student student = Student(
+        email: _emailController.text,
+        fullName: _fullNameController.text,
+        phoneNumber: _phoneNumberController.text,
+        id: _idController.text,
+      );
+      await _createAccountViewModel.addStudentToDatabase(student: student);
+
+      Navigator.pushReplacementNamed(context, "/login");
+    } catch (e) {
+      setState(() {
+        _loading = false;
+        _signUpButton = "Sign up";
+        _message = e.toString().split(":")[1].trim();
+      });
+
+      return;
     }
   }
 
@@ -263,18 +271,32 @@ class _SignUpFormState extends State<SignUp> {
                           value.isEmpty ? "Password is required" : null;
                     });
 
-                    if (_passwordError == null) {
-                      if (value.length < 8) {
-                        setState(() {
-                          _passwordError =
-                              "Password must be at least 8 characters";
-                        });
-                      } else {
-                        setState(() {
-                          _passwordError = null;
-                        });
-                      }
+                    if (_passwordError != null) {
+                      return;
                     }
+
+                    if (value.length < 8) {
+                      setState(() {
+                        _passwordError =
+                            "Password must be at least 8 characters";
+                      });
+                      return;
+                    }
+
+                    if (_passwordController.text !=
+                        _confirmPasswordController.text) {
+                      setState(() {
+                        _passwordError = "Passwords do not match";
+                        _confirmPasswordError = "Passwords do not match";
+                      });
+
+                      return;
+                    }
+
+                    setState(() {
+                      _passwordError = null;
+                      _confirmPasswordError = null;
+                    });
                   },
                   onSubmitted: (_) => _confirmPasswordNode.requestFocus(),
                 ),
@@ -295,17 +317,22 @@ class _SignUpFormState extends State<SignUp> {
                           value.isEmpty ? "Confirm password is required" : null;
                     });
 
-                    if (_confirmPasswordError == null) {
-                      if (value != _passwordController.text) {
-                        setState(() {
-                          _confirmPasswordError = "Passwords do not match";
-                        });
-                      } else {
-                        setState(() {
-                          _confirmPasswordError = null;
-                        });
-                      }
+                    if (_confirmPasswordError != null) {
+                      return;
                     }
+
+                    if (value != _passwordController.text) {
+                      setState(() {
+                        _passwordError = "Passwords do not match";
+                        _confirmPasswordError = "Passwords do not match";
+                      });
+                      return;
+                    }
+
+                    setState(() {
+                      _passwordError = null;
+                      _confirmPasswordError = null;
+                    });
                   },
                   onSubmitted: (_) => _idNode.requestFocus(),
                 ),
@@ -343,7 +370,7 @@ class _SignUpFormState extends State<SignUp> {
               ElevatedButton(
                 onPressed: _checkValues() || _loading ? null : _submitSignUp,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2E60F7),
+                  backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
@@ -365,7 +392,9 @@ class _SignUpFormState extends State<SignUp> {
                     style: TextStyle(fontSize: 16),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, "/login");
+                    },
                     style: ButtonStyle(
                       overlayColor: MaterialStateProperty.resolveWith(
                         (states) => Colors.transparent,
@@ -384,7 +413,7 @@ class _SignUpFormState extends State<SignUp> {
               ),
               Text(
                 _message ?? "",
-                style: const TextStyle(color: Colors.red),
+                style: TextStyle(color: AppColors.warning),
               ),
             ],
           ),

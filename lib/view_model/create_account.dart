@@ -1,30 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:license/model/signup.dart';
+import 'package:license/res/types.dart';
 
 class CreateAccountViewModel {
   final SignUpModel _signUpModel = SignUpModel();
 
-  Future<void> createUserWithEmailAndPassword(
+  Future<void> createStudentWithEmailAndPassword(
       {required String email,
       required String password,
       required String id}) async {
     try {
-      await _signUpModel.createUserWithEmailAndPassword(
+      await _signUpModel.createStudentWithEmailAndPassword(
           email: email, password: password, id: id);
     } on FirebaseAuthException catch (e) {
       throw Exception(e.message);
     }
   }
 
-  Future<void> addUserToDatabase({
-    required String email,
-    required String fullName,
-    required String phoneNumber,
-    required String id,
-  }) async {
+  Future<void> addStudentToDatabase({required Student student}) async {
     try {
-      await _signUpModel.addUserToDatabase(
-          email: email, fullName: fullName, phoneNumber: phoneNumber, id: id);
+      await _signUpModel.addStudentToDatabase(student);
     } catch (e) {
       throw Exception(e.toString());
     }

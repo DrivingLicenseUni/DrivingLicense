@@ -1,9 +1,10 @@
-import "package:license/repository/user_repository.dart";
+import "package:license/data/remote/user_data.dart";
+import "package:license/res/types.dart";
 
 class SignUpModel {
-  final UserRepository _userRepository = UserRepository();
+  final StudentData _userRepository = StudentData();
 
-  Future<void> createUserWithEmailAndPassword({
+  Future<void> createStudentWithEmailAndPassword({
     required String email,
     required String password,
     required String id,
@@ -22,22 +23,21 @@ class SignUpModel {
     }
   }
 
-  Future<void> addUserToDatabase({
-    required String email,
-    required String fullName,
-    required String phoneNumber,
-    required String id,
-  }) async {
-    bool doesIdExist = await _doesIdExist(id);
+  Future<void> addStudentToDatabase(Student student) async {
+    bool doesIdExist = await _doesIdExist(student.id);
 
     if (doesIdExist) {
-      await _userRepository.removeUserFromAuth();
+      await _userRepository.removeStudentFromAuth();
       throw Exception("User already exists");
     }
 
+    Student? user = await _userRepository.getStudentByEmail(student.email);
+    if (user != null) {
+      throw Exception("Email already exists");
+    }
+
     try {
-      await _userRepository.addUserToDatabase(
-          email: email, fullName: fullName, phoneNumber: phoneNumber, id: id);
+      await _userRepository.addStudentToDatabase(student);
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -47,7 +47,7 @@ class SignUpModel {
     bool doesIdExist;
 
     try {
-      doesIdExist = await _userRepository.isUserInDatabase(id);
+      doesIdExist = await _userRepository.isStudentInDatabase(id);
     } catch (e) {
       throw Exception(e.toString());
     }
