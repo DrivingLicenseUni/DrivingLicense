@@ -393,7 +393,12 @@ class _SignUpFormState extends State<SignUp> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, "/login");
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUp(),
+                        ),
+                      );
                     },
                     style: ButtonStyle(
                       overlayColor: MaterialStateProperty.resolveWith(
