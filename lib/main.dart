@@ -4,6 +4,8 @@ import 'package:license/view/forgot-password-p.dart';
 import 'package:license/view/changed-password-p.dart';
 import 'package:license/view_model/forgot-password-vm.dart';
 import 'package:provider/provider.dart';
+import 'data/remote/forgot-password-d.dart';
+import 'model/forgot-password-m.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,23 +15,61 @@ Future<void> main() async {
           appId: "1:486459417909:android:d9f6011ad27e7f79f5587c",
           messagingSenderId: "486459417909",
           projectId: "drivinglicense-437ff"));
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        initialRoute: '/forgotPassword'
-            '',
-        routes: {
-          '/forgotPassword': (context) => ForgotPassword(),
-          '/passwordChanged': (context) => const PasswordChanged(),
-        },
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel(ForgotPasswordModel(ForgotPasswordRemoteData()))),
+    ],
+    child: MaterialApp(
+      title: 'Driving License',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+        useMaterial3: true,
       ),
-    )
-  );
+      home:  ForgotPassword(),
+      routes: {
+        "/forgotPassword": (context) =>  ForgotPassword(),
+        '/passwordChanged': (context) => const PasswordChanged(),
+       },
+      ),
+    );
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//   runApp(
+//     MultiProvider(
+//       providers: [
+//         ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),
+//       ],
+//       child: MaterialApp(
+//         title: 'Flutter Demo',
+//         theme: ThemeData(
+//           primarySwatch: Colors.blue,
+//         ),
+//         initialRoute: '/forgotPassword'
+//             '',
+//         routes: {
+//           '/forgotPassword': (context) => ForgotPassword(),
+//           '/passwordChanged': (context) => const PasswordChanged(),
+//         },
+//       ),
+//     )
+//   );
+//   }

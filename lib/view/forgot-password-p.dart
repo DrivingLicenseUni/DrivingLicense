@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../res/colors.dart';
 import '../view_model/forgot-password-vm.dart';
+import '../res/colors.dart';
 
 class ForgotPassword extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   ForgotPassword({super.key});
   @override
   Widget build(BuildContext context) {
-  final viewModel = Provider.of<ForgotPasswordViewModel>(context);
+    final viewModel = Provider.of<ForgotPasswordViewModel>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back,size: 30),
+          icon: const Icon(Icons.arrow_back, size: 30),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 35.0,top: 10),
+            padding: const EdgeInsets.only(right: 35.0, top: 10),
             child: Icon(
               Icons.hotel_class,
               color: AppColors.primary,
@@ -44,7 +45,7 @@ class ForgotPassword extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 25),
-             Text(
+            Text(
               "Don’t worry! It happens. Please enter the email associated with your account.",
               style: TextStyle(fontSize: 20, color: AppColors.placeholder),
             ),
@@ -59,7 +60,7 @@ class ForgotPassword extends StatelessWidget {
             ),
             const SizedBox(height: 25),
             SizedBox(
-              width: double.infinity,
+                width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
                     if (emailController.text.isNotEmpty) {
@@ -68,15 +69,15 @@ class ForgotPassword extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter an email address')));
                     }
                   },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                ),
-                child: const Text("Send Link", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-              )
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: AppColors.primary,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                  child: const Text("Send Link", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                )
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15),
