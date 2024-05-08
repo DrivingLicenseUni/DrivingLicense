@@ -31,10 +31,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () => Navigator.of(context).pop(), //navigate it
-      ),
       title: Text(
         'Registration',
         style: AppTextStyles.headline,
@@ -155,7 +151,7 @@ class CameraButton extends StatelessWidget {
           onPressed: () {},
           style: ButtonStyle(
             backgroundColor:
-                MaterialStateProperty.all(AppColors.secondaryLight),
+                MaterialStateProperty.all(AppColors.secondaryLightBlue),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -193,7 +189,7 @@ class ContinueButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12.5),
       child: SizedBox(
-        width: 105,
+        width: 110,
         height: 40,
         child: FilledButton(
           onPressed: () {
