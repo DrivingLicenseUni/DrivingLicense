@@ -1,12 +1,11 @@
-import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:license/model/sign_in_model.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -54,6 +53,8 @@ class _SignInScreenState extends State<SignInScreen> {
           case 'invalid-email':
             errorMessage = 'Invalid email address. Please enter a valid email.';
             break;
+          default:
+            errorMessage = 'Unexpected error occurred. Please try again later.';
         }
       }
 
@@ -136,7 +137,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 100),
+                    const SizedBox(height: 20),
                     const Text(
                       'Password',
                       style: TextStyle(
@@ -177,24 +178,6 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         ),
                       ),
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Spacer(), // Add a spacer widget to push the text to the end
-                        TextButton(
-                          onPressed: () {
-                            // Implement your forgot password logic here
-                          },
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                     const SizedBox(height: 20),
                     Container(
