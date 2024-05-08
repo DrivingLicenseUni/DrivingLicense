@@ -4,6 +4,24 @@ import "package:license/res/types.dart";
 class SignUpModel {
   final StudentData _userRepository = StudentData();
 
+  Future<void> signInWithEmailAndPassword(
+      {required String email, required String password}) async {
+    try {
+      await _userRepository.signInWithEmailAndPassword(
+          email: email, password: password);
+    } on Exception catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _userRepository.signOut();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> createStudentWithEmailAndPassword({
     required String email,
     required String password,

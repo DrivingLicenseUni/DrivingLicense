@@ -20,6 +20,28 @@ class StudentData {
     }
   }
 
+  Future<void> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message);
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Future<Student?> getStudentByEmail(String email) async {
     try {
       final doc = await _firestore

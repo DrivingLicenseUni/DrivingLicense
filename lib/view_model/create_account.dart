@@ -17,6 +17,24 @@ class CreateAccountViewModel {
     }
   }
 
+  Future<void> signInWithEmailAndPassword(
+      {required String email, required String password}) async {
+    try {
+      await _signUpModel.signInWithEmailAndPassword(
+          email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message);
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _signUpModel.signOut();
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> addStudentToDatabase({required Student student}) async {
     try {
       await _signUpModel.addStudentToDatabase(student);

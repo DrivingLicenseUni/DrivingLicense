@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 class ForgotPasswordRemoteData {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final RegExp emailRegex = RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
-  Future<void> sendPasswordResetEmail(String email, BuildContext context) async {
+  final RegExp emailRegex =
+      RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
+  Future<void> sendPasswordResetEmail(
+      String email, BuildContext context) async {
     try {
       if (!emailRegex.hasMatch(email)) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -17,14 +19,19 @@ class ForgotPasswordRemoteData {
         );
         return;
       }
-      var querySnapshot = await _firestore.collection('students').where('email', isEqualTo: email).get();
+      var querySnapshot = await _firestore
+          .collection('students')
+          .where('email', isEqualTo: email)
+          .get();
       if (querySnapshot.docs.isNotEmpty) {
         await _firebaseAuth.sendPasswordResetEmail(email: email);
-        Navigator.of(context).pushNamedAndRemoveUntil('/password-ؤhanged', (Route<dynamic> route) => false);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/password-changed', (Route<dynamic> route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Email address not found. Please check and try again.'),
+            content:
+                Text('Email address not found. Please check and try again.'),
             backgroundColor: Colors.red,
           ),
         );

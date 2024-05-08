@@ -6,9 +6,11 @@ import '../res/colors.dart';
 class ForgotPassword extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   ForgotPassword({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<ForgotPasswordViewModel>(context, listen: false);
+    final viewModel =
+        Provider.of<ForgotPasswordViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -51,19 +53,16 @@ class ForgotPassword extends StatelessWidget {
             const SizedBox(height: 25),
             TextField(
               controller: emailController,
-              decoration:  InputDecoration(
-                labelText: "Email address",
-                hintText: "Enter your email address",
-                border: const OutlineInputBorder(),
-                focusColor: AppColors.primary,
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                  BorderSide(color: AppColors.primary, width: 2.0),
-                ),
-                labelStyle: TextStyle(
-                  color: AppColors.black
-                )
-              ),
+              decoration: InputDecoration(
+                  labelText: "Email address",
+                  hintText: "Enter your email address",
+                  border: const OutlineInputBorder(),
+                  focusColor: AppColors.primary,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: AppColors.primary, width: 2.0),
+                  ),
+                  labelStyle: TextStyle(color: AppColors.black)),
             ),
             const SizedBox(height: 25),
             SizedBox(
@@ -71,9 +70,11 @@ class ForgotPassword extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (emailController.text.isNotEmpty) {
-                      await viewModel.sendPasswordResetEmail(emailController.text, context);
+                      await viewModel.sendPasswordResetEmail(
+                          emailController.text, context);
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter an email address')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Please enter an email address')));
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -81,11 +82,13 @@ class ForgotPassword extends StatelessWidget {
                     backgroundColor: AppColors.primary,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     elevation: 2,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
                   ),
-                  child: const Text("Send Link", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-                )
-            ),
+                  child: const Text("Send Link",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                )),
             Padding(
               padding: const EdgeInsets.only(top: 15),
               child: Center(

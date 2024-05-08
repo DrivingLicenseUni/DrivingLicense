@@ -142,7 +142,10 @@ class _SignUpFormState extends State<SignUp> {
       );
       await _createAccountViewModel.addStudentToDatabase(student: student);
 
-      Navigator.pushReplacementNamed(context, "/login");
+      await _createAccountViewModel.signInWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+
+      Navigator.pushReplacementNamed(context, "/document-upload");
     } catch (e) {
       setState(() {
         _loading = false;
