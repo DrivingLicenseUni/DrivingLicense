@@ -6,7 +6,6 @@ class ForgotPasswordRemoteData {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RegExp emailRegex = RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
-
   Future<void> sendPasswordResetEmail(String email, BuildContext context) async {
     try {
       if (!emailRegex.hasMatch(email)) {

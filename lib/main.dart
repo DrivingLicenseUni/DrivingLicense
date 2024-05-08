@@ -17,7 +17,6 @@ Future<void> main() async {
           projectId: "drivinglicense-437ff"));
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
@@ -41,35 +40,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-//   runApp(
-//     MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),
-//       ],
-//       child: MaterialApp(
-//         title: 'Flutter Demo',
-//         theme: ThemeData(
-//           primarySwatch: Colors.blue,
-//         ),
-//         initialRoute: '/forgotPassword'
-//             '',
-//         routes: {
-//           '/forgotPassword': (context) => ForgotPassword(),
-//           '/passwordChanged': (context) => const PasswordChanged(),
-//         },
-//       ),
-//     )
-//   );
-//   }

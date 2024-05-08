@@ -9,7 +9,6 @@ class ForgotPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<ForgotPasswordViewModel>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -64,8 +63,6 @@ class ForgotPassword extends StatelessWidget {
                 labelStyle: TextStyle(
                   color: AppColors.black
                 )
-
-
               ),
             ),
             const SizedBox(height: 25),
