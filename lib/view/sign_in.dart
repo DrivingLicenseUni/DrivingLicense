@@ -82,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
           alignment: Alignment.topRight,
           child: AppBar(
             title: const Text(
-              "Log In",
+              "Log In ",
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
             ),
             actions: const [
@@ -190,7 +190,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           child: const Text(
                             'Forgot Password?',
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Colors.black,
                             ),
                           ),
                         ),
