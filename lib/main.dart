@@ -1,7 +1,7 @@
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
-import 'package:license/view/forgot-password-p.dart';
-import 'package:license/view/changed-password-p.dart';
+import 'package:license/view/forgot-password-v.dart';
+import 'package:license/view/changed-password-v.dart';
 import 'package:license/view_model/forgot-password-vm.dart';
 import 'package:provider/provider.dart';
 import 'data/remote/forgot-password-d.dart';
