@@ -16,6 +16,7 @@ class ForgotPasswordRemoteData {
             backgroundColor: Colors.red,
           ),
         );
+        return;
       }
       var querySnapshot = await _firestore.collection('students').where('email', isEqualTo: email).get();
       if (querySnapshot.docs.isNotEmpty) {
