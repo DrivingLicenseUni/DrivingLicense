@@ -1,6 +1,6 @@
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
-import 'package:license/view/sign_in.dart';
+import 'package:license/view_model/sign_in_logic.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
           useMaterial3: true,
         ),
-        home: const SignInScreen());
+        home: const SigninAuth());
   }
 }
 
