@@ -98,7 +98,7 @@ class _SelectInstructorState extends State<SelectInstructor> {
               onPressed: () {
                 Navigator.pushNamed(
                   context,
-                  '/home',
+                  '/login',
                 );
               },
               child: const Icon(

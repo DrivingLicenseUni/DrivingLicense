@@ -2,6 +2,7 @@ import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
 import 'package:license/view/instructor_details.dart';
 import 'package:license/view/select_instructor.dart';
+import 'package:license/view/sign_up.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
+      home: const SignUp(),
       routes: {
+        "/signup": (context) => const SignUp(),
         "/select-instructor": (context) => const SelectInstructor(),
       },
       onGenerateRoute: (settings) {
@@ -37,7 +40,6 @@ class MyApp extends StatelessWidget {
         }
         return null;
       },
-      home: const SelectInstructor(),
     );
   }
 }

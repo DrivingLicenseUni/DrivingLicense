@@ -7,4 +7,5 @@ class AppColors {
   static Color get success => const Color.fromRGBO(28, 212, 35, 1);
   static Color get warning => const Color.fromRGBO(231, 34, 34, 1);
   static Color get black => const Color.fromRGBO(57, 56, 56, 1);
+  static Color get placeholder => const Color.fromRGBO(73, 69, 79, 1);
 }
