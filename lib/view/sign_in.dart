@@ -82,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
           alignment: Alignment.topRight,
           child: AppBar(
             title: const Text(
-              "Sign In",
+              "Log In",
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
             ),
             actions: const [
@@ -96,7 +96,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
       ),
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Stack(
           children: [
@@ -104,7 +104,7 @@ class _SignInScreenState extends State<SignInScreen> {
             Center(
               child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Text labels for Email and Password
                     const Text(
@@ -136,7 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 100),
                     const Text(
                       'Password',
                       style: TextStyle(
@@ -178,9 +178,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                     ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        const Spacer(), // Add a spacer widget to push the text to the end
                         TextButton(
                           onPressed: () {
                             // Implement your forgot password logic here
