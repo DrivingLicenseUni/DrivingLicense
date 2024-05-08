@@ -76,6 +76,26 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: AppBar(
+            title: const Text(
+              "Sign In",
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
+            ),
+            actions: const [
+              Icon(
+                Icons.star,
+                color: Colors.blue,
+                size: 30,
+              ),
+              SizedBox(width: 10),
+            ],
+          ),
+        ),
+      ),
       backgroundColor: Colors.grey,
       body: SafeArea(
         child: Stack(
@@ -86,21 +106,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 16.0),
-                          child: Text(
-                            'Login',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                     // Text labels for Email and Password
                     const Text(
                       'Email address:',
@@ -118,9 +123,13 @@ class _SignInScreenState extends State<SignInScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
                           controller: _emailController,
                           decoration: const InputDecoration(
-                            border: InputBorder.none,
+                            border: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(46, 96, 247, 1))),
                             hintText: 'helloworld@gmail.com',
                             hintStyle: TextStyle(color: Colors.grey),
                           ),
@@ -143,10 +152,14 @@ class _SignInScreenState extends State<SignInScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: TextFormField(
+                          keyboardType: TextInputType.visiblePassword,
                           controller: _passwordController,
                           obscureText: !_passwordVisible,
                           decoration: InputDecoration(
-                            border: InputBorder.none,
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(46, 96, 247, 1))),
                             hintText: '********',
                             hintStyle: const TextStyle(color: Colors.grey),
                             suffixIcon: IconButton(
@@ -232,14 +245,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: CircularProgressIndicator(),
                 ),
               ),
-            const Positioned(
-              top: 20.0,
-              right: 20.0,
-              child: Icon(
-                Icons.star,
-                color: Colors.blue,
-              ),
-            )
           ],
         ),
       ),
