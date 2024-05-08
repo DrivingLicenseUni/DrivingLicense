@@ -1,6 +1,9 @@
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
-import 'package:license/view/payment-v.dart';
+import 'package:license/view/instructor_details.dart';
+import 'package:license/view/select_instructor.dart';
+import 'package:license/view/sign_up.dart';
+import "package:license/view/payment_v.dart";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +28,19 @@ class MyApp extends StatelessWidget {
       ),
       home: const PaymentScreen(),
       routes: {
-        "/paymentMethod": (context) => const PaymentScreen(),
+        "/signup": (context) => const SignUp(),
+        "/payment-method": (context) => const PaymentScreen(),
+        "/select-instructor": (context) => const SelectInstructor(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == "/instructor-details") {
+          final args = settings.arguments as Map<String, dynamic>;
+          final String id = args['id'];
+          return MaterialPageRoute(
+            builder: (context) => InstructorDetails(id: id),
+          );
+        }
+        return null;
       },
     );
   }
