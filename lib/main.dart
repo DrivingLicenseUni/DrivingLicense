@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:license/view/instructor_details.dart';
 import 'package:license/view/select_instructor.dart';
 import 'package:license/view/sign_up.dart';
+import "package:license/view/payment_v.dart";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,9 +26,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
-      home: const SignUp(),
+      home: const PaymentScreen(),
       routes: {
         "/signup": (context) => const SignUp(),
+        "/payment-method": (context) => const PaymentScreen(),
         "/select-instructor": (context) => const SelectInstructor(),
       },
       onGenerateRoute: (settings) {
