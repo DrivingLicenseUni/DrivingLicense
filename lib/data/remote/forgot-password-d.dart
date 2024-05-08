@@ -20,7 +20,7 @@ class ForgotPasswordRemoteData {
       var querySnapshot = await _firestore.collection('students').where('email', isEqualTo: email).get();
       if (querySnapshot.docs.isNotEmpty) {
         await _firebaseAuth.sendPasswordResetEmail(email: email);
-        Navigator.of(context).pushNamedAndRemoveUntil('/passwordChanged', (Route<dynamic> route) => false);
+        Navigator.of(context).pushNamedAndRemoveUntil('/password-ؤhanged', (Route<dynamic> route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
