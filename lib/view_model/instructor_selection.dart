@@ -1,4 +1,4 @@
-import 'package:license/model/instructor_model.dart';
+import 'package:license/model/select_instructor_model.dart';
 import 'package:license/res/types.dart';
 
 class InstructorSelectionViewModel {
@@ -18,5 +18,13 @@ class InstructorSelectionViewModel {
     } catch (e) {
       throw Exception(e.toString());
     }
+  }
+
+  Future<void> cacheInstructors() async {
+    await _selectInstructorModel.cacheInstructors();
+  }
+
+  Instructor? getCachedInstructor(String id) {
+    return _selectInstructorModel.getCachedInstructor(id);
   }
 }

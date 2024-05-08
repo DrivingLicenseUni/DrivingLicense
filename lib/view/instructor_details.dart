@@ -22,12 +22,29 @@ class _InstructorDetailsState extends State<InstructorDetails> {
   void initState() {
     super.initState();
 
-    _instructorSelectionViewModel.getInstructor(id).then((instructor) {
+    if (_instructorSelectionViewModel.getCachedInstructor(id) != null) {
+      final instructor = _instructorSelectionViewModel.getCachedInstructor(id);
       setState(() {
-        _instructor = instructor;
+        _instructor = instructor!;
+        _isLoading = false;
+      });
+      return;
+    }
+
+    _instructorSelectionViewModel.cacheInstructors().then((_) {
+      final instructor = _instructorSelectionViewModel.getCachedInstructor(id);
+      setState(() {
+        _instructor = instructor!;
         _isLoading = false;
       });
     });
+
+    // _instructorSelectionViewModel.getInstructor(id).then((instructor) {
+    //   setState(() {
+    //     _instructor = instructor;
+    //     _isLoading = false;
+    //   });
+    // });
   }
 
   Widget _loading() {
