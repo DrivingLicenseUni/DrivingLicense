@@ -6,6 +6,7 @@ import 'package:license/view_model/forgot-password-vm.dart';
 import 'package:provider/provider.dart';
 import 'data/remote/forgot-password-d.dart';
 import 'model/forgot-password-m.dart';
+import 'package:license/view/sign_up.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,25 +18,29 @@ Future<void> main() async {
           projectId: "drivinglicense-437ff"));
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel(ForgotPasswordModel(ForgotPasswordRemoteData()))),
-    ],
-    child: MaterialApp(
-      title: 'Driving License',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        useMaterial3: true,
-      ),
-      home:  ForgotPassword(),
-      routes: {
-        "/forgotPassword": (context) =>  ForgotPassword(),
-        '/passwordChanged': (context) => const PasswordChanged(),
-       },
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => ForgotPasswordViewModel(
+                ForgotPasswordModel(ForgotPasswordRemoteData()))),
+      ],
+      child: MaterialApp(
+        title: 'Driving License',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+          useMaterial3: true,
+        ),
+        home: const SignUp(),
+        routes: {
+          "/forgot-password": (context) => ForgotPassword(),
+          '/password-changed': (context) => const PasswordChanged(),
+          "/signup": (context) => const SignUp(),
+        },
       ),
     );
   }
