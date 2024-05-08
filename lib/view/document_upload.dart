@@ -1,6 +1,5 @@
-
-
 import 'package:flutter/material.dart';
+import "package:license/view_model/payment_vm.dart";
 import 'package:google_fonts/google_fonts.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/res/textstyles.dart';
@@ -34,11 +33,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
-        onPressed: () => Navigator.of(context).pop(),//navigate it
+        onPressed: () => Navigator.of(context).pop(), //navigate it
       ),
       title: Text(
         'Registration',
-        style:AppTextStyles.headline,
+        style: AppTextStyles.headline,
       ),
       centerTitle: true,
       toolbarHeight: preferredSize.height,
@@ -92,7 +91,7 @@ class FileSelectionContainer extends StatelessWidget {
                 height: 23.3,
                 child: Icon(
                   Icons.insert_drive_file,
-                  color:AppColors.primary,
+                  color: AppColors.primary,
                 ),
               ),
               Text(
@@ -155,7 +154,8 @@ class CameraButton extends StatelessWidget {
         child: FilledButton.tonal(
           onPressed: () {},
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.secondaryLight),
+            backgroundColor:
+                MaterialStateProperty.all(AppColors.secondaryLight),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -189,13 +189,16 @@ class CameraButton extends StatelessWidget {
 class ContinueButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final paymentViewModel = PaymentViewModel(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12.5),
       child: SizedBox(
         width: 105,
         height: 40,
         child: FilledButton(
-          onPressed: () {},
+          onPressed: () {
+            paymentViewModel.initiatePayment();
+          },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(AppColors.primary),
           ),
@@ -204,7 +207,8 @@ class ContinueButton extends StatelessWidget {
             children: [
               Text(
                 'Continue',
-                style:AppTextStyles.labelLarge , selectionColor: Colors.white ,
+                style: AppTextStyles.labelLarge,
+                selectionColor: Colors.white,
               ),
             ],
           ),
