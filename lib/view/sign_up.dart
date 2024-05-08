@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import "package:license/view_model/payment_vm.dart";
 import 'package:license/res/colors.dart';
 import 'package:license/res/types.dart';
 import 'package:license/view_model/create_account.dart';
@@ -113,7 +112,7 @@ class _SignUpFormState extends State<SignUp> {
         _phoneNumberController.text.isEmpty;
   }
 
-  Future<void> _submitSignUp(PaymentViewModel paymentViewModel) async {
+  Future<void> _submitSignUp() async {
     setState(() {
       _loading = true;
       _signUpButton = "Loading...";
@@ -146,8 +145,7 @@ class _SignUpFormState extends State<SignUp> {
       await _createAccountViewModel.signInWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
 
-      paymentViewModel.initiatePayment();
-      // Navigator.pushReplacementNamed(context, "/payment-method");
+      Navigator.pushReplacementNamed(context, "/document-upload");
     } catch (e) {
       setState(() {
         _loading = false;
@@ -161,7 +159,6 @@ class _SignUpFormState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    final paymentViewModel = PaymentViewModel(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -374,9 +371,7 @@ class _SignUpFormState extends State<SignUp> {
                 ),
               ),
               ElevatedButton(
-                onPressed: _checkValues() || _loading
-                    ? null
-                    : () => _submitSignUp(paymentViewModel),
+                onPressed: _checkValues() || _loading ? null : _submitSignUp,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,

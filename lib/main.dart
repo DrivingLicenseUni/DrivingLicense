@@ -1,5 +1,6 @@
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
+import 'package:license/view/document_upload.dart';
 import 'package:license/view/instructor_details.dart';
 import 'package:license/view/select_instructor.dart';
 import 'package:license/view/sign_up.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "/signup": (context) => const SignUp(),
         "/select-instructor": (context) => const SelectInstructor(),
+        "/document-upload": (context) => const DocumentUpload(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == "/instructor-details") {
