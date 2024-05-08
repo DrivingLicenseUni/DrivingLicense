@@ -1,12 +1,43 @@
-
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/res/textstyles.dart';
+import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 
-class DocumentUpload extends StatelessWidget {
+class DocumentUpload extends StatefulWidget {
   const DocumentUpload({Key? key}) : super(key: key);
+
+  @override
+  _DocumentUploadState createState() => _DocumentUploadState();
+}
+
+class _DocumentUploadState extends State<DocumentUpload> {
+  File? selectedFile;
+
+  Future<void> pickFile() async {
+    // Request permission to read external storage
+    PermissionStatus permissionStatus = await Permission.storage.request();
+
+    if (permissionStatus.isGranted) {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'png'],
+      );
+
+      if (result != null) {
+        setState(() {
+          selectedFile = File(result.files.single.path!);
+        });
+      } else {
+        // User canceled the file picker
+      }
+    } else {
+      // Permission denied, handle accordingly
+      print('Permission denied');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +46,10 @@ class DocumentUpload extends StatelessWidget {
       body: Column(
         children: <Widget>[
           HeaderText(),
-          FileSelectionContainer(),
+          FileSelectionContainer(
+            onTap: pickFile,
+            selectedFile: selectedFile,
+          ),
           OrDivider(),
           CameraButton(),
           ContinueButton(),
@@ -34,11 +68,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
-        onPressed: () => Navigator.of(context).pop(),//navigate it
+        onPressed: () => Navigator.of(context).pop(),
       ),
       title: Text(
         'Registration',
-        style:AppTextStyles.headline,
+        style: AppTextStyles.headline,
       ),
       centerTitle: true,
       toolbarHeight: preferredSize.height,
@@ -67,11 +101,21 @@ class HeaderText extends StatelessWidget {
 }
 
 class FileSelectionContainer extends StatelessWidget {
+  final VoidCallback onTap;
+  final File? selectedFile;
+
+  const FileSelectionContainer({
+    Key? key,
+    required this.onTap,
+    this.selectedFile,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 12.5),
       child: GestureDetector(
+        onTap: onTap,
         child: Container(
           width: 304,
           height: 159,
@@ -91,13 +135,16 @@ class FileSelectionContainer extends StatelessWidget {
                 width: 23.3,
                 height: 23.3,
                 child: Icon(
-                  Icons.insert_drive_file,
-                  color:AppColors.primary,
+                  selectedFile != null ? Icons.check : Icons.insert_drive_file,
+                  color: AppColors.primary,
                 ),
               ),
               Text(
-                'Select file',
+                selectedFile != null
+                    ? selectedFile!.path.split('/').last
+                    : 'Select file',
                 style: AppTextStyles.labelLarge,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -155,7 +202,8 @@ class CameraButton extends StatelessWidget {
         child: FilledButton.tonal(
           onPressed: () {},
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.secondaryLight),
+            backgroundColor:
+                MaterialStateProperty.all(AppColors.secondaryLight),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -204,7 +252,8 @@ class ContinueButton extends StatelessWidget {
             children: [
               Text(
                 'Continue',
-                style:AppTextStyles.labelLarge , selectionColor: Colors.white ,
+                style: AppTextStyles.labelLarge,
+                selectionColor: Colors.white,
               ),
             ],
           ),
