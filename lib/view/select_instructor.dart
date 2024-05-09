@@ -14,6 +14,7 @@ class _SelectInstructorState extends State<SelectInstructor> {
   String _selectedInstructorId = "";
   final InstructorSelectionViewModel _instructorSelectionViewModel =
       InstructorSelectionViewModel();
+  bool _loading = true;
 
   List<Instructor> _instructors = [];
 
@@ -23,6 +24,7 @@ class _SelectInstructorState extends State<SelectInstructor> {
     if (_instructorSelectionViewModel.getCachedInstructors().isNotEmpty) {
       setState(() {
         _instructors = _instructorSelectionViewModel.getCachedInstructors();
+        _loading = false;
       });
       return;
     }
@@ -32,6 +34,7 @@ class _SelectInstructorState extends State<SelectInstructor> {
     _instructorSelectionViewModel.cacheInstructors().then((value) {
       setState(() {
         _instructors = _instructorSelectionViewModel.getCachedInstructors();
+        _loading = false;
       });
     });
   }
@@ -123,54 +126,60 @@ class _SelectInstructorState extends State<SelectInstructor> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Select Instructor',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
-        ),
-        centerTitle: true,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: const EdgeInsets.fromLTRB(10, 5, 0, 0),
-            child: const Text(
-              'Select an instructor',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w400,
-                color: Color.fromRGBO(57, 56, 56, 1),
+    return _loading
+        ? Center(
+            child: CircularProgressIndicator(
+              color: AppColors.black,
+            ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              title: const Text(
+                'Select Instructor',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
               ),
+              centerTitle: true,
             ),
-          ),
-          GridView.builder(
-            shrinkWrap: true,
-            itemCount: _instructors.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                  child: const Text(
+                    'Select an instructor',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromRGBO(57, 56, 56, 1),
+                    ),
+                  ),
+                ),
+                GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: _instructors.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        if (_selectedInstructorId.isNotEmpty) {
+                          setState(() {
+                            _selectedInstructorId = "";
+                          });
+                        } else {
+                          setState(() {
+                            _selectedInstructorId = _instructors[index].id;
+                          });
+                        }
+                      },
+                      child: _displayInstructor(_instructors[index]),
+                    );
+                  },
+                ),
+              ],
             ),
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  if (_selectedInstructorId.isNotEmpty) {
-                    setState(() {
-                      _selectedInstructorId = "";
-                    });
-                  } else {
-                    setState(() {
-                      _selectedInstructorId = _instructors[index].id;
-                    });
-                  }
-                },
-                child: _displayInstructor(_instructors[index]),
-              );
-            },
-          ),
-        ],
-      ),
-      floatingActionButton: _confirmationButton(),
-    );
+            floatingActionButton: _confirmationButton(),
+          );
   }
 }
