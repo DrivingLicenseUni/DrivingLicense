@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../view_model/forgot-password-vm.dart';
-import '../res/colors.dart';
+import 'package:license/view_model/forgot_password_vm.dart';
+import 'package:license/res/colors.dart';
 
 class ForgotPassword extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -93,7 +93,8 @@ class ForgotPassword extends StatelessWidget {
               padding: const EdgeInsets.only(top: 15),
               child: Center(
                 child: TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () =>
+                      Navigator.pushReplacementNamed(context, '/login'),
                   child: RichText(
                     text: TextSpan(
                       text: 'Remember password? ',

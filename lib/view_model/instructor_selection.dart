@@ -24,6 +24,10 @@ class InstructorSelectionViewModel {
     await _selectInstructorModel.cacheInstructors();
   }
 
+  List<Instructor> getCachedInstructors() {
+    return _selectInstructorModel.getCachedInstructors();
+  }
+
   Instructor? getCachedInstructor(String id) {
     return _selectInstructorModel.getCachedInstructor(id);
   }

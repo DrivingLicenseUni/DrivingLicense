@@ -20,9 +20,18 @@ class _SelectInstructorState extends State<SelectInstructor> {
   @override
   void initState() {
     super.initState();
-    _instructorSelectionViewModel.getInstructors().then((instructors) {
+    if (_instructorSelectionViewModel.getCachedInstructors().isNotEmpty) {
       setState(() {
-        _instructors = instructors;
+        _instructors = _instructorSelectionViewModel.getCachedInstructors();
+      });
+      return;
+    }
+
+    _instructorSelectionViewModel.cacheInstructors();
+
+    _instructorSelectionViewModel.cacheInstructors().then((value) {
+      setState(() {
+        _instructors = _instructorSelectionViewModel.getCachedInstructors();
       });
     });
   }

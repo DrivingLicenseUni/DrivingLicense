@@ -23,10 +23,18 @@ class InstructorModel {
   }
 
   Future<void> cacheInstructors() async {
+    if (_cachedInstructors.isNotEmpty) {
+      return;
+    }
+
     final instructors = await getInstructors();
     for (final instructor in instructors) {
       _cachedInstructors[instructor.id] = instructor;
     }
+  }
+
+  List<Instructor> getCachedInstructors() {
+    return _cachedInstructors.values.toList();
   }
 
   Instructor? getCachedInstructor(String id) {

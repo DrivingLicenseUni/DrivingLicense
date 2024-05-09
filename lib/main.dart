@@ -4,12 +4,12 @@ import 'package:license/res/colors.dart';
 import 'package:license/view/document_upload.dart';
 import 'package:license/view/instructor_details.dart';
 import 'package:license/view/select_instructor.dart';
-import 'package:license/view/forgot-password-v.dart';
-import 'package:license/view/changed-password-v.dart';
-import 'package:license/view_model/forgot-password-vm.dart';
+import 'package:license/view/forgot_password_v.dart';
+import 'package:license/view/changed_password_v.dart';
+import 'package:license/view_model/forgot_password_vm.dart';
 import 'package:provider/provider.dart';
-import 'data/remote/forgot-password-d.dart';
-import 'model/forgot-password-m.dart';
+import 'data/remote/forgot_password_d.dart';
+import 'model/forgot_password_m.dart';
 import 'package:license/view/sign_up.dart';
 
 Future<void> main() async {
@@ -85,45 +85,46 @@ class _MyAppState extends State<ApplicationRoot> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: [
-          const SignUp(),
-          ForgotPassword(),
-          const SelectInstructor(),
-          const DocumentUpload(),
-        ][currentPageIndex],
-        bottomNavigationBar: NavigationBar(
-          indicatorColor: AppColors.secondaryLightBlue,
-          backgroundColor: AppColors.secondaryBlue,
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentPageIndex = index;
-            });
-          },
-          shadowColor: AppColors.black,
-          selectedIndex: currentPageIndex,
-          height: 80,
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.home),
-              selectedIcon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.search),
-              selectedIcon: Icon(Icons.search),
-              label: 'Search',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.add),
-              selectedIcon: Icon(Icons.add),
-              label: 'Add',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.person),
-              selectedIcon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-        ));
+      body: [
+        const SignUp(),
+        ForgotPassword(),
+        const SelectInstructor(),
+        const DocumentUpload(),
+      ][currentPageIndex],
+      bottomNavigationBar: NavigationBar(
+        indicatorColor: AppColors.secondaryLightBlue,
+        backgroundColor: AppColors.secondaryBlue,
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        shadowColor: AppColors.black,
+        selectedIndex: currentPageIndex,
+        height: 80,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home),
+            selectedIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.search),
+            selectedIcon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.add),
+            selectedIcon: Icon(Icons.add),
+            label: 'Add',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
   }
 }

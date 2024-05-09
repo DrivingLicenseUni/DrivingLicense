@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/res/types.dart';
 import 'package:license/view_model/create_account.dart';
@@ -146,6 +147,7 @@ class _SignUpFormState extends State<SignUp> {
           email: _emailController.text, password: _passwordController.text);
 
       Navigator.pushReplacementNamed(context, "/document-upload");
+      // context.go("/document-upload");
     } catch (e) {
       setState(() {
         _loading = false;
