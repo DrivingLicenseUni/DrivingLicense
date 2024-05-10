@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-class IntroPage extends StatefulWidget {
-  const IntroPage({super.key});
+class LogoView extends StatefulWidget {
+  const LogoView({super.key});
 
   @override
-  _IntroPageState createState() => _IntroPageState();
+  _LogoViewState createState() => _LogoViewState();
 }
 
-class _IntroPageState extends State<IntroPage> {
+class _LogoViewState extends State<LogoView> {
   @override
   void initState() {
     super.initState();
@@ -18,7 +18,7 @@ class _IntroPageState extends State<IntroPage> {
 
   void navigateToOnboardingPage() {
     if (mounted) {
-      Navigator.pushReplacementNamed(context, '/onboarding-page');
+      Navigator.pushReplacementNamed(context, '/onboarding-view');
     }
   }
 
@@ -31,7 +31,7 @@ class _IntroPageState extends State<IntroPage> {
         elevation: 0,
       ),
       body: Center(
-        child: Image.asset('assets/images/logo_gif.gif'),  // Your GIF asset
+        child: Image.asset('assets/images/logo_gif.gif'),
       ),
     );
   }
