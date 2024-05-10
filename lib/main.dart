@@ -1,5 +1,6 @@
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
+import 'package:license/view/onboarding-v.dart';
 import 'package:license/view/view_calendar_time.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view/document_upload.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         restorationScopeId: 'app',
-        home: const ApplicationRoot(),
+        home: const OnboardingView(),
         routes: {
           "/forgot-password": (context) => ForgotPassword(),
           '/password-changed': (context) => const PasswordChanged(),
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
           "/select-instructor": (context) => const SelectInstructor(),
           "/document-upload": (context) => const DocumentUpload(),
           "/pick-date": (context) => const DatePickerExample(restorationId: 'main'),
+          "/onboarding-view": (context) => const OnboardingView(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
