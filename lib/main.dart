@@ -1,5 +1,6 @@
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
+import 'package:license/view/view_calendar_time.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view/document_upload.dart';
 import 'package:license/view/instructor_details.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -44,6 +46,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
           useMaterial3: true,
         ),
+        restorationScopeId: 'app',
         home: const ApplicationRoot(),
         routes: {
           "/forgot-password": (context) => ForgotPassword(),
@@ -51,6 +54,7 @@ class MyApp extends StatelessWidget {
           "/signup": (context) => const SignUp(),
           "/select-instructor": (context) => const SelectInstructor(),
           "/document-upload": (context) => const DocumentUpload(),
+          "/pick-date": (context) => const DatePickerExample(restorationId: 'main'),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
@@ -90,6 +94,7 @@ class _MyAppState extends State<ApplicationRoot> {
         ForgotPassword(),
         const SelectInstructor(),
         const DocumentUpload(),
+        const DatePickerExample(restorationId: 'main'),
       ][currentPageIndex],
       bottomNavigationBar: NavigationBar(
         indicatorColor: AppColors.secondaryLightBlue,
@@ -117,6 +122,11 @@ class _MyAppState extends State<ApplicationRoot> {
             icon: Icon(Icons.add),
             selectedIcon: Icon(Icons.add),
             label: 'Add',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
           ),
           NavigationDestination(
             icon: Icon(Icons.person),
