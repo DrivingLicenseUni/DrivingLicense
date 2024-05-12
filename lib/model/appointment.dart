@@ -1,6 +1,14 @@
-class Appointment {
-  DateTime selectedDate;
-  String? selectedTime;
+import 'package:license/data/remote/instructor_data.dart';
+import 'package:license/res/types.dart';
 
-  Appointment(this.selectedDate, this.selectedTime);
+class Appointment {
+  // DateTime selectedDate;
+  // String? selectedTime;
+  InstructorData _instructorData = InstructorData();
+
+  Future<List<Instructor>> getInstructors() async {
+    return await _instructorData.getInstructors();
+  }
+
+  Appointment();
 }

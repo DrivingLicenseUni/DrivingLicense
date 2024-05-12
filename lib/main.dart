@@ -29,7 +29,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -44,6 +43,8 @@ class MyApp extends StatelessWidget {
         title: 'Driving License',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+          primaryColor: AppColors.primary,
+          focusColor: AppColors.primary,
           useMaterial3: true,
         ),
         restorationScopeId: 'app',
@@ -54,7 +55,8 @@ class MyApp extends StatelessWidget {
           "/signup": (context) => const SignUp(),
           "/select-instructor": (context) => const SelectInstructor(),
           "/document-upload": (context) => const DocumentUpload(),
-          "/pick-date": (context) => const DatePickerExample(restorationId: 'main'),
+          "/pick-date": (context) =>
+              const DatePickerExample(restorationId: 'main'),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {

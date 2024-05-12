@@ -1,32 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:license/model/appointment.dart';
+import 'package:license/res/types.dart';
 
 class DatePickerViewModel extends ChangeNotifier {
+  final Appointment _appointment = Appointment();
   DateTime _selectedDate = DateTime.now();
-  List<DateTime> _bookedDates = [];
-  List<String> _availableTimes = [];
+  final List<DateTime> _bookedDates = [];
+  // List<String> _availableTimes = [];
+  Map<String, dynamic> _availableTimes = {};
   String? _selectedTime;
 
   DateTime get selectedDate => _selectedDate;
   List<DateTime> get bookedDates => _bookedDates;
-  List<String> get availableTimes => _availableTimes;
+  Map<String, dynamic> get availableTimes => _availableTimes;
   String? get selectedTime => _selectedTime;
 
-  TextEditingController _timeController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
   TextEditingController get timeController => _timeController;
 
   DatePickerViewModel() {
     _timeController.text = '';
-    _loadAvailableTimes();
+    loadAvailableTimes().then((value) {
+      notifyListeners();
+      _availableTimes = value;
+    });
   }
 
-  void _loadAvailableTimes() {
+  List<Instructor> _instructors = [];
+
+  Future<Map<String, dynamic>> loadAvailableTimes() async {
     try {
-      _availableTimes = ['10:00 AM', '11:00 AM', '12:00 PM', '2:00 PM', '3:00 PM'];
+      _instructors = await _appointment.getInstructors();
+      late Instructor instructor;
+
+      for (int i = 0; i < _instructors.length; i++) {
+        if (_instructors[i].email == 'omar_ins@instructor.com') {
+          instructor = _instructors[i];
+          break;
+        }
+      }
+
+      _availableTimes = instructor.availableTimes;
+      // _availableTimes
+      // _availableTimes = {
+      //   "hi": ['10:00 AM'],
+      // };
     } catch (e) {
-      print('Error loading available times: $e');
-      _availableTimes = [];
+      _availableTimes = {};
     }
+
+    return _availableTimes;
   }
 
   void selectDate(DateTime selectedDate) {
@@ -43,12 +66,13 @@ class DatePickerViewModel extends ChangeNotifier {
     if (_selectedTime != null) {
       try {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Booking for $_selectedDate at $_selectedTime')),
+          SnackBar(
+              content: Text('Booking for $_selectedDate at $_selectedTime')),
         );
       } catch (e) {
-        print('Error booking appointment: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An error occurred while booking the appointment')),
+          SnackBar(
+              content: Text('An error occurred while booking the appointment')),
         );
       }
     } else {

@@ -11,8 +11,10 @@ class InstructorData {
           .map((doc) => Instructor(
                 id: doc.id,
                 name: doc['name'],
+                email: doc['email'],
                 image: doc['image'],
                 desc: doc['desc'],
+                availableTimes: doc["availableTimes"],
               ))
           .toList();
     } catch (e) {
@@ -26,8 +28,10 @@ class InstructorData {
       return Instructor(
         id: snapshot.id,
         name: snapshot['name'],
+        email: snapshot['email'],
         image: snapshot['image'],
         desc: snapshot['desc'],
+        availableTimes: snapshot["availableTimes"],
       );
     } catch (e) {
       throw Exception(e.toString());
