@@ -131,9 +131,9 @@ class _MyAppState extends State<ApplicationRoot> {
             label: 'Profile',
           ),
           NavigationDestination(
-            icon: Icon(Icons.person),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.calendar_today_outlined),
+            selectedIcon: Icon(Icons.calendar_today),
+            label: 'Calendar',
           ),
         ],
       ),

@@ -22,6 +22,14 @@ class InstructorModel {
     }
   }
 
+  Future<Instructor> getInstructorByEmail(String email) async {
+    try {
+      return await _instructorRepository.getInstructorByEmail(email);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> cacheInstructors() async {
     if (_cachedInstructors.isNotEmpty) {
       return;

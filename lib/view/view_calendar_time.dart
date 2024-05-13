@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:license/view_model/date_picker.dart';
 import 'package:license/res/textstyle.dart';
 import 'package:license/res/colors.dart';
+import 'package:license/view_model/instructor_selection.dart';
 
 class DatePickerExample extends StatefulWidget {
   const DatePickerExample({super.key, this.restorationId});
@@ -15,8 +16,11 @@ class DatePickerExample extends StatefulWidget {
 
 class _DatePickerExampleState extends State<DatePickerExample> {
   final DatePickerViewModel _viewModel = DatePickerViewModel();
+  final InstructorSelectionViewModel _selectionViewModel =
+      InstructorSelectionViewModel();
   bool _canEdit = false;
   TimeOfDay? _selectedTime;
+  DateTime? _selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -81,10 +85,17 @@ class _DatePickerExampleState extends State<DatePickerExample> {
             child: _buildTimeSlots(),
           ),
           const SizedBox(height: 35),
-          !_canEdit ? const SizedBox() : _buildTimePicker(),
-          // _buildBookNowButton(),
         ],
       ),
+      floatingActionButton: !_canEdit
+          ? const SizedBox()
+          : FloatingActionButton(
+              onPressed: () {
+                _showTimePicker();
+              },
+              backgroundColor: AppColors.primary,
+              child: const Icon(Icons.access_time),
+            ),
     );
   }
 
@@ -99,7 +110,12 @@ class _DatePickerExampleState extends State<DatePickerExample> {
         initialDate: _viewModel.selectedDate,
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(const Duration(days: 6)),
-        onDateChanged: _viewModel.selectDate,
+        onDateChanged: (date) {
+          _viewModel.selectDate(date);
+          setState(() {
+            _selectedDate = date;
+          });
+        },
         selectableDayPredicate: (DateTime date) {
           // Allow selection only if the date is not booked
           return !_viewModel.bookedDates.contains(date);
@@ -109,8 +125,8 @@ class _DatePickerExampleState extends State<DatePickerExample> {
   }
 
   Widget _buildTimeSlots() {
-    return FutureBuilder<Map<String, dynamic>>(
-      future: _viewModel.loadAvailableTimes(),
+    return FutureBuilder<List<String>>(
+      future: _viewModel.loadAvailableTimes(_selectedDate!.day),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -121,12 +137,21 @@ class _DatePickerExampleState extends State<DatePickerExample> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children:
-                  snapshot.data!.values.expand((times) => times).map((time) {
+                  // snapshot.data!.values.expand((times) => times).map((time) {
+                  snapshot.data!.map((time) {
                 return Padding(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: GestureDetector(
                     onTap: () {
-                      _viewModel.selectTime(time);
+                      if (_canEdit) {
+                        _viewModel.removeTime(_selectedDate!.day, time).then(
+                          (value) {
+                            setState(() {});
+                          },
+                        );
+                      } else {
+                        _viewModel.selectTime(time);
+                      }
                     },
                     child: Container(
                       width: 78,
@@ -141,8 +166,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
                             color: Colors.grey.withOpacity(0.4),
                             spreadRadius: 1,
                             blurRadius: 1,
-                            offset: const Offset(
-                                0, 1), // changes position of shadow
+                            offset: const Offset(0, 1),
                           ),
                         ],
                       ),
@@ -160,29 +184,6 @@ class _DatePickerExampleState extends State<DatePickerExample> {
           );
         }
       },
-    );
-  }
-
-  Widget _buildTimePicker() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            _selectedTime == null
-                ? 'Select Time'
-                : 'Selected Time: ${_selectedTime!.format(context)}',
-            style: const TextStyle(fontSize: 16.0),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _showTimePicker();
-            },
-            child: const Text('Pick Time'),
-          ),
-        ],
-      ),
     );
   }
 
@@ -210,6 +211,19 @@ class _DatePickerExampleState extends State<DatePickerExample> {
     );
 
     if (time != null) {
+      final instructor = await _selectionViewModel
+          .getInstructorByEmail("omar_ins@instructor.com");
+
+      final formattedTime =
+          '${time.hour > 12 ? time.hour - 12 : time.hour}:${time.minute <= 9 ? "0${time.minute}" : time.minute} ${time.period == DayPeriod.am ? 'AM' : 'PM'}';
+
+      if (instructor.availableTimes[_selectedDate!.day] == null) {
+        instructor.availableTimes[_selectedDate!.day] = [formattedTime];
+      } else {
+        instructor.availableTimes[_selectedDate!.day]!.add(formattedTime);
+      }
+
+      await _viewModel.updateInstructor(instructor);
       setState(() {
         _selectedTime = time;
       });

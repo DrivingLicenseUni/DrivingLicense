@@ -20,6 +20,14 @@ class InstructorSelectionViewModel {
     }
   }
 
+  Future<Instructor> getInstructorByEmail(String email) async {
+    try {
+      return await _selectInstructorModel.getInstructorByEmail(email);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> cacheInstructors() async {
     await _selectInstructorModel.cacheInstructors();
   }

@@ -4,7 +4,7 @@ class Instructor {
   final String email;
   final String image;
   final String desc;
-  final Map<String, dynamic> availableTimes;
+  final Map<int, dynamic> availableTimes;
 
   Instructor({
     required this.id,
@@ -14,6 +14,24 @@ class Instructor {
     required this.desc,
     required this.availableTimes,
   });
+
+  Instructor copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? image,
+    String? desc,
+    Map<int, dynamic>? availableTimes,
+  }) {
+    return Instructor(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      image: image ?? this.image,
+      desc: desc ?? this.desc,
+      availableTimes: availableTimes ?? this.availableTimes,
+    );
+  }
 }
 
 class Student {
