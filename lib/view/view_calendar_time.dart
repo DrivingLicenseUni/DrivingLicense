@@ -43,49 +43,51 @@ class _DatePickerExampleState extends State<DatePickerExample> {
         centerTitle: true,
         toolbarHeight: 83,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0, bottom: 11.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                children: [
-                  const Text(
-                    'Select Date',
-                    style: AppTextStyles.title,
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    color: AppColors.primary,
-                    onPressed: () {
-                      setState(() {
-                        _canEdit = !_canEdit;
-                      });
-                    },
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, bottom: 11.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  children: [
+                    const Text(
+                      'Select Date',
+                      style: AppTextStyles.title,
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      color: AppColors.primary,
+                      onPressed: () {
+                        setState(() {
+                          _canEdit = !_canEdit;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          _buildDatePicker(),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Select Time Slot',
-                style: AppTextStyles.title,
+            _buildDatePicker(),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Select Time Slot',
+                  style: AppTextStyles.title,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(13),
-            child: _buildTimeSlots(),
-          ),
-          const SizedBox(height: 35),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(13),
+              child: _buildTimeSlots(),
+            ),
+            const SizedBox(height: 35),
+          ],
+        ),
       ),
       floatingActionButton: !_canEdit
           ? const SizedBox()
@@ -94,7 +96,10 @@ class _DatePickerExampleState extends State<DatePickerExample> {
                 _showTimePicker();
               },
               backgroundColor: AppColors.primary,
-              child: const Icon(Icons.access_time),
+              child: const Icon(
+                Icons.access_time,
+                color: Colors.white,
+              ),
             ),
     );
   }
@@ -203,6 +208,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
             ),
             timePickerTheme: TimePickerThemeData(
               dayPeriodColor: AppColors.primary,
+              dayPeriodTextColor: Colors.black,
             ),
           ),
           child: child!,
