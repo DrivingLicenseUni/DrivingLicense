@@ -50,11 +50,13 @@ class MyApp extends StatelessWidget {
         title: 'Driving License',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+          primaryColor: AppColors.primary,
+          focusColor: AppColors.primary,
           useMaterial3: true,
         ),
         restorationScopeId: 'app',
         home: const ApplicationRoot(),
-        initialRoute: user == null ? '/login' : '/home_screen',
+        initialRoute: user == null ? '/application-root' : '/home-screen',
         routes: {
           "/forgot-password": (context) => ForgotPassword(),
           '/password-changed': (context) => const PasswordChanged(),
@@ -64,7 +66,8 @@ class MyApp extends StatelessWidget {
           "/pick-date": (context) =>
               const DatePickerExample(restorationId: 'main'),
           '/login': (context) => const LoginView(),
-          '/home_screen': (context) => HomeScreen(),
+          '/home-screen': (context) => HomeScreen(),
+          '/application-root': (context) => const ApplicationRoot(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
@@ -139,9 +142,9 @@ class _MyAppState extends State<ApplicationRoot> {
             label: 'Profile',
           ),
           NavigationDestination(
-            icon: Icon(Icons.person),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.calendar_today_outlined),
+            selectedIcon: Icon(Icons.calendar_today),
+            label: 'Calendar',
           ),
         ],
       ),

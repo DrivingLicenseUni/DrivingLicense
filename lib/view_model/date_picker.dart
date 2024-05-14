@@ -1,32 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:license/model/appointment.dart';
+import 'package:license/res/types.dart';
 
 class DatePickerViewModel extends ChangeNotifier {
+  final Appointment _appointment = Appointment();
   DateTime _selectedDate = DateTime.now();
-  List<DateTime> _bookedDates = [];
-  List<String> _availableTimes = [];
+  final List<DateTime> _bookedDates = [];
+  // List<String> _availableTimes = [];
+  Map<int, dynamic> _availableTimes = {};
+  dynamic _availableTimesInDate = [];
   String? _selectedTime;
 
   DateTime get selectedDate => _selectedDate;
+  dynamic get availableTimesInDate => _availableTimesInDate;
   List<DateTime> get bookedDates => _bookedDates;
-  List<String> get availableTimes => _availableTimes;
+  Map<int, dynamic> get availableTimes => _availableTimes;
   String? get selectedTime => _selectedTime;
 
-  TextEditingController _timeController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
   TextEditingController get timeController => _timeController;
 
   DatePickerViewModel() {
     _timeController.text = '';
-    _loadAvailableTimes();
+    loadAvailableTimes(_selectedDate.day).then((value) {
+      notifyListeners();
+      _availableTimesInDate = value;
+    });
   }
 
-  void _loadAvailableTimes() {
+  List<Instructor> _instructors = [];
+
+  Future<void> updateInstructor(Instructor instructor) async {
+    await _appointment.updateInstructor(instructor);
+    loadAvailableTimes(_selectedDate.day).then((value) {
+      _availableTimesInDate = value;
+    });
+  }
+
+  Future<List<String>> loadAvailableTimes(int day) async {
     try {
-      _availableTimes = ['10:00 AM', '11:00 AM', '12:00 PM', '2:00 PM', '3:00 PM'];
+      _instructors = await _appointment.getInstructors();
+      late Instructor instructor;
+
+      for (int i = 0; i < _instructors.length; i++) {
+        if (_instructors[i].email == 'omar_ins@instructor.com') {
+          instructor = _instructors[i];
+          break;
+        }
+      }
+
+      _availableTimes = instructor.availableTimes;
+
+      if (instructor.availableTimes[day] != null) {
+        _availableTimesInDate = instructor.availableTimes[day];
+      } else {
+        _availableTimesInDate = [];
+      }
     } catch (e) {
-      print('Error loading available times: $e');
-      _availableTimes = [];
+      _availableTimes = {};
+      _availableTimesInDate = [];
     }
+
+    List<String> actualTimes = [];
+    for (int i = 0; i < _availableTimesInDate.length; i++) {
+      actualTimes.add(_availableTimesInDate[i]);
+    }
+
+    _availableTimesInDate = actualTimes;
+
+    return actualTimes;
+  }
+
+  Future<void> removeTime(int day, String time) async {
+    await _appointment.removeTimeFromInstructorFromDay(
+        "omar_ins@instructor.com", day, time);
+    notifyListeners();
   }
 
   void selectDate(DateTime selectedDate) {
@@ -43,12 +91,13 @@ class DatePickerViewModel extends ChangeNotifier {
     if (_selectedTime != null) {
       try {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Booking for $_selectedDate at $_selectedTime')),
+          SnackBar(
+              content: Text('Booking for $_selectedDate at $_selectedTime')),
         );
       } catch (e) {
-        print('Error booking appointment: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An error occurred while booking the appointment')),
+          SnackBar(
+              content: Text('An error occurred while booking the appointment')),
         );
       }
     } else {

@@ -405,10 +405,10 @@ class _SignUpFormState extends State<SignUp> {
                         (states) => Colors.transparent,
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Login",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),

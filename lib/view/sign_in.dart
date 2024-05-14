@@ -25,6 +25,7 @@ class _LoginViewState extends State<LoginView> {
             fontSize: 24,
             letterSpacing: 1.2,
           ),
+          textAlign: TextAlign.center,
         ),
         backgroundColor: AppColors.primary,
       ),
