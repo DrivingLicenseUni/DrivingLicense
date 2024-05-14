@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:license/model/select_instructor_model.dart';
 import 'package:license/model/signup.dart';
 import 'package:license/res/types.dart';
@@ -7,9 +5,6 @@ import 'package:license/res/types.dart';
 class InstructorSelectionViewModel {
   final InstructorModel _selectInstructorModel = InstructorModel();
   final StudentModel _studentModel = StudentModel();
-
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<List<Instructor>> getInstructors() async {
     try {

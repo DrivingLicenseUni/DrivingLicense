@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
+import 'package:license/view/home_dummy.dart';
+import 'package:license/view/sign_in.dart';
 import 'package:license/view/view_calendar_time.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view/document_upload.dart';
@@ -21,11 +24,15 @@ Future<void> main() async {
           appId: "1:486459417909:android:d9f6011ad27e7f79f5587c",
           messagingSenderId: "486459417909",
           projectId: "drivinglicense-437ff"));
-  runApp(const MyApp());
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? user = auth.currentUser;
+  runApp(MyApp(user: user));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final User? user;
+  const MyApp({super.key, this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +56,7 @@ class MyApp extends StatelessWidget {
         ),
         restorationScopeId: 'app',
         home: const ApplicationRoot(),
+        initialRoute: user == null ? '/application-root' : '/home-screen',
         routes: {
           "/forgot-password": (context) => ForgotPassword(),
           '/password-changed': (context) => const PasswordChanged(),
@@ -57,6 +65,9 @@ class MyApp extends StatelessWidget {
           "/document-upload": (context) => const DocumentUpload(),
           "/pick-date": (context) =>
               const DatePickerExample(restorationId: 'main'),
+          '/login': (context) => const LoginView(),
+          '/home-screen': (context) => HomeScreen(),
+          '/application-root': (context) => const ApplicationRoot(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
