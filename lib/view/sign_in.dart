@@ -157,7 +157,7 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // Handle "Sign up" button press
+                        Navigator.pushReplacementNamed(context, '/signup');
                       },
                       child: Text(
                         "Sign up!",

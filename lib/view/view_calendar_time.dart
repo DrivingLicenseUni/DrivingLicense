@@ -32,10 +32,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
-          'Book a Lesson',
-           style:AppTextStyles.headline
-        ),
+        title: Text('Book a Lesson', style: AppTextStyles.headline),
         actions: [
           CircleAvatar(
             child: Icon(Icons.person),
@@ -60,12 +57,13 @@ class _DatePickerExampleState extends State<DatePickerExample> {
           ),
           _buildDatePicker(),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Select Time Slot',
-               style: AppTextStyles.title,
+                style: AppTextStyles.title,
               ),
             ),
           ),
@@ -83,7 +81,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
   Widget _buildDatePicker() {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.secondary,
+        color: AppColors.secondaryBlue,
         borderRadius: BorderRadius.circular(12.0),
       ),
       margin: EdgeInsets.fromLTRB(13, 0, 13, 19),
@@ -115,7 +113,9 @@ class _DatePickerExampleState extends State<DatePickerExample> {
                 width: 78,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: _viewModel.selectedTime == time ? Colors.blue : AppColors.secondary,
+                  color: _viewModel.selectedTime == time
+                      ? Colors.blue
+                      : AppColors.secondaryBlue,
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
@@ -129,7 +129,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
                 child: Center(
                   child: Text(
                     time,
-                    style:AppTextStyles.labelLarge,
+                    style: AppTextStyles.labelLarge,
                   ),
                 ),
               ),
@@ -141,38 +141,30 @@ class _DatePickerExampleState extends State<DatePickerExample> {
   }
 
   Widget _buildBookNowButton() {
-    return
-        FilledButton(
-          style: ButtonStyle(
-            backgroundColor: const MaterialStatePropertyAll<Color>(AppColors.primary),
-            fixedSize: MaterialStateProperty.all<Size>(const Size(283, 41)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
+    return FilledButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll<Color>(AppColors.primary),
+        fixedSize: MaterialStateProperty.all<Size>(const Size(283, 41)),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
           ),
-          onPressed: () {
-            _viewModel.bookNow(context);
-          },
-          child: Text(
-            'Book Now',
-            style: GoogleFonts.roboto(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-              height: 1.5,
-              letterSpacing: 0.01,
-              fontStyle: FontStyle.normal,
-              decoration: TextDecoration.none,
         ),
-      ), 
-      
+      ),
+      onPressed: () {
+        _viewModel.bookNow(context);
+      },
+      child: Text(
+        'Book Now',
+        style: GoogleFonts.roboto(
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          height: 1.5,
+          letterSpacing: 0.01,
+          fontStyle: FontStyle.normal,
+          decoration: TextDecoration.none,
+        ),
+      ),
     );
-    
   }
 }
-
-
-
-
-
