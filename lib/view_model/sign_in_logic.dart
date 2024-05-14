@@ -1,15 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:license/data/remote/signin_data.dart';
 import 'package:license/model/user_model.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
   final LoginData loginData = LoginData(email: '', password: '');
-  final RemoteDataSource _dataSource = RemoteDataSource();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   void updateEmail(String email) {
     loginData.email = email;
@@ -24,7 +20,7 @@ class LoginViewModel extends ChangeNotifier {
   Future<void> login(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       try {
-        await _dataSource.login(loginData.email, loginData.password);
+        await loginData.login(loginData.email, loginData.password);
         // Login successful, navigate to the next screen
         Navigator.pushNamed(context, '/home_screen');
       } catch (e) {
@@ -37,8 +33,7 @@ class LoginViewModel extends ChangeNotifier {
 
   Future<void> signOut(BuildContext context) async {
     try {
-      await _firebaseAuth.signOut();
-      // Sign-out successful, navigate to the login screen
+      await loginData.signOut();
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', (Route<dynamic> route) => false);
     } catch (e) {
