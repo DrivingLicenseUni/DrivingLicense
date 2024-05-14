@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 
 class DocumentUpload extends StatefulWidget {
-  const DocumentUpload({Key? key}) : super(key: key);
+  const DocumentUpload({super.key});
 
   @override
   _DocumentUploadState createState() => _DocumentUploadState();
@@ -42,7 +42,7 @@ class _DocumentUploadState extends State<DocumentUpload> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: Column(
         children: <Widget>[
           HeaderText(),
@@ -60,6 +60,8 @@ class _DocumentUploadState extends State<DocumentUpload> {
 }
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key});
+
   @override
   Size get preferredSize => const Size.fromHeight(83);
 
@@ -67,10 +69,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back),
         onPressed: () => Navigator.of(context).pop(),
       ),
-      title: Text(
+      title: const Text(
         'Registration',
         style: AppTextStyles.headline,
       ),
@@ -89,7 +91,7 @@ class HeaderText extends StatelessWidget {
         alignment: Alignment.center,
         child: Container(
           width: 335,
-          child: Text(
+          child: const Text(
             'Regulations require you to upload documents that are required for school enrollment. Don\'t worry, your data will remain secure and private.',
             textAlign: TextAlign.center,
             style: AppTextStyles.title,
@@ -125,7 +127,7 @@ class FileSelectionContainer extends StatelessWidget {
               width: 3,
             ),
             borderRadius: BorderRadius.circular(32),
-            color: Color(0xFFFAFAFA),
+            color: const Color(0xFFFAFAFA),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -163,7 +165,7 @@ class OrDivider extends StatelessWidget {
         Expanded(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-            child: Divider(
+            child: const Divider(
               color: Color(0xFFEEEEEE),
               height: 36,
             ),
@@ -174,13 +176,13 @@ class OrDivider extends StatelessWidget {
           style: GoogleFonts.roboto(
             fontSize: 15,
             fontWeight: FontWeight.w500,
-            color: Color(0xFF616161),
+            color: const Color(0xFF616161),
           ),
         ),
         Expanded(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-            child: Divider(
+            child: const Divider(
               color: Color(0xFFEEEEEE),
               height: 36,
             ),
@@ -208,12 +210,12 @@ class CameraButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.camera_alt,
                 size: 16,
                 color: AppColors.primary,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 'Open Camera & Take Photo',
                 style: GoogleFonts.roboto(
@@ -247,7 +249,7 @@ class ContinueButton extends StatelessWidget {
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(AppColors.primary),
           ),
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
