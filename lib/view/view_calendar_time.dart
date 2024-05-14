@@ -5,7 +5,7 @@ import 'package:license/res/textstyle.dart';
 import 'package:license/res/colors.dart';
 
 class DatePickerExample extends StatefulWidget {
-  const DatePickerExample({Key? key, this.restorationId}) : super(key: key);
+  const DatePickerExample({super.key, this.restorationId});
 
   final String? restorationId;
 
@@ -27,19 +27,19 @@ class _DatePickerExampleState extends State<DatePickerExample> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
+        title: const Text(
           'Book a Lesson',
            style:AppTextStyles.headline
         ),
-        actions: [
+        actions: const [
           CircleAvatar(
-            child: Icon(Icons.person),
             backgroundColor: Colors.grey,
+            child: Icon(Icons.person),
           ),
           SizedBox(width: 17.0),
         ],
@@ -48,8 +48,8 @@ class _DatePickerExampleState extends State<DatePickerExample> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0, bottom: 11.0),
+          const Padding(
+            padding: EdgeInsets.only(left: 15.0, bottom: 11.0),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -59,8 +59,8 @@ class _DatePickerExampleState extends State<DatePickerExample> {
             ),
           ),
           _buildDatePicker(),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -83,10 +83,10 @@ class _DatePickerExampleState extends State<DatePickerExample> {
   Widget _buildDatePicker() {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.secondary,
+        color: AppColors.secondaryBlue,
         borderRadius: BorderRadius.circular(12.0),
       ),
-      margin: EdgeInsets.fromLTRB(13, 0, 13, 19),
+      margin: const EdgeInsets.fromLTRB(13, 0, 13, 19),
       child: CalendarDatePicker(
         initialDate: _viewModel.selectedDate,
         firstDate: DateTime.now(),
@@ -115,14 +115,14 @@ class _DatePickerExampleState extends State<DatePickerExample> {
                 width: 78,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: _viewModel.selectedTime == time ? Colors.blue : AppColors.secondary,
+                  color: _viewModel.selectedTime == time ? Colors.blue : AppColors.secondaryBlue,
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.4),
                       spreadRadius: 1,
                       blurRadius: 1,
-                      offset: Offset(0, 1), // changes position of shadow
+                      offset: const Offset(0, 1), // changes position of shadow
                     ),
                   ],
                 ),
@@ -144,7 +144,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
     return
         FilledButton(
           style: ButtonStyle(
-            backgroundColor: const MaterialStatePropertyAll<Color>(AppColors.primary),
+            backgroundColor:  MaterialStatePropertyAll<Color>(AppColors.primary),
             fixedSize: MaterialStateProperty.all<Size>(const Size(283, 41)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
@@ -165,10 +165,10 @@ class _DatePickerExampleState extends State<DatePickerExample> {
               fontStyle: FontStyle.normal,
               decoration: TextDecoration.none,
         ),
-      ), 
-      
+      ),
+
     );
-    
+
   }
 }
 
