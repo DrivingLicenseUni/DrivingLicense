@@ -2,6 +2,18 @@ import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
 import 'package:license/view/home_dummy.dart';
 import 'package:license/view/sign_in.dart';
+import 'package:license/view/view_calendar_time.dart';
+import 'package:license/res/colors.dart';
+import 'package:license/view/document_upload.dart';
+import 'package:license/view/instructor_details.dart';
+import 'package:license/view/select_instructor.dart';
+import 'package:license/view/forgot_password_v.dart';
+import 'package:license/view/changed_password_v.dart';
+import 'package:license/view_model/forgot_password_vm.dart';
+import 'package:provider/provider.dart';
+import 'data/remote/forgot_password_d.dart';
+import 'model/forgot_password_m.dart';
+import 'package:license/view/sign_up.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,43 +27,117 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        useMaterial3: true,
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ForgotPasswordViewModel(
+            ForgotPasswordModel(
+              ForgotPasswordRemoteData(),
+            ),
+          ),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Driving License',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+          useMaterial3: true,
+        ),
+        restorationScopeId: 'app',
+        home: const ApplicationRoot(),
+        routes: {
+          "/forgot-password": (context) => ForgotPassword(),
+          '/password-changed': (context) => const PasswordChanged(),
+          "/signup": (context) => const SignUp(),
+          "/select-instructor": (context) => const SelectInstructor(),
+          "/document-upload": (context) => const DocumentUpload(),
+          "/pick-date": (context) => const DatePickerExample(restorationId: 'main'),
+          '/login': (context) => const LoginView(),
+          '/home_screen': (context) => HomeScreen(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == "/instructor-details") {
+            final args = settings.arguments as Map<String, dynamic>;
+            final String id = args['id'];
+            return MaterialPageRoute(
+              builder: (context) => InstructorDetails(id: id),
+            );
+          }
+          return null;
+        },
       ),
-      initialRoute: '/login', // Set the initial route
-      routes: {
-        '/login': (context) => const LoginView(),
-            '/home_screen': (context) => HomeScreen(),
-      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+class ApplicationRoot extends StatefulWidget {
+  const ApplicationRoot({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<ApplicationRoot> createState() => _MyAppState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyAppState extends State<ApplicationRoot> {
+  int currentPageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const IconButton(
-          icon: Icon(Icons.arrow_left_sharp),
-          onPressed: null,
-        ),
-        title: Text(widget.title),
+      body: [
+        const SignUp(),
+        ForgotPassword(),
+        const SelectInstructor(),
+        const DocumentUpload(),
+        const DatePickerExample(restorationId: 'main'),
+      ][currentPageIndex],
+      bottomNavigationBar: NavigationBar(
+        indicatorColor: AppColors.secondaryLightBlue,
+        backgroundColor: AppColors.secondaryBlue,
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        shadowColor: AppColors.black,
+        selectedIndex: currentPageIndex,
+        height: 80,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home),
+            selectedIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.search),
+            selectedIcon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.add),
+            selectedIcon: Icon(Icons.add),
+            label: 'Add',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }
