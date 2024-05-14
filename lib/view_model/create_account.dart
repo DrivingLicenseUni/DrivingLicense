@@ -3,7 +3,7 @@ import 'package:license/model/signup.dart';
 import 'package:license/res/types.dart';
 
 class CreateAccountViewModel {
-  final SignUpModel _signUpModel = SignUpModel();
+  final StudentModel _signUpModel = StudentModel();
 
   Future<void> createStudentWithEmailAndPassword(
       {required String email,
