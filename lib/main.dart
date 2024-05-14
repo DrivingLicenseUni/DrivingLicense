@@ -1,5 +1,7 @@
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
+import 'package:license/view/home_dummy.dart';
+import 'package:license/view/sign_in.dart';
 import 'package:license/view/view_calendar_time.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view/document_upload.dart';
@@ -55,6 +57,8 @@ class MyApp extends StatelessWidget {
           "/select-instructor": (context) => const SelectInstructor(),
           "/document-upload": (context) => const DocumentUpload(),
           "/pick-date": (context) => const DatePickerExample(restorationId: 'main'),
+          '/login': (context) => const LoginView(),
+          '/home_screen': (context) => HomeScreen(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
