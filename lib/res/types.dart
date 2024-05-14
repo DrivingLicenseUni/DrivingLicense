@@ -39,11 +39,15 @@ class Student {
   String email;
   String phoneNumber;
   String id;
+  String? instructorName;
+  String? instructorId;
 
   Student({
     required this.fullName,
     required this.email,
     required this.phoneNumber,
     required this.id,
+    this.instructorName,
+    this.instructorId,
   });
 }
