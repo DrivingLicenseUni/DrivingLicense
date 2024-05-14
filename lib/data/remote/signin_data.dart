@@ -1,30 +1,24 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 
-class UserModel {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class RemoteDataSource {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<User?> signInWithEmailAndPassword(
-      String email, String password) async {
+  Future<void> login(String email, String password) async {
     try {
-      final UserCredential userCredential =
-          await _auth.signInWithEmailAndPassword(
+      await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return userCredential.user;
-    } catch (error) {
-      rethrow;
+    } catch (e) {
+      throw Exception('Failed to login: $e');
     }
   }
 
   Future<void> signOut() async {
     try {
-      await _auth.signOut();
-    } catch (error) {
-      rethrow;
+      await _firebaseAuth.signOut();
+    } catch (e) {
+      throw Exception('Failed to sign out: $e');
     }
   }
-
-  // Additional methods for sign-up or other user-related functionality can be added here
 }

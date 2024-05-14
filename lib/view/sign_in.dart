@@ -1,236 +1,177 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:license/model/sign_in_model.dart';
+import 'package:license/res/colors.dart';
+import 'package:license/view_model/sign_in_logic.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({
-    Key? key,
-  }) : super(key: key);
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  _LoginViewState createState() => _LoginViewState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
-  final UserModel _userModel = UserModel();
-
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+class _LoginViewState extends State<LoginView> {
+  final LoginViewModel viewModel = LoginViewModel();
+  bool _isPasswordVisible = false;
   bool _isLoading = false;
-  String? _errorMessage;
-  bool _passwordVisible = false;
-
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-  }
-
-  Future<void> signIn() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    try {
-      await _userModel.signInWithEmailAndPassword(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
-      // Successful login, proceed with desired action
-    } catch (error) {
-      String errorMessage = 'An error occurred. Please try again.';
-
-      if (error is FirebaseAuthException) {
-        switch (error.code) {
-          case 'user-not-found':
-            errorMessage = 'User not found. Please check your email.';
-            break;
-          case 'wrong-password':
-            errorMessage = 'Invalid password. Please try again.';
-            break;
-          case 'invalid-email':
-            errorMessage = 'Invalid email address. Please enter a valid email.';
-            break;
-          default:
-            errorMessage = 'Unexpected error occurred. Please try again later.';
-        }
-      }
-
-      setState(() {
-        _errorMessage = errorMessage;
-        _isLoading = false;
-      });
-    }
-  }
-
-  void signOut() async {
-    try {
-      await _userModel.signOut();
-      // Perform any additional actions after signing out
-    } catch (error) {
-      // Handle and display error message
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: AppBar(
-            title: const Text(
-              "Log In ",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
-            ),
-            actions: const [
-              Icon(
-                Icons.star,
-                color: Colors.blue,
-                size: 30,
-              ),
-              SizedBox(width: 10),
-            ],
+      appBar: AppBar(
+        title: const Text(
+          'Login',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 24,
+            letterSpacing: 1.2,
           ),
         ),
+        backgroundColor: AppColors.primary,
       ),
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            // Center the content column
-            Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Form(
+          key: viewModel.formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 16),
+                const Center(
+                  child: Icon(
+                    Icons.drive_eta,
+                    size: 80,
+                    color: Color.fromRGBO(46, 96, 247, 1),
+                  ),
+                ),
+                const SizedBox(height: 32),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Email Address',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: AppColors.primary,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (email) => viewModel.updateEmail(email),
+                  validator: (email) => viewModel.validateEmail(email ?? ''),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: AppColors.primary,
+                        width: 2,
+                      ),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: AppColors.primary,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: !_isPasswordVisible,
+                  onChanged: (password) => viewModel.updatePassword(password),
+                  validator: (password) =>
+                      viewModel.validatePassword(password ?? ''),
+                ),
+                const SizedBox(height: 8),
+                Row(
                   children: [
-                    // Text labels for Email and Password
-                    const Text(
-                      'Email address:',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextFormField(
-                          keyboardType: TextInputType.emailAddress,
-                          controller: _emailController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(46, 96, 247, 1))),
-                            hintText: 'helloworld@gmail.com',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        // Handle "Forgot Password" button press
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Password',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextFormField(
-                          keyboardType: TextInputType.visiblePassword,
-                          controller: _passwordController,
-                          obscureText: !_passwordVisible,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(46, 96, 247, 1))),
-                            hintText: '********',
-                            hintStyle: const TextStyle(color: Colors.grey),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _passwordVisible = !_passwordVisible;
-                                });
-                              },
-                              icon: Icon(
-                                _passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: signIn,
-                        style: ElevatedButton.styleFrom(
-                            elevation: 0, // Remove the button's elevation
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            backgroundColor: Colors.blue),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            _isLoading ? 'Logging in...' : 'Login',
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (_errorMessage != null) ...[
-                      Text(
-                        _errorMessage!,
-                        style: const TextStyle(
-                          color: Colors.red,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                    //TextButton(
-                    //onPressed: sign,
-                    //child: const Text("Don't have an account? Sign up"),
-                    //),
                   ],
                 ),
-              ),
-            ),
-            if (_isLoading)
-              Container(
-                color: Colors.black.withOpacity(0.5),
-                child: const Center(
-                  child: CircularProgressIndicator(),
+                const SizedBox(height: 24),
+                _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        ),
+                      )
+                    : ElevatedButton(
+                        onPressed: () async {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          await viewModel.login(context);
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.all(16),
+                          textStyle: const TextStyle(fontSize: 18),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text('Login'),
+                      ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't have an account?",
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // Handle "Sign up" button press
+                      },
+                      child: Text(
+                        "Sign up!",
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );
