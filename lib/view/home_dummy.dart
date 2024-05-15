@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:license/data/remote/signin_data.dart';
+import 'package:license/view/home_view.dart';
 
 class HomeScreen extends StatelessWidget {
   final RemoteDataSource _dataSource = RemoteDataSource();
@@ -22,22 +23,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Hello, You are Signed In'),
-            ElevatedButton(
-              onPressed: () => _signOut(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
-              child: const Text('Sign Out'),
-            ),
-          ],
-        ),
-      ),
-    );
+  return HomeView();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:license/view/selected_instructor_v.dart';
 import 'package:provider/provider.dart';
 import '../view_model/home_vm.dart';
 import '../res/colors.dart';
@@ -107,7 +108,7 @@ class HomeView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           children: <Widget>[
             _buildCategoryItem(context, "Exams", "assets/images/exams.png", const HomeView()),
-            _buildCategoryItem(context, "Instructor", "assets/images/instructor.png", const HomeView()),
+            _buildCategoryItem(context, "Instructor", "assets/images/instructor.png",const SelectInstructor()),
             _buildCategoryItem(context, "Theory", "assets/images/theory.png", const HomeView()),
             _buildCategoryItem(context, "Booking", "assets/images/booking.png", const HomeView()),
           ],
