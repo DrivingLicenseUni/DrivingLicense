@@ -55,8 +55,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         restorationScopeId: 'app',
-        home: const ApplicationRoot(),
-        initialRoute: user == null ? '/application-root' : '/home-screen',
+        home: user == null ? const ApplicationRoot() : HomeScreen(),
         routes: {
           "/forgot-password": (context) => ForgotPassword(),
           '/password-changed': (context) => const PasswordChanged(),

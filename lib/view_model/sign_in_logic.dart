@@ -21,7 +21,7 @@ class LoginViewModel extends ChangeNotifier {
     if (formKey.currentState!.validate()) {
       try {
         await loginData.login(loginData.email, loginData.password);
-        Navigator.pushNamed(context, '/home-screen');
+        Navigator.pushReplacementNamed(context, '/home-screen');
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Failed to login: $e'),
