@@ -4,14 +4,14 @@ import 'package:license/view_model/instructor_selection.dart';
 import '../data/remote/user_data.dart';
 import '../res/types.dart';
 
-class SelectInstructor extends StatefulWidget {
-  const SelectInstructor({super.key});
+class SelectedInstructor extends StatefulWidget {
+  const SelectedInstructor({super.key});
 
   @override
-  State<SelectInstructor> createState() => _SelectInstructorState();
+  State<SelectedInstructor> createState() => _SelectedInstructorState();
 }
 
-class _SelectInstructorState extends State<SelectInstructor> {
+class _SelectedInstructorState extends State<SelectedInstructor> {
   String _selectedInstructorId = "";
   final InstructorSelectionViewModel _instructorSelectionViewModel =
       InstructorSelectionViewModel();
@@ -50,7 +50,6 @@ class _SelectInstructorState extends State<SelectInstructor> {
         _loading = false;
       });
     } catch (e) {
-      // Handle errors
       print("Error fetching student data and instructors: $e");
     }
   }
