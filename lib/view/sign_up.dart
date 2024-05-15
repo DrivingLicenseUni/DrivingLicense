@@ -139,7 +139,7 @@ class _SignUpFormState extends State<SignUp> {
         email: _emailController.text,
         fullName: _fullNameController.text,
         phoneNumber: _phoneNumberController.text,
-        id: _idController.text,
+        id: _idController.text, instructorName: '', instructorId: '', profileImageUrl: '',
       );
       await _createAccountViewModel.addStudentToDatabase(student: student);
 
@@ -405,10 +405,10 @@ class _SignUpFormState extends State<SignUp> {
                         (states) => Colors.transparent,
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Login",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),

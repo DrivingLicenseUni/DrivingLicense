@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 
 class LogoView extends StatefulWidget {
-  const LogoView({super.key});
+  final User? user;
+  const LogoView({super.key, this.user});
 
   @override
-  _LogoViewState createState() => _LogoViewState();
+  State<LogoView> createState() => _LogoViewState();
 }
 
 class _LogoViewState extends State<LogoView> {
@@ -18,7 +20,11 @@ class _LogoViewState extends State<LogoView> {
 
   void navigateToOnboardingPage() {
     if (mounted) {
-      Navigator.pushReplacementNamed(context, '/onboarding-view');
+      if (widget.user == null) {
+        Navigator.pushReplacementNamed(context, '/application-root');
+      } else {
+        Navigator.pushReplacementNamed(context, '/home-screen');
+      }
     }
   }
 

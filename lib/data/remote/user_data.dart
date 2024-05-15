@@ -11,12 +11,24 @@ class StudentData {
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
+  Future<String> getStudentId() async {
+    String studentEmail = _auth.currentUser!.email!;
+
+    String studentId = await _firestore
+        .collection('students')
+        .where('email', isEqualTo: studentEmail)
+        .get()
+        .then((value) => value.docs[0].id);
+
+    return studentId;
+  }
+
   Future<bool> isStudentInDatabase(String id) async {
     try {
       final doc = await _firestore.collection(collectionName).doc(id).get();
       return doc.exists;
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow;
     }
   }
 
@@ -38,7 +50,19 @@ class StudentData {
     try {
       await _auth.signOut();
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> addInstructorNameToStudent(
+      String studentId, String instructorName, String instructorId) async {
+    try {
+      await _firestore.collection(collectionName).doc(studentId).update({
+        "instructorName": instructorName,
+        "instructorId": instructorId,
+      });
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -53,6 +77,9 @@ class StudentData {
         email: doc.docs[0].data()["email"],
         fullName: doc.docs[0].data()["fullName"],
         phoneNumber: doc.docs[0].data()["phoneNumber"],
+        instructorName: doc.docs[0].data()["instructorName"],
+        instructorId: doc.docs[0].data()["instructorId"],
+        profileImageUrl: doc.docs[0].data()["image"],
       );
       return student;
     } catch (e) {
@@ -64,7 +91,7 @@ class StudentData {
     try {
       await _auth.currentUser!.delete();
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow;
     }
   }
 
@@ -88,6 +115,8 @@ class StudentData {
         "email": student.email,
         "fullName": student.fullName,
         "phoneNumber": student.phoneNumber,
+        "instructorName": "",
+        "instructorId": "",
       });
     } catch (e) {
       throw Exception(e.toString());
