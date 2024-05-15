@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import '../data/remote/home_v_data.dart';
+import '../data/remote/user_data.dart';
+import '../res/types.dart';
 
-class HomeViewModel with ChangeNotifier {
-  String userName = "";
-  String userImage = "";
+class HomeViewModel extends ChangeNotifier {
+  final StudentData _studentData = StudentData();
 
-  Future<void> fetchUserData(String userId) async {
-    var userData = await FirebaseService.getUserData(userId);
+  Student? _currentStudent;
 
-    userName = userData?['name'];
-    userImage = userData?['image'];
-    notifyListeners();
+  Student? get currentStudent => _currentStudent;
+
+  HomeViewModel() {
+    _fetchCurrentStudent();
   }
 
-  void onCategoryTap(BuildContext context, Widget destinationPage) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => destinationPage));
+  Future<void> _fetchCurrentStudent() async {
+    User? user = _studentData.currentUser;
+    if (user != null) {
+      _currentStudent = await _studentData.getStudentByEmail(user.email!);
+      notifyListeners();
+    }
   }
 }

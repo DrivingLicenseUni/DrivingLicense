@@ -1,33 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:license/view/selected_instructor_v.dart';
 import 'package:provider/provider.dart';
-import '../view_model/home_vm.dart';
 import '../res/colors.dart';
+import '../view_model/home_vm.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<HomeViewModel>(
+    return ChangeNotifierProvider(
       create: (_) => HomeViewModel(),
-      child: Consumer<HomeViewModel>(
-        builder: (context, model, child) {
-          return Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Image.asset(
-                "assets/images/logo-h-v.png",
-                fit: BoxFit.cover,
-                height: 40,
-              ),
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Image.asset(
+            "assets/images/logo-h-v.png",
+            fit: BoxFit.cover,
+            height: 40,
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Consumer<HomeViewModel>(
+                  builder: (context, viewModel, child) {
+                    final student = viewModel.currentStudent;
+                    return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -35,15 +36,17 @@ class HomeView extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 37.0,
-                              backgroundImage: NetworkImage(
-                                  model.userImage.isNotEmpty ? model.userImage : "assets/default-image.png"),
+                              backgroundImage: student?.profileImageUrl != null
+                                  ? NetworkImage(student!.profileImageUrl)
+                                  : AssetImage("assets/default-image.png")
+                                      as ImageProvider,
                             ),
                             const SizedBox(width: 10),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                 Text(
+                                Text(
                                   "Welcome Back!",
                                   style: TextStyle(
                                     fontSize: 20,
@@ -52,8 +55,8 @@ class HomeView extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  model.userName,
-                                  style:  TextStyle(
+                                  student?.fullName ?? "Loading...",
+                                  style: TextStyle(
                                     fontSize: 16,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w500,
@@ -64,21 +67,20 @@ class HomeView extends StatelessWidget {
                           ],
                         ),
                         IconButton(
-                          icon:  Icon(Icons.notifications_none, color: AppColors.black, size: 40),
-                          onPressed: () {
-
-                          },
+                          icon: Icon(Icons.notifications_none,
+                              color: AppColors.black, size: 40),
+                          onPressed: () {},
                         ),
                       ],
-                    ),
-                  ),
-                  const ReminderCard(),
-                  _buildServiceCategories(context),
-                ],
+                    );
+                  },
+                ),
               ),
-            ),
-          );
-        },
+              const ReminderCard(),
+              _buildServiceCategories(context),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -92,9 +94,9 @@ class HomeView extends StatelessWidget {
           child: Text(
             "Service categories:",
             style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w400,
-                color: AppColors.placeholder
+              fontSize: 25,
+              fontWeight: FontWeight.w400,
+              color: AppColors.placeholder,
             ),
           ),
         ),
@@ -107,17 +109,22 @@ class HomeView extends StatelessWidget {
           mainAxisSpacing: 5,
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           children: <Widget>[
-            _buildCategoryItem(context, "Exams", "assets/images/exams.png", const HomeView()),
-            _buildCategoryItem(context, "Instructor", "assets/images/instructor.png",const SelectInstructor()),
-            _buildCategoryItem(context, "Theory", "assets/images/theory.png", const HomeView()),
-            _buildCategoryItem(context, "Booking", "assets/images/booking.png", const HomeView()),
+            _buildCategoryItem(
+                context, "Exams", "assets/images/exams.png", const HomeView()),
+            _buildCategoryItem(context, "Instructor",
+                "assets/images/instructor.png", const SelectedInstructor()),
+            _buildCategoryItem(context, "Theory", "assets/images/theory.png",
+                const HomeView()),
+            _buildCategoryItem(context, "Booking", "assets/images/booking.png",
+                const HomeView()),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildCategoryItem(BuildContext context, String title, String assetPath, Widget destinationPage) {
+  Widget _buildCategoryItem(BuildContext context, String title,
+      String assetPath, Widget destinationPage) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,7 +138,10 @@ class HomeView extends StatelessWidget {
           elevation: 5,
           shadowColor: Colors.grey.withOpacity(0.5),
           child: InkWell(
-            onTap: () => Provider.of<HomeViewModel>(context, listen: false).onCategoryTap(context, destinationPage),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => destinationPage),
+            ),
             child: Container(
               width: 100,
               height: 100,
@@ -173,9 +183,10 @@ class ReminderCard extends StatelessWidget {
             child: Text(
               "Remind you:",
               style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.placeholder),
+                fontSize: 25,
+                fontWeight: FontWeight.w400,
+                color: AppColors.placeholder,
+              ),
             ),
           ),
         ),

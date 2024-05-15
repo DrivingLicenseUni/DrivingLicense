@@ -139,7 +139,7 @@ class _SignUpFormState extends State<SignUp> {
         email: _emailController.text,
         fullName: _fullNameController.text,
         phoneNumber: _phoneNumberController.text,
-        id: _idController.text,
+        id: _idController.text, instructorName: '', instructorId: '', profileImageUrl: '',
       );
       await _createAccountViewModel.addStudentToDatabase(student: student);
 

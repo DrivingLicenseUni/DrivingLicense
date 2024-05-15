@@ -41,13 +41,15 @@ class Student {
   String id;
   String? instructorName;
   String? instructorId;
+  final String profileImageUrl;
 
   Student({
-    required this.fullName,
-    required this.email,
-    required this.phoneNumber,
     required this.id,
-    this.instructorName,
-    this.instructorId,
+    required this.email,
+    required this.fullName,
+    required this.phoneNumber,
+    required this.instructorName,
+    required this.instructorId,
+    required this.profileImageUrl,
   });
 }
