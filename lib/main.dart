@@ -111,7 +111,6 @@ class _MyAppState extends State<ApplicationRoot> {
     return Scaffold(
       body: [
         const OnboardingView(),
-        const SignUp(),
         const InstructorDashboardView(),
         const SelectInstructor(),
         const DocumentUpload(),
@@ -133,11 +132,6 @@ class _MyAppState extends State<ApplicationRoot> {
             icon: Icon(Icons.bookmark_border),
             selectedIcon: Icon(Icons.bookmark),
             label: 'Onboarding',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.home),
-            selectedIcon: Icon(Icons.home),
-            label: 'Home',
           ),
           NavigationDestination(
             icon: Icon(Icons.search),
