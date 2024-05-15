@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
+import 'package:license/view/logo-view.dart';
+import 'package:license/view/onboarding-v.dart';
 import 'package:license/view/home_page.dart';
 import 'package:license/view/sign_in.dart';
 import 'package:license/view/view_calendar_time.dart';
@@ -55,13 +57,17 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         restorationScopeId: 'app',
-        home: user == null ? const ApplicationRoot() : HomeScreen(),
+        home: LogoView(
+          user: user,
+        ),
         routes: {
           "/forgot-password": (context) => ForgotPassword(),
           '/password-changed': (context) => const PasswordChanged(),
           "/signup": (context) => const SignUp(),
           "/select-instructor": (context) => const SelectInstructor(),
           "/document-upload": (context) => const DocumentUpload(),
+          "/logo-view": (context) => LogoView(user: user),
+          "/onboarding-view": (context) => const OnboardingView(),
           "/pick-date": (context) =>
               const DatePickerExample(restorationId: 'main'),
           '/login': (context) => const LoginView(),
@@ -102,6 +108,7 @@ class _MyAppState extends State<ApplicationRoot> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: [
+        const OnboardingView(),
         const SignUp(),
         ForgotPassword(),
         const SelectInstructor(),
@@ -120,6 +127,11 @@ class _MyAppState extends State<ApplicationRoot> {
         selectedIndex: currentPageIndex,
         height: 80,
         destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.bookmark_border),
+            selectedIcon: Icon(Icons.bookmark),
+            label: 'Onboarding',
+          ),
           NavigationDestination(
             icon: Icon(Icons.home),
             selectedIcon: Icon(Icons.home),

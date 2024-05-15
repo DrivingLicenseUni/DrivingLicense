@@ -4,6 +4,7 @@ import 'package:license/view/selected_instructor_v.dart';
 import 'package:provider/provider.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view_model/home_vm.dart';
+import 'package:license/view_model/sign_in_logic.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -13,8 +14,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  HomeViewModel _viewModel = HomeViewModel();
-
+  LoginViewModel _loginViewModel = LoginViewModel();
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -77,7 +77,9 @@ class _HomeViewState extends State<HomeView> {
                         IconButton(
                           icon: Icon(Icons.notifications_none,
                               color: AppColors.black, size: 40),
-                          onPressed: () {},
+                          onPressed: () {
+                            _loginViewModel.signOut(context);
+                          },
                         ),
                       ],
                     );
