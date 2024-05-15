@@ -52,7 +52,7 @@ class StudentData {
         id: doc.docs[0].id,
         email: doc.docs[0].data()["email"],
         fullName: doc.docs[0].data()["fullName"],
-        phoneNumber: doc.docs[0].data()["phoneNumber"],
+        phoneNumber: doc.docs[0].data()["phoneNumber"], role: "role",
       );
       return student;
     } catch (e) {

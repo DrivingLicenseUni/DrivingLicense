@@ -1,5 +1,6 @@
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
+import 'package:license/view/instructor_dashboard_.dart';
 import 'package:license/view/view_calendar_time.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view/document_upload.dart';
@@ -29,7 +30,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -49,12 +49,14 @@ class MyApp extends StatelessWidget {
         restorationScopeId: 'app',
         home: const ApplicationRoot(),
         routes: {
+          "/dashboard": (context) => const InstructorDashboardView(),
           "/forgot-password": (context) => ForgotPassword(),
           '/password-changed': (context) => const PasswordChanged(),
           "/signup": (context) => const SignUp(),
           "/select-instructor": (context) => const SelectInstructor(),
           "/document-upload": (context) => const DocumentUpload(),
-          "/pick-date": (context) => const DatePickerExample(restorationId: 'main'),
+          "/pick-date": (context) =>
+              const DatePickerExample(restorationId: 'main'),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
@@ -91,7 +93,7 @@ class _MyAppState extends State<ApplicationRoot> {
     return Scaffold(
       body: [
         const SignUp(),
-        ForgotPassword(),
+       const InstructorDashboardView(),
         const SelectInstructor(),
         const DocumentUpload(),
         const DatePickerExample(restorationId: 'main'),
