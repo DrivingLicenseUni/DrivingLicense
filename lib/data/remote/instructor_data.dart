@@ -95,13 +95,17 @@ class InstructorData {
   Future<Instructor> getInstructor(String id) async {
     try {
       final snapshot = await _firestore.collection('instructors').doc(id).get();
+
+      final availableTimesMap =
+          _convertAvailableTimes(snapshot['availableTimes']);
+
       return Instructor(
         id: snapshot.id,
         name: snapshot['name'],
         email: snapshot['email'],
         image: snapshot['image'],
         desc: snapshot['desc'],
-        availableTimes: snapshot["availableTimes"],
+        availableTimes: availableTimesMap,
       );
     } catch (e) {
       rethrow;

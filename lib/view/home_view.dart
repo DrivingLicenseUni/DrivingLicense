@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:license/res/types.dart';
 import 'package:license/view/selected_instructor_v.dart';
 import 'package:provider/provider.dart';
-import '../res/colors.dart';
-import '../view_model/home_vm.dart';
+import 'package:license/res/colors.dart';
+import 'package:license/view_model/home_vm.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  HomeViewModel _viewModel = HomeViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +84,7 @@ class HomeView extends StatelessWidget {
                   },
                 ),
               ),
-              const ReminderCard(),
+              ReminderCard(),
               _buildServiceCategories(context),
             ],
           ),
@@ -170,78 +178,110 @@ class HomeView extends StatelessWidget {
 }
 
 class ReminderCard extends StatelessWidget {
-  const ReminderCard({super.key});
+  ReminderCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Remind you:",
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w400,
-                color: AppColors.placeholder,
-              ),
-            ),
-          ),
-        ),
-        Card(
-          color: AppColors.primary,
-          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: const ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundImage: NetworkImage(""),
-            ),
-            title: Text(
-              'Saad Dawood',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Owner',
-                  style: TextStyle(
-                    color: Colors.white70,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
+    final viewModel = Provider.of<HomeViewModel>(context, listen: false);
+
+    return FutureBuilder<Student?>(
+      future: viewModel.fetchCurrentStudent(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return const Text("Error");
+        } else {
+          final student = snapshot.data!;
+          return FutureBuilder<Instructor>(
+            future: viewModel.getInstructorById(student.instructorId!),
+            builder: (context, instructorSnapshot) {
+              if (instructorSnapshot.connectionState ==
+                  ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (instructorSnapshot.hasError) {
+                return const Text("Error");
+              } else {
+                final instructor = instructorSnapshot.data!;
+                return Column(
                   children: [
-                    Icon(Icons.calendar_today, color: Colors.white70, size: 20),
-                    SizedBox(width: 5),
-                    Text(
-                      'Sunday, 12 June',
-                      style: TextStyle(color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 6.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Remind you:",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.placeholder,
+                          ),
+                        ),
+                      ),
                     ),
-                    SizedBox(width: 8),
-                    Icon(Icons.access_time, color: Colors.white70, size: 20),
-                    SizedBox(width: 2),
-                    Text(
-                      '11:00 AM',
-                      style: TextStyle(color: Colors.white),
+                    Card(
+                      color: AppColors.primary,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(instructor.image),
+                        ),
+                        title: Text(
+                          student.instructorName!,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Owner',
+                              style: TextStyle(
+                                color: Colors.white70,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.calendar_today,
+                                    color: Colors.white70, size: 20),
+                                SizedBox(width: 5),
+                                Text(
+                                  'Sunday, 12 June',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                SizedBox(width: 8),
+                                Icon(Icons.access_time,
+                                    color: Colors.white70, size: 20),
+                                SizedBox(width: 2),
+                                Text(
+                                  '11:00 AM',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        trailing:
+                            Icon(Icons.arrow_forward_ios, color: Colors.white),
+                      ),
                     ),
                   ],
-                ),
-              ],
-            ),
-            trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
-          ),
-        ),
-      ],
+                );
+              }
+            },
+          );
+        }
+      },
     );
   }
 }
