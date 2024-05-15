@@ -32,7 +32,7 @@ class _DatePickerExampleState extends State<DatePickerExample> {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text('Book a Lesson', style: AppTextStyles.headline),
+        title: const Text('Calendar', style: AppTextStyles.headline),
         actions: const [
           CircleAvatar(
             backgroundColor: Colors.grey,
