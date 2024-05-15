@@ -112,7 +112,7 @@ class HomeView extends StatelessWidget {
             _buildCategoryItem(
                 context, "Exams", "assets/images/exams.png", const HomeView()),
             _buildCategoryItem(context, "Instructor",
-                "assets/images/instructor.png", const SelectedInstructor()),
+                "assets/images/instructor.png", const SelectInstructor()),
             _buildCategoryItem(context, "Theory", "assets/images/theory.png",
                 const HomeView()),
             _buildCategoryItem(context, "Booking", "assets/images/booking.png",
