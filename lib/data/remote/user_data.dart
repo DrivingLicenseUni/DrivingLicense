@@ -79,6 +79,7 @@ class StudentData {
         phoneNumber: doc.docs[0].data()["phoneNumber"],
         instructorName: doc.docs[0].data()["instructorName"],
         instructorId: doc.docs[0].data()["instructorId"],
+        profileImageUrl: doc.docs[0].data()["image"],
       );
       return student;
     } catch (e) {
