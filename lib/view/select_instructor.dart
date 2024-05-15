@@ -97,7 +97,7 @@ class _SelectInstructorState extends State<SelectInstructor> {
     );
   }
 
-  Widget _confirmationButton() {
+  Widget _confirmationButton(Instructor instructor) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -108,6 +108,11 @@ class _SelectInstructorState extends State<SelectInstructor> {
             child: FloatingActionButton(
               backgroundColor: AppColors.primary,
               onPressed: () {
+                _instructorSelectionViewModel.getStudentId().then((value) {
+                  _instructorSelectionViewModel.addInstructorNameToStudent(
+                      value, instructor.name, instructor.id);
+                });
+
                 Navigator.pushNamed(
                   context,
                   '/login',
@@ -123,6 +128,8 @@ class _SelectInstructorState extends State<SelectInstructor> {
       ],
     );
   }
+
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +177,7 @@ class _SelectInstructorState extends State<SelectInstructor> {
                         } else {
                           setState(() {
                             _selectedInstructorId = _instructors[index].id;
+                            _currentIndex = index;
                           });
                         }
                       },
@@ -179,7 +187,8 @@ class _SelectInstructorState extends State<SelectInstructor> {
                 ),
               ],
             ),
-            floatingActionButton: _confirmationButton(),
+            floatingActionButton:
+                _confirmationButton(_instructors[_currentIndex]),
           );
   }
 }

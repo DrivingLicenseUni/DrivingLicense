@@ -16,9 +16,11 @@ class _InstructorDetailsState extends State<InstructorDetails> {
   Instructor _instructor = Instructor(
     id: "",
     name: "",
+    email: "",
     image: "",
     desc: "",
     role: "Instructor",
+    availableTimes: {},
   );
   bool _isLoading = true;
   final InstructorSelectionViewModel _instructorSelectionViewModel =
