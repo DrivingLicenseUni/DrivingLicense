@@ -77,6 +77,7 @@ class StudentData {
         email: doc.docs[0].data()["email"],
         fullName: doc.docs[0].data()["fullName"],
         phoneNumber: doc.docs[0].data()["phoneNumber"],
+        role: doc.docs[0].data()["role"] ?? "Student",
         instructorName: doc.docs[0].data()["instructorName"],
         instructorId: doc.docs[0].data()["instructorId"],
         profileImageUrl: doc.docs[0].data()["image"],
@@ -119,7 +120,7 @@ class StudentData {
         "instructorId": "",
       });
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow;
     }
   }
 }

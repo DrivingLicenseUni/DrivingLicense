@@ -14,7 +14,14 @@ class InstructorDetails extends StatefulWidget {
 class _InstructorDetailsState extends State<InstructorDetails> {
   late final String id = widget.id;
   Instructor _instructor = Instructor(
-      id: "", name: "", email: "", image: "", desc: "", availableTimes: {});
+    id: "",
+    name: "",
+    email: "",
+    image: "",
+    desc: "",
+    role: "Instructor",
+    availableTimes: {},
+  );
   bool _isLoading = true;
   final InstructorSelectionViewModel _instructorSelectionViewModel =
       InstructorSelectionViewModel();

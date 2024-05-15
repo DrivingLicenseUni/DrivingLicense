@@ -14,6 +14,7 @@ class InstructorData {
           email: doc['email'],
           image: doc['image'],
           desc: doc['desc'],
+          role: doc['role'] ?? 'Instructor',
           availableTimes: _convertAvailableTimes(doc["availableTimes"]),
         );
 
@@ -85,6 +86,7 @@ class InstructorData {
         email: snapshot.docs[0]['email'],
         image: snapshot.docs[0]['image'],
         desc: snapshot.docs[0]['desc'],
+        role: snapshot.docs[0]['role'] ?? 'Instructor',
         availableTimes: convertedAvailableTimes,
       );
     } catch (e) {
@@ -105,6 +107,7 @@ class InstructorData {
         email: snapshot['email'],
         image: snapshot['image'],
         desc: snapshot['desc'],
+        role: snapshot['role'] ?? 'Instructor',
         availableTimes: availableTimesMap,
       );
     } catch (e) {
@@ -125,6 +128,64 @@ class InstructorData {
         'image': instructor.image,
         'desc': instructor.desc,
         'availableTimes': availableTimesAsString,
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateInstructorRole(String id, String newRole) async {
+    try {
+      await _firestore.collection('instructors').doc(id).update({
+        'role': newRole,
+      });
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<List<Student>> getStudents() async {
+    try {
+      final snapshot = await _firestore.collection('students').get();
+      return snapshot.docs
+          .map((doc) => Student(
+                id: doc.id,
+                email: doc['email'],
+                fullName: doc['fullName'],
+                phoneNumber: doc['phoneNumber'],
+                role: doc['role'] ?? 'Student',
+                instructorName: doc['instructorName'],
+                instructorId: doc['instructorId'],
+                profileImageUrl: doc['image'],
+              ))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Student> getStudent(String id) async {
+    try {
+      final snapshot = await _firestore.collection('students').doc(id).get();
+      return Student(
+        id: snapshot.id,
+        email: snapshot['email'],
+        fullName: snapshot['fullName'],
+        phoneNumber: snapshot['phoneNumber'],
+        role: snapshot['role'] ?? 'Student',
+        instructorName: snapshot['instructorName'],
+        instructorId: snapshot['instructorId'],
+        profileImageUrl: snapshot['image'],
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateStudentRole(String id, String newRole) async {
+    try {
+      await _firestore.collection('students').doc(id).update({
+        'role': newRole,
       });
     } catch (e) {
       rethrow;

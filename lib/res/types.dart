@@ -4,16 +4,17 @@ class Instructor {
   final String email;
   final String image;
   final String desc;
+  final String role;
   final Map<int, dynamic> availableTimes;
 
-  Instructor({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.image,
-    required this.desc,
-    required this.availableTimes,
-  });
+  Instructor(
+      {required this.id,
+      required this.name,
+      required this.email,
+      required this.image,
+      required this.desc,
+      required this.availableTimes,
+      required this.role});
 
   Instructor copyWith({
     String? id,
@@ -21,6 +22,7 @@ class Instructor {
     String? email,
     String? image,
     String? desc,
+    String? role,
     Map<int, dynamic>? availableTimes,
   }) {
     return Instructor(
@@ -29,6 +31,7 @@ class Instructor {
       email: email ?? this.email,
       image: image ?? this.image,
       desc: desc ?? this.desc,
+      role: role ?? this.role,
       availableTimes: availableTimes ?? this.availableTimes,
     );
   }
@@ -39,12 +42,14 @@ class Student {
   String email;
   String phoneNumber;
   String id;
+  String role;
   String? instructorName;
   String? instructorId;
   final String profileImageUrl;
 
   Student({
     required this.id,
+    required this.role,
     required this.email,
     required this.fullName,
     required this.phoneNumber,

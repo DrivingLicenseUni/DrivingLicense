@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
+import 'package:license/view/instructor_dashboard_.dart';
 import 'package:license/view/logo-view.dart';
 import 'package:license/view/onboarding-v.dart';
 import 'package:license/view/home_page.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
           user: user,
         ),
         routes: {
+          "/dashboard": (context) => const InstructorDashboardView(),
           "/forgot-password": (context) => ForgotPassword(),
           '/password-changed': (context) => const PasswordChanged(),
           "/signup": (context) => const SignUp(),
@@ -110,7 +112,7 @@ class _MyAppState extends State<ApplicationRoot> {
       body: [
         const OnboardingView(),
         const SignUp(),
-        ForgotPassword(),
+        const InstructorDashboardView(),
         const SelectInstructor(),
         const DocumentUpload(),
         const DatePickerExample(restorationId: 'main'),
