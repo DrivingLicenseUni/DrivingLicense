@@ -5,16 +5,16 @@ import 'package:license/res/textstyle.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view_model/instructor_selection.dart';
 
-class DatePickerExample extends StatefulWidget {
-  const DatePickerExample({super.key, this.restorationId});
+class DatePickerInstructor extends StatefulWidget {
+  const DatePickerInstructor({super.key, this.restorationId});
 
   final String? restorationId;
 
   @override
-  State<DatePickerExample> createState() => _DatePickerExampleState();
+  State<DatePickerInstructor> createState() => _DatePickerInstructorState();
 }
 
-class _DatePickerExampleState extends State<DatePickerExample> {
+class _DatePickerInstructorState extends State<DatePickerInstructor> {
   final DatePickerViewModel _viewModel = DatePickerViewModel();
   final InstructorSelectionViewModel _selectionViewModel =
       InstructorSelectionViewModel();
@@ -26,12 +26,6 @@ class _DatePickerExampleState extends State<DatePickerExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
         title: const Text('Calendar', style: AppTextStyles.headline),
         actions: const [
           CircleAvatar(

@@ -6,13 +6,14 @@ import 'package:license/view/logo-view.dart';
 import 'package:license/view/onboarding-v.dart';
 import 'package:license/view/home_page.dart';
 import 'package:license/view/sign_in.dart';
-import 'package:license/view/view_calendar_time.dart';
+import 'package:license/view/view_calendar_time_ins.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view/document_upload.dart';
 import 'package:license/view/instructor_details.dart';
 import 'package:license/view/select_instructor.dart';
 import 'package:license/view/forgot_password_v.dart';
 import 'package:license/view/changed_password_v.dart';
+import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:license/view_model/forgot_password_vm.dart';
 import 'package:provider/provider.dart';
 import 'data/remote/forgot_password_d.dart';
@@ -70,8 +71,10 @@ class MyApp extends StatelessWidget {
           "/document-upload": (context) => const DocumentUpload(),
           "/logo-view": (context) => LogoView(user: user),
           "/onboarding-view": (context) => const OnboardingView(),
-          "/pick-date": (context) =>
-              const DatePickerExample(restorationId: 'main'),
+          "/instructor-calendar": (context) =>
+              const DatePickerInstructor(restorationId: 'main'),
+          "/book-appointment": (context) =>
+              const DatePickerStudent(restorationId: 'main'),
           '/login': (context) => const LoginView(),
           '/home-screen': (context) => HomeScreen(),
           '/application-root': (context) => const ApplicationRoot(),
@@ -114,7 +117,7 @@ class _MyAppState extends State<ApplicationRoot> {
         const InstructorDashboardView(),
         const SelectInstructor(),
         const DocumentUpload(),
-        const DatePickerExample(restorationId: 'main'),
+        const DatePickerInstructor(restorationId: 'main'),
       ][currentPageIndex],
       bottomNavigationBar: NavigationBar(
         indicatorColor: AppColors.secondaryLightBlue,
