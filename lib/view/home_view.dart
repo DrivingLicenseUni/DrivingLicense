@@ -78,7 +78,7 @@ class _HomeViewState extends State<HomeView> {
                           icon: Icon(Icons.notifications_none,
                               color: AppColors.black, size: 40),
                           onPressed: () {
-                            _loginViewModel.signOut(context);
+                            Navigator.pushNamed(context, '/notification-view');
                           },
                         ),
                       ],
