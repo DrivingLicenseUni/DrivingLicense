@@ -77,7 +77,6 @@ class MyApp extends StatelessWidget {
               const DatePickerStudent(restorationId: 'main'),
           '/login': (context) => const LoginView(),
           '/home-screen': (context) => HomeScreen(),
-          '/application-root': (context) => const ApplicationRoot(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
@@ -94,70 +93,70 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class ApplicationRoot extends StatefulWidget {
-  const ApplicationRoot({super.key});
+// class ApplicationRoot extends StatefulWidget {
+//   const ApplicationRoot({super.key});
+//
+//   @override
+//   State<ApplicationRoot> createState() => _MyAppState();
+// }
 
-  @override
-  State<ApplicationRoot> createState() => _MyAppState();
-}
+// class _MyAppState extends State<ApplicationRoot> {
+//   int currentPageIndex = 0;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
 
-class _MyAppState extends State<ApplicationRoot> {
-  int currentPageIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: [
-        const OnboardingView(),
-        const InstructorDashboardView(),
-        const SelectInstructor(),
-        const DocumentUpload(),
-        const DatePickerInstructor(restorationId: 'main'),
-      ][currentPageIndex],
-      bottomNavigationBar: NavigationBar(
-        indicatorColor: AppColors.secondaryLightBlue,
-        backgroundColor: AppColors.secondaryBlue,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        shadowColor: AppColors.black,
-        selectedIndex: currentPageIndex,
-        height: 80,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.bookmark_border),
-            selectedIcon: Icon(Icons.bookmark),
-            label: 'Onboarding',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.search),
-            selectedIcon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.add),
-            selectedIcon: Icon(Icons.add),
-            label: 'Add',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_today_outlined),
-            selectedIcon: Icon(Icons.calendar_today),
-            label: 'Calendar',
-          ),
-        ],
-      ),
-    );
-  }
-}
+// @override
+// Widget build(BuildContext context) {
+//   return Scaffold(
+// body: [
+//   const OnboardingView(),
+//   const InstructorDashboardView(),
+//   const SelectInstructor(),
+//   const DocumentUpload(),
+//   const DatePickerInstructor(restorationId: 'main'),
+// ][currentPageIndex],
+// bottomNavigationBar: NavigationBar(
+//   indicatorColor: AppColors.secondaryLightBlue,
+//   backgroundColor: AppColors.secondaryBlue,
+//   onDestinationSelected: (int index) {
+//     setState(() {
+//       currentPageIndex = index;
+//     });
+//   },
+//   shadowColor: AppColors.black,
+//   selectedIndex: currentPageIndex,
+//   height: 80,
+//   destinations: const [
+//     NavigationDestination(
+//       icon: Icon(Icons.bookmark_border),
+//       selectedIcon: Icon(Icons.bookmark),
+//       label: 'Onboarding',
+//     ),
+//     NavigationDestination(
+//       icon: Icon(Icons.search),
+//       selectedIcon: Icon(Icons.search),
+//       label: 'Search',
+//     ),
+//     NavigationDestination(
+//       icon: Icon(Icons.add),
+//       selectedIcon: Icon(Icons.add),
+//       label: 'Add',
+//     ),
+//     NavigationDestination(
+//       icon: Icon(Icons.person),
+//       selectedIcon: Icon(Icons.person),
+//       label: 'Profile',
+//     ),
+//     NavigationDestination(
+//       icon: Icon(Icons.calendar_today_outlined),
+//       selectedIcon: Icon(Icons.calendar_today),
+//       label: 'Calendar',
+//     ),
+//   ],
+// ),
+// );
+// }
+// }

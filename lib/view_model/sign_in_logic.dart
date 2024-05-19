@@ -35,7 +35,7 @@ class LoginViewModel extends ChangeNotifier {
     try {
       await loginData.signOut();
       Navigator.pushNamedAndRemoveUntil(
-          context, '/application-root', (Route<dynamic> route) => false);
+          context, '/login', (Route<dynamic> route) => false);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Failed to sign out: $e'),
