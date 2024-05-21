@@ -21,7 +21,7 @@ class _LogoViewState extends State<LogoView> {
   void navigateToOnboardingPage() {
     if (mounted) {
       if (widget.user == null) {
-        Navigator.pushReplacementNamed(context, '/application-root');
+        Navigator.pushReplacementNamed(context, '/login');
       } else {
         Navigator.pushReplacementNamed(context, '/home-screen');
       }

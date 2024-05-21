@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/res/types.dart';
 import 'package:license/view_model/create_account.dart';

@@ -31,4 +31,14 @@ class HomeViewModel extends ChangeNotifier {
 
     return null;
   }
+
+  Future<bool> comparePassword(String password) async {
+    return await _studentData.comparePassword(password);
+  }
+
+  Future<void> updatePhoneNumber(String studentId, String phoneNumber) async {
+    _currentStudent =
+        await _studentData.updatePhoneNumber(studentId, phoneNumber);
+    notifyListeners();
+  }
 }

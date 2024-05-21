@@ -11,6 +11,51 @@ class StudentData {
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
+  Future<bool> comparePassword(String password) async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      return await _auth.currentUser!
+          .reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: user.email!, password: password),
+      )
+          .then((value) {
+        return true;
+      }).catchError((error) {
+        return false;
+      });
+    }
+
+    return false;
+  }
+
+  Future<Student?> updatePhoneNumber(
+      String studentId, String phoneNumber) async {
+    try {
+      await _firestore.collection(collectionName).doc(studentId).update({
+        "phoneNumber": phoneNumber,
+      });
+    } catch (e) {
+      rethrow;
+    }
+
+    return await _firestore
+        .collection(collectionName)
+        .doc(studentId)
+        .get()
+        .then((value) {
+      return Student(
+        id: value.id,
+        email: value.data()!["email"],
+        fullName: value.data()!["fullName"],
+        phoneNumber: value.data()!["phoneNumber"],
+        role: value.data()!["role"] ?? "Student",
+        instructorName: value.data()!["instructorName"],
+        instructorId: value.data()!["instructorId"],
+        profileImageUrl: value.data()!["image"],
+      );
+    });
+  }
+
   Future<String> getStudentId() async {
     String studentEmail = _auth.currentUser!.email!;
 
@@ -118,6 +163,7 @@ class StudentData {
         "phoneNumber": student.phoneNumber,
         "instructorName": "",
         "instructorId": "",
+        "image": "",
       });
     } catch (e) {
       rethrow;
