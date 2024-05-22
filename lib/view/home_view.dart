@@ -81,22 +81,22 @@ class _HomeViewState extends State<HomeView> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.notifications_none,
-                              color: AppColors.black, size: 40),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/notification-view');
-                          },
-                        ),
-                      ],
-                    );
-                  },
-
+                                ],
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.notifications_none,
+                                color: AppColors.black, size: 40),
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/notification-view');
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
                 ReminderCard(),
                 _buildServiceCategories(context),
