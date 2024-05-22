@@ -79,11 +79,14 @@ class DatePickerViewModel extends ChangeNotifier {
         "omar_ins@instructor.com", day, time);
     notifyListeners();
   }
-  Future<List<String>> loadAvailableTimesForStudent(DateTime selectedDate) async {
+
+  Future<List<String>> loadAvailableTimesForStudent(
+      DateTime selectedDate) async {
     try {
       final availableTimeSlots = await StudentData().fetchAvailableTimeSlots();
-      if (availableTimeSlots.containsKey(selectedDate)) {
-        var timeSlots = availableTimeSlots[selectedDate];
+
+      if (availableTimeSlots.containsKey(selectedDate.day.toString())) {
+        var timeSlots = availableTimeSlots[selectedDate.day.toString()];
         if (timeSlots is List<String>) {
           return timeSlots;
         }

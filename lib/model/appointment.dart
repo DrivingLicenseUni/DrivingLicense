@@ -21,7 +21,7 @@ class Appointment {
     await _instructorData.updateInstructor(instructor);
   }
 
-  Future<Map<DateTime, List<String>>> fetchAvailableTimeSlots() async {
+  Future<Map<String, List<String>>> fetchAvailableTimeSlots() async {
     return await _studentData.fetchAvailableTimeSlots();
   }
 }

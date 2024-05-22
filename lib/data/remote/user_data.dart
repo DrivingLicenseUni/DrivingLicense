@@ -190,18 +190,16 @@ class StudentData {
     }
   }
 
-  Future<Map<DateTime, List<String>>> fetchAvailableTimeSlots() async {
+  Future<Map<String, List<String>>> fetchAvailableTimeSlots() async {
     try {
       String instructorId = await getInstructorId();
       Instructor instructor = await _instructorData.getInstructor(instructorId);
 
-      Map<DateTime, List<String>> availableTimeSlots = {};
+      Map<String, List<String>> availableTimeSlots = {};
 
       for (var day in instructor.availableTimes.keys) {
         var timeSlots = instructor.availableTimes[day];
-        if (timeSlots is List<String>) {
-          availableTimeSlots[DateTime.now().add(Duration(days: day))] = timeSlots;
-        }
+        availableTimeSlots[day.toString()] = timeSlots.cast<String>();
       }
 
       return availableTimeSlots;
@@ -211,21 +209,28 @@ class StudentData {
     }
   }
 
-  Future<void> addAppointment(DateTime selectedDate, String selectedTime) async {
+  Future<void> addAppointment(
+      DateTime selectedDate, String selectedTime) async {
     try {
       //String studentId="t5QFxL6kOJFV20Xl37cn";//get it from db
       String studentId = await getStudentId();
 
-      DocumentSnapshot studentDoc = await _firestore.collection(collectionName).doc(studentId).get();
+      DocumentSnapshot studentDoc =
+          await _firestore.collection(collectionName).doc(studentId).get();
       if (!studentDoc.exists) {
         throw Exception("Student not found");
       }
-      Map<String, dynamic> studentData = studentDoc.data() as Map<String, dynamic>;
+      Map<String, dynamic> studentData =
+          studentDoc.data() as Map<String, dynamic>;
 
       String studentName = studentData['fullName'];
       String studentProfileImage = studentData['image'];
 
-      await _firestore.collection(collectionName).doc(studentId).collection('appointments').add({
+      await _firestore
+          .collection(collectionName)
+          .doc(studentId)
+          .collection('appointments')
+          .add({
         'date': selectedDate,
         'time': selectedTime,
         'title': studentName,
@@ -252,7 +257,7 @@ class StudentData {
           .collection(collectionName)
           .doc(studentId)
           .collection('appointments')
-      // .where('date', isGreaterThanOrEqualTo: queryDate, isLessThan: nextDayTimestamp)
+          // .where('date', isGreaterThanOrEqualTo: queryDate, isLessThan: nextDayTimestamp)
           .get();
 
       final List<CardData> bookedAppointments = snapshot.docs.map((doc) {
@@ -264,5 +269,4 @@ class StudentData {
       return [];
     }
   }
-
 }

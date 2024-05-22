@@ -18,7 +18,6 @@ class DatePickerStudent extends StatefulWidget {
 class _DatePickerStudentState extends State<DatePickerStudent> {
   late DatePickerViewModel _viewModel;
 
-
   @override
   void initState() {
     super.initState();
@@ -105,8 +104,6 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
   }
 
   Widget _buildTimeSlots() {
-    print('Building Time Slots Widget');
-
     return FutureBuilder<List<String>>(
       future: _viewModel.loadAvailableTimesForStudent(_viewModel.selectedDate),
       builder: (context, snapshot) {
@@ -159,6 +156,7 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
       },
     );
   }
+
   Widget _buildBookNowButton() {
     return FilledButton(
       style: ButtonStyle(
