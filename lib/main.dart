@@ -1,12 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import 'package:license/view/instructor_dashboard_.dart';
 import 'package:license/view/logo-view.dart';
-
 import 'package:license/view/notification_view.dart';
-
 import 'package:license/view/home_page.dart';
 import 'package:license/view/onboarding-v.dart';
 import 'package:license/view/sign_in.dart';
@@ -26,6 +23,7 @@ import 'data/remote/forgot_password_d.dart';
 import 'model/firebase-massaging.dart';
 import 'model/forgot_password_m.dart';
 import 'package:license/view/sign_up.dart';
+import 'package:license/view/stu_progress_page.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -53,7 +51,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        
         ChangeNotifierProvider(
           create: (_) => ForgotPasswordViewModel(
             ForgotPasswordModel(
@@ -86,13 +83,16 @@ class MyApp extends StatelessWidget {
           "/logo-view": (context) => LogoView(user: user),
           "/onboarding-view": (context) => const OnboardingView(),
           "/instructor-calendar": (context) =>
-          const DatePickerInstructor(restorationId: 'main'),
+              const DatePickerInstructor(restorationId: 'main'),
           "/book-appointment": (context) =>
-          const DatePickerStudent(restorationId: 'main'),
+              const DatePickerStudent(restorationId: 'main'),
           '/login': (context) => const LoginView(),
           '/home-screen': (context) => HomeScreen(),
-          '/my-activity': (context) => StudentActivityPage(studentId: '',),
+          '/my-activity': (context) => StudentActivityPage(
+                studentId: '',
+              ),
           '/notification-view': (context) => NotificationView(),
+          "/stu-progress": (context) => CardListView()
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
@@ -123,7 +123,6 @@ class MyApp extends StatelessWidget {
 //   void initState() {
 //     super.initState();
 //   }
-
 
 // @override
 // Widget build(BuildContext context) {

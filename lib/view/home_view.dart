@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:license/res/types.dart';
 import 'package:license/view/profile-page.dart';
 import 'package:license/view/selected_instructor_v.dart';
+import 'package:license/view/stu_progress_page.dart';
 import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:provider/provider.dart';
 import 'package:license/res/colors.dart';
@@ -103,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
               ],
             ),
           ),
-          SizedBox(),
+          CardListView(),
           SizedBox(),
           ProfilePage(),
         ][_selectedIndex],
