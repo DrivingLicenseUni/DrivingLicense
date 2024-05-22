@@ -89,6 +89,7 @@ class MyApp extends StatelessWidget {
           '/home-screen': (context) => HomeScreen(),
           '/application-root': (context) => const ApplicationRoot(),
           '/notification-view': (context) => NotificationView(),
+
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
