@@ -30,46 +30,52 @@ class AppointmentPage extends StatelessWidget {
         centerTitle: true,
         toolbarHeight: 83,
       ),
-      body:  Center(
-    child: Padding(
-    padding: const EdgeInsets.only(top: 22),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.event_available_outlined,
-              size: 24,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 22),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.event_available_outlined,
+                  size: 24,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Select time slot',
+                  style: GoogleFonts.roboto(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    height: 1.4,
+                    letterSpacing: 0.02,
+                    fontStyle: FontStyle.normal,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+                const DatePickerWidget(),
+                SizedBox(height: 20),
+                Consumer<AppointmentViewModel>(
+                  builder: (context, viewModel, child) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: viewModel.filteredAppointments.length,
+                        itemBuilder: (context, index) {
+                          return CardItem(cardData: viewModel.filteredAppointments[index]);
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
-            SizedBox(height: 10),
-            Text(
-              'Select time slot',
-              style: GoogleFonts.roboto(
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-                height: 1.4,
-                letterSpacing: 0.02,
-                fontStyle: FontStyle.normal,
-                decoration: TextDecoration.none,
-              ),
-            ),
-
-            DatePickerWidget(),
-            SizedBox(height: 20),
-            Expanded(
-
-              child: Consumer<AppointmentViewModel>(
-                builder: (context, viewModel, child) {
-
-                  return SampleCard(
-                    viewModel: viewModel,
-                  );
-                },
-              ),
-            ),
-          ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }

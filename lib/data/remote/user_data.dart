@@ -3,6 +3,8 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import "package:license/res/types.dart";
 import 'package:license/data/remote/instructor_data.dart';
 
+import "../../model/appointments_card_data.dart";
+
 class StudentData {
   final collectionName = "students";
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -208,4 +210,59 @@ class StudentData {
       throw e;
     }
   }
+
+  Future<void> addAppointment(DateTime selectedDate, String selectedTime) async {
+    try {
+      //String studentId="t5QFxL6kOJFV20Xl37cn";//get it from db
+      String studentId = await getStudentId();
+
+      DocumentSnapshot studentDoc = await _firestore.collection(collectionName).doc(studentId).get();
+      if (!studentDoc.exists) {
+        throw Exception("Student not found");
+      }
+      Map<String, dynamic> studentData = studentDoc.data() as Map<String, dynamic>;
+
+      String studentName = studentData['fullName'];
+      String studentProfileImage = studentData['image'];
+
+      await _firestore.collection(collectionName).doc(studentId).collection('appointments').add({
+        'date': selectedDate,
+        'time': selectedTime,
+        'title': studentName,
+        'subtitle': selectedTime,
+        'avatar': studentProfileImage,
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<CardData>> getBookedAppointments() async {
+    try {
+      String studentId = await getStudentId();
+      // print(studentId);
+      //String studentId="t5QFxL6kOJFV20Xl37cn";
+
+      // Timestamp queryDate = Timestamp.fromDate(date);
+      //
+      // DateTime nextDay = date.add(Duration(days: 1));
+      // Timestamp nextDayTimestamp = Timestamp.fromDate(nextDay);
+
+      final snapshot = await _firestore
+          .collection(collectionName)
+          .doc(studentId)
+          .collection('appointments')
+      // .where('date', isGreaterThanOrEqualTo: queryDate, isLessThan: nextDayTimestamp)
+          .get();
+
+      final List<CardData> bookedAppointments = snapshot.docs.map((doc) {
+        return CardData.fromFirestore(doc);
+      }).toList();
+      return bookedAppointments;
+    } catch (e) {
+      print('Error fetching booked appointments: $e');
+      return [];
+    }
+  }
+
 }
