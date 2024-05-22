@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:license/res/types.dart';
+import 'package:license/view/profile-page.dart';
 import 'package:license/view/selected_instructor_v.dart';
+import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:provider/provider.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view_model/home_vm.dart';
@@ -14,7 +16,15 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  int _selectedIndex = 0;
   LoginViewModel _loginViewModel = LoginViewModel();
+
+  onTabTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -28,46 +38,48 @@ class _HomeViewState extends State<HomeView> {
             height: 40,
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Consumer<HomeViewModel>(
-                  builder: (context, viewModel, child) {
-                    final student = viewModel.currentStudent;
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 37.0,
-                              backgroundImage: student?.profileImageUrl != null
-                                  ? NetworkImage(student!.profileImageUrl)
-                                  : AssetImage("assets/default-image.png")
-                                      as ImageProvider,
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  "Welcome Back!",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.placeholder,
+        body: [
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Consumer<HomeViewModel>(
+                    builder: (context, viewModel, child) {
+                      final student = viewModel.currentStudent;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 37.0,
+                                backgroundImage:
+                                    student?.profileImageUrl != null
+                                        ? NetworkImage(student!.profileImageUrl)
+                                        : AssetImage("") as ImageProvider,
+                              ),
+                              const SizedBox(width: 10),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "Welcome Back!",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.placeholder,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  student?.fullName ?? "Loading...",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w500,
+                                  Text(
+                                    student?.fullName ?? "Loading...",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -84,12 +96,45 @@ class _HomeViewState extends State<HomeView> {
                       ],
                     );
                   },
+
                 ),
-              ),
-              ReminderCard(),
-              _buildServiceCategories(context),
-            ],
+                ReminderCard(),
+                _buildServiceCategories(context),
+              ],
+            ),
           ),
+          SizedBox(),
+          SizedBox(),
+          ProfilePage(),
+        ][_selectedIndex],
+        bottomNavigationBar: NavigationBar(
+          height: 80,
+          selectedIndex: _selectedIndex,
+          onDestinationSelected: onTabTapped,
+          indicatorColor: AppColors.secondaryLightBlue,
+          backgroundColor: AppColors.secondaryBlue,
+          destinations: [
+            NavigationDestination(
+              icon: Icon(Icons.home_outlined),
+              selectedIcon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.show_chart),
+              selectedIcon: Icon(Icons.home),
+              label: 'Progress',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.bubble_chart),
+              selectedIcon: Icon(Icons.home),
+              label: 'Activities',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person_outlined),
+              selectedIcon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
         ),
       ),
     );
@@ -126,7 +171,7 @@ class _HomeViewState extends State<HomeView> {
             _buildCategoryItem(context, "Theory", "assets/images/theory.png",
                 const HomeView()),
             _buildCategoryItem(context, "Booking", "assets/images/booking.png",
-                const HomeView()),
+                const DatePickerStudent()),
           ],
         ),
       ],
