@@ -10,6 +10,7 @@ import 'package:license/view/notification_view.dart';
 import 'package:license/view/home_page.dart';
 import 'package:license/view/onboarding-v.dart';
 import 'package:license/view/sign_in.dart';
+import 'package:license/view/student_activity.dart';
 import 'package:license/view/view_calendar_time_ins.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view/document_upload.dart';
@@ -19,6 +20,7 @@ import 'package:license/view/forgot_password_v.dart';
 import 'package:license/view/changed_password_v.dart';
 import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:license/view_model/forgot_password_vm.dart';
+import 'package:license/view_model/student_activity_vm.dart';
 import 'package:provider/provider.dart';
 import 'data/remote/forgot_password_d.dart';
 import 'model/firebase-massaging.dart';
@@ -51,6 +53,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        
         ChangeNotifierProvider(
           create: (_) => ForgotPasswordViewModel(
             ForgotPasswordModel(
@@ -58,6 +61,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        ChangeNotifierProvider(create: (_) => StudentViewModel()),
       ],
       child: MaterialApp(
         title: 'Driving License',
@@ -87,6 +91,7 @@ class MyApp extends StatelessWidget {
           const DatePickerStudent(restorationId: 'main'),
           '/login': (context) => const LoginView(),
           '/home-screen': (context) => HomeScreen(),
+          '/my-activity': (context) => StudentActivityPage(studentId: '',),
           '/notification-view': (context) => NotificationView(),
         },
         onGenerateRoute: (settings) {
@@ -118,6 +123,7 @@ class MyApp extends StatelessWidget {
 //   void initState() {
 //     super.initState();
 //   }
+
 
 // @override
 // Widget build(BuildContext context) {
