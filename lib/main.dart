@@ -6,6 +6,7 @@ import 'package:license/view/logo-view.dart';
 import 'package:license/view/onboarding-v.dart';
 import 'package:license/view/home_page.dart';
 import 'package:license/view/sign_in.dart';
+import 'package:license/view/student_activity.dart';
 import 'package:license/view/view_calendar_time_ins.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view/document_upload.dart';
@@ -15,6 +16,7 @@ import 'package:license/view/forgot_password_v.dart';
 import 'package:license/view/changed_password_v.dart';
 import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:license/view_model/forgot_password_vm.dart';
+import 'package:license/view_model/student_activity_vm.dart';
 import 'package:provider/provider.dart';
 import 'data/remote/forgot_password_d.dart';
 import 'model/forgot_password_m.dart';
@@ -42,6 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        
         ChangeNotifierProvider(
           create: (_) => ForgotPasswordViewModel(
             ForgotPasswordModel(
@@ -49,6 +52,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        ChangeNotifierProvider(create: (_) => StudentViewModel()),
       ],
       child: MaterialApp(
         title: 'Driving License',
@@ -78,6 +82,7 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const LoginView(),
           '/home-screen': (context) => HomeScreen(),
           '/application-root': (context) => const ApplicationRoot(),
+          '/my-activity': (context) => StudentActivityPage(studentId: '',),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
@@ -114,7 +119,7 @@ class _MyAppState extends State<ApplicationRoot> {
     return Scaffold(
       body: [
         const OnboardingView(),
-        const InstructorDashboardView(),
+        StudentActivityPage(studentId: '',),
         const SelectInstructor(),
         const DocumentUpload(),
         const DatePickerInstructor(restorationId: 'main'),
