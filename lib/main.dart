@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import "package:firebase_core/firebase_core.dart";
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
 import 'package:license/view/instructor_dashboard_.dart';
 import 'package:license/view/logo-view.dart';
-import 'package:license/view/onboarding-v.dart';
+
+import 'package:license/view/notification_view.dart';
+
 import 'package:license/view/home_page.dart';
+import 'package:license/view/onboarding-v.dart';
 import 'package:license/view/sign_in.dart';
 import 'package:license/view/view_calendar_time_ins.dart';
 import 'package:license/res/colors.dart';
@@ -17,8 +21,11 @@ import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:license/view_model/forgot_password_vm.dart';
 import 'package:provider/provider.dart';
 import 'data/remote/forgot_password_d.dart';
+import 'model/firebase-massaging.dart';
 import 'model/forgot_password_m.dart';
 import 'package:license/view/sign_up.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +35,8 @@ Future<void> main() async {
           appId: "1:486459417909:android:d9f6011ad27e7f79f5587c",
           messagingSenderId: "486459417909",
           projectId: "drivinglicense-437ff"));
+
+  await FirebaseApi().initNotifications();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   User? user = auth.currentUser;
@@ -62,6 +71,7 @@ class MyApp extends StatelessWidget {
         home: LogoView(
           user: user,
         ),
+        navigatorKey: navigatorKey,
         routes: {
           "/dashboard": (context) => const InstructorDashboardView(),
           "/forgot-password": (context) => ForgotPassword(),
@@ -72,11 +82,12 @@ class MyApp extends StatelessWidget {
           "/logo-view": (context) => LogoView(user: user),
           "/onboarding-view": (context) => const OnboardingView(),
           "/instructor-calendar": (context) =>
-              const DatePickerInstructor(restorationId: 'main'),
+          const DatePickerInstructor(restorationId: 'main'),
           "/book-appointment": (context) =>
-              const DatePickerStudent(restorationId: 'main'),
+          const DatePickerStudent(restorationId: 'main'),
           '/login': (context) => const LoginView(),
           '/home-screen': (context) => HomeScreen(),
+          '/notification-view': (context) => NotificationView(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
