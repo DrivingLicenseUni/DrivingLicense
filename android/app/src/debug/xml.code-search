@@ -1,0 +1,176 @@
+# Query: xml
+# ContextLines: 1
+
+50 results - 30 files
+
+android\app\src\debug\AndroidManifest.xml:
+  1: <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  2      <!-- The INTERNET permission is required for development. Specifically,
+
+android\app\src\main\AndroidManifest.xml:
+  1: <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  2      <application
+
+android\app\src\main\res\drawable\launch_background.xml:
+  1: <?xml version="1.0" encoding="utf-8"?>
+  2  <!-- Modify this file to customize your launch splash screen -->
+  3: <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  4      <item android:drawable="@android:color/white" />
+
+android\app\src\main\res\drawable-v21\launch_background.xml:
+  1: <?xml version="1.0" encoding="utf-8"?>
+  2  <!-- Modify this file to customize your launch splash screen -->
+  3: <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  4      <item android:drawable="?android:colorBackground" />
+
+android\app\src\main\res\values\styles.xml:
+  1: <?xml version="1.0" encoding="utf-8"?>
+  2  <resources>
+
+android\app\src\main\res\values-night\styles.xml:
+  1: <?xml version="1.0" encoding="utf-8"?>
+  2  <resources>
+
+android\app\src\profile\AndroidManifest.xml:
+  1: <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  2      <!-- The INTERNET permission is required for development. Specifically,
+
+functions\package-lock.json:
+   836          "extend": "^3.0.2",
+   837:         "fast-xml-parser": "^4.2.2",
+   838          "gaxios": "^5.0.0",
+
+  2797      },
+  2798:     "node_modules/fast-xml-parser": {
+  2799        "version": "4.3.6",
+  2800:       "resolved": "https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-4.3.6.tgz",
+  2801        "integrity": "sha512-M2SovcRxD4+vC493Uc2GZVcZaj66CCJhWurC4viynVSTvrpErCShNcDz1lAho6n9REQKvL/ll4A4/fw6Y9z8nw==",
+
+  3319        "resolved": "https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-5.0.0.tgz",
+  3320:       "integrity": "sha512-n2hY8YdoRE1i7r6M0w9DIw5GgZN0G25P8zLCRQ8rjXtTU3vsNFBI/vWK/UIeE6g5MUUz6avwAPXmL6Fy9D/90w==",
+  3321        "optional": true,
+
+  3533        "resolved": "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz",
+  3534:       "integrity": "sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==",
+  3535        "dev": true,
+
+  4277      },
+  4278:     "node_modules/js2xmlparser": {
+  4279        "version": "4.0.2",
+  4280:       "resolved": "https://registry.npmjs.org/js2xmlparser/-/js2xmlparser-4.0.2.tgz",
+  4281        "integrity": "sha512-6n4D8gLlLf1n5mNLQPRfViYzu9RATblzPEtm1SthMX1Pjao0r9YI9nw7ZIfRxQMERS87mcswrg+r/OYrPRX6jA==",
+
+  4283        "dependencies": {
+  4284:         "xmlcreate": "^2.0.4"
+  4285        }
+
+  4298          "escape-string-regexp": "^2.0.0",
+  4299:         "js2xmlparser": "^4.0.2",
+  4300          "klaw": "^3.0.0",
+
+  6290      },
+  6291:     "node_modules/xmlcreate": {
+  6292        "version": "2.0.4",
+  6293:       "resolved": "https://registry.npmjs.org/xmlcreate/-/xmlcreate-2.0.4.tgz",
+  6294        "integrity": "sha512-nquOebG4sngPmGPICTS5EnxqhKbCmz5Ox5hsszI2T6U5qdrJizBc+0ilYSEjTSzU0yZcmvppztXe/5Al5fUwdg==",
+
+ios\Flutter\AppFrameworkInfo.plist:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+ios\Runner\Info.plist:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+ios\Runner\Base.lproj\LaunchScreen.storyboard:
+  1: <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+  2  <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+
+ios\Runner\Base.lproj\Main.storyboard:
+  1: <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+  2  <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+
+ios\Runner.xcodeproj\project.pbxproj:
+  46  		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+  47: 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+  48  		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
+
+  56  		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+  57: 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+  58  /* End PBXFileReference section */
+
+ios\Runner.xcodeproj\project.xcworkspace\contents.xcworkspacedata:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <Workspace
+
+ios\Runner.xcodeproj\project.xcworkspace\xcshareddata\IDEWorkspaceChecks.plist:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+ios\Runner.xcodeproj\project.xcworkspace\xcshareddata\WorkspaceSettings.xcsettings:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+ios\Runner.xcodeproj\xcshareddata\xcschemes\Runner.xcscheme:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <Scheme
+
+ios\Runner.xcworkspace\contents.xcworkspacedata:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <Workspace
+
+ios\Runner.xcworkspace\xcshareddata\IDEWorkspaceChecks.plist:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+ios\Runner.xcworkspace\xcshareddata\WorkspaceSettings.xcsettings:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+macos\Runner\DebugProfile.entitlements:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+macos\Runner\Info.plist:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+macos\Runner\Release.entitlements:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+macos\Runner\Base.lproj\MainMenu.xib:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+
+macos\Runner.xcodeproj\project.pbxproj:
+  70  		33CC10F52044A3C60003C045 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+  71: 		33CC10F72044A3C60003C045 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Runner/Info.plist; sourceTree = "<group>"; };
+  72  		33CC11122044BFA00003C045 /* MainFlutterWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFlutterWindow.swift; sourceTree = "<group>"; };
+
+macos\Runner.xcodeproj\project.xcworkspace\xcshareddata\IDEWorkspaceChecks.plist:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+macos\Runner.xcodeproj\xcshareddata\xcschemes\Runner.xcscheme:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <Scheme
+
+macos\Runner.xcworkspace\contents.xcworkspacedata:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <Workspace
+
+macos\Runner.xcworkspace\xcshareddata\IDEWorkspaceChecks.plist:
+  1: <?xml version="1.0" encoding="UTF-8"?>
+  2  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+windows\runner\runner.exe.manifest:
+  1: <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  2: <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  3:   <application xmlns="urn:schemas-microsoft-com:asm.v3">
+  4      <windowsSettings>
+  5:       <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2</dpiAwareness>
+  6      </windowsSettings>
+  7    </application>
+  8:   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+  9      <application>

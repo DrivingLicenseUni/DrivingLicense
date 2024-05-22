@@ -5,6 +5,7 @@ import 'package:license/res/colors.dart';
 import 'package:license/res/textstyles.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart' as handler;
 
 class DocumentUpload extends StatefulWidget {
   const DocumentUpload({super.key});
@@ -17,10 +18,10 @@ class _DocumentUploadState extends State<DocumentUpload> {
   File? selectedFile;
 
   Future<void> pickFile() async {
-    // Request permission to read external storage
     PermissionStatus permissionStatus = await Permission.storage.request();
 
     if (permissionStatus.isGranted) {
+      // Permission granted, proceed with file picking
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'png'],
@@ -33,9 +34,13 @@ class _DocumentUploadState extends State<DocumentUpload> {
       } else {
         // User canceled the file picker
       }
-    } else {
-      // Permission denied, handle accordingly
-      print('Permission denied');
+    } else if (permissionStatus.isDenied) {
+      // Permission denied by user, handle accordingly
+      print('Permission denied by user');
+    } else if (permissionStatus.isPermanentlyDenied) {
+      // Permission permanently denied, open app settings to allow permission manually
+      print('Permission permanently denied');
+      await handler.openAppSettings();
     }
   }
 
