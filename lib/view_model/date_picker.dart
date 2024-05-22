@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:license/model/appointment.dart';
 import 'package:license/res/types.dart';
 
+import '../data/remote/instructor_data.dart';
+import '../data/remote/user_data.dart';
+
 class DatePickerViewModel extends ChangeNotifier {
   final Appointment _appointment = Appointment();
   DateTime _selectedDate = DateTime.now();
@@ -75,6 +78,24 @@ class DatePickerViewModel extends ChangeNotifier {
     await _appointment.removeTimeFromInstructorFromDay(
         "omar_ins@instructor.com", day, time);
     notifyListeners();
+  }
+
+  Future<List<String>> loadAvailableTimesForStudent(
+      DateTime selectedDate) async {
+    try {
+      final availableTimeSlots = await StudentData().fetchAvailableTimeSlots();
+
+      if (availableTimeSlots.containsKey(selectedDate.day.toString())) {
+        var timeSlots = availableTimeSlots[selectedDate.day.toString()];
+        if (timeSlots is List<String>) {
+          return timeSlots;
+        }
+      }
+      return [];
+    } catch (e) {
+      print('Error loading available times for student: $e');
+      throw e;
+    }
   }
 
   void selectDate(DateTime selectedDate) {

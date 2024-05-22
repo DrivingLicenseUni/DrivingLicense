@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:license/view_model/date_picker.dart';
 import 'package:license/res/textstyle.dart';
 import 'package:license/res/colors.dart';
+import '../view_model/home_vm.dart';
+import 'home_view.dart';
 
 class DatePickerStudent extends StatefulWidget {
   const DatePickerStudent({Key? key, this.restorationId}) : super(key: key);
@@ -29,7 +31,10 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomeView()),
+            );
           },
         ),
         title: Text('Book a Lesson', style: AppTextStyles.headline),
@@ -69,8 +74,7 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
           ),
           Padding(
             padding: const EdgeInsets.all(13),
-            // child: _buildTimeSlots(),
-            child: const SizedBox(),
+            child: _buildTimeSlots(),
           ),
           const SizedBox(height: 35),
           _buildBookNowButton(),
@@ -99,47 +103,59 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
     );
   }
 
-  // Widget _buildTimeSlots() {
-  //   return SingleChildScrollView(
-  //     scrollDirection: Axis.horizontal,
-  //     child: Row(
-  //       children: _viewModel.availableTimes.map((time) {
-  //         return Padding(
-  //           padding: const EdgeInsets.only(right: 20.0),
-  //           child: GestureDetector(
-  //             onTap: () {
-  //               _viewModel.selectTime(time);
-  //             },
-  //             child: Container(
-  //               width: 78,
-  //               height: 40,
-  //               decoration: BoxDecoration(
-  //                 color: _viewModel.selectedTime == time
-  //                     ? Colors.blue
-  //                     : AppColors.secondaryBlue,
-  //                 borderRadius: BorderRadius.circular(8),
-  //                 boxShadow: [
-  //                   BoxShadow(
-  //                     color: Colors.grey.withOpacity(0.4),
-  //                     spreadRadius: 1,
-  //                     blurRadius: 1,
-  //                     offset: Offset(0, 1), // changes position of shadow
-  //                   ),
-  //                 ],
-  //               ),
-  //               child: Center(
-  //                 child: Text(
-  //                   time,
-  //                   style: AppTextStyles.labelLarge,
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //       }).toList(),
-  //     ),
-  //   );
-  // }
+  Widget _buildTimeSlots() {
+    return FutureBuilder<List<String>>(
+      future: _viewModel.loadAvailableTimesForStudent(_viewModel.selectedDate),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          final availableTimes = snapshot.data!;
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: availableTimes.map((time) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      _viewModel.selectTime(time);
+                    },
+                    child: Container(
+                      width: 78,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: _viewModel.selectedTime == time
+                            ? Colors.blue
+                            : AppColors.secondaryBlue,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.4),
+                            spreadRadius: 1,
+                            blurRadius: 1,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          time,
+                          style: AppTextStyles.labelLarge,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          );
+        }
+      },
+    );
+  }
 
   Widget _buildBookNowButton() {
     return FilledButton(
