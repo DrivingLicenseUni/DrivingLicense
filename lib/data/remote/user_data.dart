@@ -1,11 +1,13 @@
 import "package:firebase_auth/firebase_auth.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:license/res/types.dart";
+import 'package:license/data/remote/instructor_data.dart';
 
 class StudentData {
   final collectionName = "students";
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final InstructorData _instructorData = InstructorData();
 
   User? get currentUser => _auth.currentUser;
 
@@ -167,6 +169,43 @@ class StudentData {
       });
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<String> getInstructorId() async {
+    try {
+      String studentId = await getStudentId();
+      String instructorId = await _firestore
+          .collection(collectionName)
+          .doc(studentId)
+          .get()
+          .then((doc) => doc['instructorId']);
+
+      return instructorId;
+    } catch (e) {
+      print('Error fetching instructorId: $e');
+      throw e;
+    }
+  }
+
+  Future<Map<DateTime, List<String>>> fetchAvailableTimeSlots() async {
+    try {
+      String instructorId = await getInstructorId();
+      Instructor instructor = await _instructorData.getInstructor(instructorId);
+
+      Map<DateTime, List<String>> availableTimeSlots = {};
+
+      for (var day in instructor.availableTimes.keys) {
+        var timeSlots = instructor.availableTimes[day];
+        if (timeSlots is List<String>) {
+          availableTimeSlots[DateTime.now().add(Duration(days: day))] = timeSlots;
+        }
+      }
+
+      return availableTimeSlots;
+    } catch (e) {
+      print('Error fetching available time slots: $e');
+      throw e;
     }
   }
 }
