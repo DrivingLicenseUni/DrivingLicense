@@ -40,7 +40,7 @@ dependencies:
   cloud_firestore: ^4.17.1
   google_fonts: ^6.2.1
   permission_handler: ^10.2.0
-
+  image_picker: ^0.8.6+1
 dev_dependencies:
   flutter_test:
     sdk: flutter

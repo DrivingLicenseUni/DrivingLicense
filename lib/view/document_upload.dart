@@ -5,16 +5,16 @@ import 'package:license/res/colors.dart';
 import 'package:license/res/textstyles.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:permission_handler/permission_handler.dart' as handler;
+import 'package:image_picker/image_picker.dart';
 
 class DocumentUpload extends StatefulWidget {
   const DocumentUpload({super.key});
 
   @override
-  _DocumentUploadState createState() => _DocumentUploadState();
+  DocumentUploadState createState() => DocumentUploadState();
 }
 
-class _DocumentUploadState extends State<DocumentUpload> {
+class DocumentUploadState extends State<DocumentUpload> {
   File? selectedFile;
 
   Future<void> pickFile() async {
@@ -35,12 +35,14 @@ class _DocumentUploadState extends State<DocumentUpload> {
         // User canceled the file picker
       }
     } else if (permissionStatus.isDenied) {
+      await openAppSettings();
+
       // Permission denied by user, handle accordingly
       print('Permission denied by user');
     } else if (permissionStatus.isPermanentlyDenied) {
       // Permission permanently denied, open app settings to allow permission manually
       print('Permission permanently denied');
-      await handler.openAppSettings();
+      await openAppSettings();
     }
   }
 
@@ -56,8 +58,35 @@ class _DocumentUploadState extends State<DocumentUpload> {
             selectedFile: selectedFile,
           ),
           OrDivider(),
-          CameraButton(),
-          ContinueButton(),
+          CameraButton(
+            onTap: () async {
+              final ImagePicker picker = ImagePicker();
+              final XFile? image = await picker.pickImage(
+                source: ImageSource.camera,
+                imageQuality: 50,
+              );
+
+              if (image != null) {
+                // Handle the captured image
+                print('Captured image: ${image.path}');
+                // You can display the image, upload it, or perform any other desired action
+              } else {
+                // User canceled the image capture
+                print('No image captured.');
+              }
+            },
+          ),
+          ContinueButton(
+            onPressed: () {
+              // Add your continue functionality here
+              print('Continue button pressed');
+              if (selectedFile != null) {
+                print('Selected file: ${selectedFile!.path}');
+              } else {
+                print('No file selected');
+              }
+            },
+          ),
         ],
       ),
     );
@@ -199,6 +228,10 @@ class OrDivider extends StatelessWidget {
 }
 
 class CameraButton extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const CameraButton({Key? key, required this.onTap}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -207,7 +240,7 @@ class CameraButton extends StatelessWidget {
         width: 340,
         height: 56,
         child: FilledButton.tonal(
-          onPressed: () {},
+          onPressed: onTap,
           style: ButtonStyle(
             backgroundColor:
                 MaterialStateProperty.all(AppColors.secondaryLight),
@@ -242,6 +275,10 @@ class CameraButton extends StatelessWidget {
 }
 
 class ContinueButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const ContinueButton({Key? key, required this.onPressed}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -250,7 +287,7 @@ class ContinueButton extends StatelessWidget {
         width: 105,
         height: 40,
         child: FilledButton(
-          onPressed: () {},
+          onPressed: onPressed,
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(AppColors.primary),
           ),
