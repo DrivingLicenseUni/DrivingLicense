@@ -46,13 +46,6 @@ class _InstructorDetailsState extends State<InstructorDetails> {
         _isLoading = false;
       });
     });
-
-    // _instructorSelectionViewModel.getInstructor(id).then((instructor) {
-    //   setState(() {
-    //     _instructor = instructor;
-    //     _isLoading = false;
-    //   });
-    // });
   }
 
   Widget _loading() {

@@ -26,6 +26,7 @@ import 'model/firebase-massaging.dart';
 import 'model/forgot_password_m.dart';
 import 'package:license/view/sign_up.dart';
 import 'package:license/view/stu_progress_page.dart';
+import 'package:license/view/sign_details.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -102,6 +103,16 @@ class MyApp extends StatelessWidget {
             final String id = args['id'];
             return MaterialPageRoute(
               builder: (context) => InstructorDetails(id: id),
+            );
+          }
+          if (settings.name == "/sign-details") {
+            final args = settings.arguments as Map<String, dynamic>;
+            final String title = args['title'];
+            final String image = args['image'];
+            final String description = args['description'];
+            return MaterialPageRoute(
+              builder: (context) => SignDetails(
+                  title: title, image: image, description: description),
             );
           }
           return null;
