@@ -1,11 +1,11 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/res/textstyles.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_document_picker/flutter_document_picker.dart';
 
 class DocumentUpload extends StatefulWidget {
   const DocumentUpload({super.key});
@@ -22,14 +22,11 @@ class DocumentUploadState extends State<DocumentUpload> {
 
     if (permissionStatus.isGranted) {
       // Permission granted, proceed with file picking
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'png'],
-      );
+      final pickedFile = await FlutterDocumentPicker.openDocument();
 
-      if (result != null) {
+      if (pickedFile != null) {
         setState(() {
-          selectedFile = File(result.files.single.path!);
+          selectedFile = File(pickedFile);
         });
       } else {
         // User canceled the file picker

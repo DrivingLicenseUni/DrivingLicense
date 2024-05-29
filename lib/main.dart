@@ -1,7 +1,7 @@
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/material.dart';
 import 'package:license/view/document_upload.dart';
-
+import 'package:license/view/permission.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
-      home: const DocumentUpload( ),
+      home: const DocumentUpload(),
     );
   }
 }
