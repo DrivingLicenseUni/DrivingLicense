@@ -7,6 +7,7 @@ import 'package:license/view/notification_view.dart';
 import 'package:license/view/home_page.dart';
 import 'package:license/view/onboarding-v.dart';
 import 'package:license/view/sign_in.dart';
+import 'package:license/view/signs_list.dart';
 import 'package:license/view/student_activity.dart';
 import 'package:license/view/view_calendar_time_ins.dart';
 import 'package:license/res/colors.dart';
@@ -91,8 +92,9 @@ class MyApp extends StatelessWidget {
           '/my-activity': (context) => StudentActivityPage(
                 studentId: '',
               ),
-          '/notification-view': (context) => NotificationView(),
-          "/stu-progress": (context) => CardListView()
+          '/notification-view': (context) => SignsList(),
+          "/stu-progress": (context) => CardListView(),
+          '/signs': (context) => SignsList(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
