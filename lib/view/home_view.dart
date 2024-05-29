@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:license/res/types.dart';
 import 'package:license/view/profile-page.dart';
 import 'package:license/view/selected_instructor_v.dart';
+import 'package:license/view/signs_section.dart';
 import 'package:license/view/stu_progress_page.dart';
 import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:provider/provider.dart';
@@ -165,8 +166,8 @@ class _HomeViewState extends State<HomeView> {
           mainAxisSpacing: 5,
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           children: <Widget>[
-            _buildCategoryItem(
-                context, "Exams", "assets/images/exams.png", const HomeView()),
+            _buildCategoryItem(context, "Exams", "assets/images/exams.png",
+                const SignsSection()),
             _buildCategoryItem(context, "Instructor",
                 "assets/images/instructor.png", const SelectInstructor()),
             _buildCategoryItem(context, "Theory", "assets/images/theory.png",
