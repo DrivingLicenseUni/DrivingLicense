@@ -1,8 +1,15 @@
 import "package:flutter/material.dart";
 import "package:license/res/textstyles.dart";
 
-class SignsSection extends StatelessWidget {
+class SignsSection extends StatefulWidget {
   const SignsSection({super.key});
+
+  @override
+  _SignsSectionState createState() => _SignsSectionState();
+}
+
+class _SignsSectionState extends State<SignsSection> {
+  String? _selectedHeader;
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +17,43 @@ class SignsSection extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: 40),
+          _buildHeaderDropdown(),
           _buildSignsSectionPage(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeaderDropdown() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: DropdownButtonFormField<String>(
+        value: _selectedHeader,
+        onChanged: (newValue) {
+          setState(() {
+            _selectedHeader = newValue;
+          });
+        },
+        decoration: InputDecoration(
+          labelText: 'Filter by Header',
+        ),
+        items: [
+          DropdownMenuItem(
+            value: null,
+            child: Text('All'),
+          ),
+          DropdownMenuItem(
+            value: 'Mandatory Signs',
+            child: Text('Mandatory Signs'),
+          ),
+          DropdownMenuItem(
+            value: 'Cautionary Signs',
+            child: Text('Cautionary Signs'),
+          ),
+          DropdownMenuItem(
+            value: 'Informatory Signs',
+            child: Text('Informatory Signs'),
+          ),
         ],
       ),
     );
@@ -21,7 +64,6 @@ class SignsSection extends StatelessWidget {
       children: [
         SizedBox(height: 10),
         _buildSignsSections(
-          context,
           "Mandatory Signs",
           [
             _SignData(
@@ -29,46 +71,48 @@ class SignsSection extends StatelessWidget {
               image: 'assets/images/turn-left-prohibited.jpg',
               description:
                   'A "Turn Left Prohibited" sign, showing a left arrow with a red slash, indicates that left turns are not allowed at that location, enhancing traffic flow and safety.',
+              header: 'Mandatory Signs',
             ),
             _SignData(
               title: 'No Entry',
               image: 'assets/images/no-entry-traffic.png',
               description:
                   'A "No Entry" traffic sign, usually a red circle with a white horizontal bar, indicates that vehicles are not allowed to enter the roadway beyond the sign, ensuring restricted access for safety and traffic management.',
+              header: 'Mandatory Signs',
             ),
           ],
         ),
-        SizedBox(height: 15),
         _buildSignsSections(
-          context,
           "Cautionary Signs",
           [
             _SignData(
               title: 'Left Reverse Bend',
               image: 'assets/images/left-reverse-bend.png',
               description: 'Left Reverse Bend',
+              header: 'Cautionary Signs',
             ),
             _SignData(
               title: 'Narrow Bridge',
               image: 'assets/images/narrow-road-ahead.png',
               description: 'Narrow Road Ahead',
+              header: 'Cautionary Signs',
             ),
           ],
         ),
-        SizedBox(height: 15),
         _buildSignsSections(
-          context,
           "Informatory Signs",
           [
             _SignData(
               title: 'Hospital',
               image: 'assets/images/hospital.png',
               description: 'A nearby hospital',
+              header: 'Informatory Signs',
             ),
             _SignData(
               title: 'Narrow Bridge',
               image: 'assets/images/fuel-station.png',
               description: 'Petrol Pump',
+              header: 'Informatory Signs',
             ),
           ],
         ),
@@ -76,17 +120,20 @@ class SignsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildSignsSections(
-      BuildContext context, String mainTitle, List<_SignData> signs) {
+  Widget _buildSignsSections(String mainTitle, List<_SignData> signs) {
     return Column(
       children: [
-        Text(
-          mainTitle,
-          style: AppTextStyles.title,
-        ),
-        SizedBox(height: 16),
+        if (_selectedHeader == null || _selectedHeader == mainTitle)
+          Text(
+            mainTitle,
+            style: AppTextStyles.title,
+          ),
+        if (_selectedHeader == null || _selectedHeader == mainTitle)
+          SizedBox(height: 16),
         Row(
           children: signs
+              .where((sign) =>
+                  _selectedHeader == null || sign.header == _selectedHeader)
               .map(
                 (sign) => Expanded(
                   child: GestureDetector(
@@ -128,7 +175,11 @@ class _SignData {
   final String title;
   final String image;
   final String description;
+  final String header;
 
   _SignData(
-      {required this.title, required this.image, required this.description});
+      {required this.title,
+      required this.image,
+      required this.description,
+      required this.header});
 }
