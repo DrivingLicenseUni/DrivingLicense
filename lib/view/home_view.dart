@@ -3,11 +3,11 @@ import 'package:license/res/types.dart';
 import 'package:license/view/profile-page.dart';
 import 'package:license/view/selected_instructor_v.dart';
 import 'package:license/view/stu_progress_page.dart';
+import 'package:license/view/theory_section.dart';
 import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:provider/provider.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view_model/home_vm.dart';
-import 'package:license/view_model/sign_in_logic.dart';
 import 'package:license/view/theory_exams_section.dart';
 
 class HomeView extends StatefulWidget {
@@ -19,7 +19,6 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int _selectedIndex = 0;
-  LoginViewModel _loginViewModel = LoginViewModel();
 
   onTabTapped(int index) {
     setState(() {
@@ -167,11 +166,11 @@ class _HomeViewState extends State<HomeView> {
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           children: <Widget>[
             _buildCategoryItem(
-                context, "Exams", "assets/images/exams.png", const HomeView()),
+                context, "Exams", "assets/images/exams.png", TheorySection()),
             _buildCategoryItem(context, "Instructor",
                 "assets/images/instructor.png", const SelectInstructor()),
             _buildCategoryItem(context, "Theory", "assets/images/theory.png",
-                TheoryPage()),
+                const TheorySection()),
             _buildCategoryItem(context, "Booking", "assets/images/booking.png",
                 const DatePickerStudent()),
           ],
