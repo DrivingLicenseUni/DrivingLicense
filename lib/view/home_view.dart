@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view_model/home_vm.dart';
 import 'package:license/view_model/sign_in_logic.dart';
+import 'package:license/view/theory_exams_section.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -171,7 +172,7 @@ class _HomeViewState extends State<HomeView> {
             _buildCategoryItem(context, "Instructor",
                 "assets/images/instructor.png", const SelectInstructor()),
             _buildCategoryItem(context, "Theory", "assets/images/theory.png",
-                const HomeView()),
+                TheoryPage()),
             _buildCategoryItem(context, "Booking", "assets/images/booking.png",
                 const DatePickerStudent()),
           ],
