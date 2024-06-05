@@ -1,23 +1,27 @@
-import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseApi {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> initNotifications() async {
     await Firebase.initializeApp();
     await _firebaseMessaging.requestPermission();
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
 
+    // Save FCM token
     _firebaseMessaging.getToken().then((token) {
+      if (token != null) {
+        _saveTokenToFirestore(token);
+      }
       print('Token: $token');
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Received a foreground message: ${message.messageId}');
-      _saveNotificationData(message, _prefs);
+      _saveNotificationData(message);
     });
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -25,33 +29,38 @@ class FirebaseApi {
     RemoteMessage? initialMessage = await _firebaseMessaging.getInitialMessage();
     if (initialMessage != null) {
       print('Received an initial message: ${initialMessage.messageId}');
-      _saveNotificationData(initialMessage, _prefs);
+      _saveNotificationData(initialMessage);
+    }
+  }
+
+  Future<void> _saveTokenToFirestore(String token) async {
+    // Get the current user's ID
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      await _firestore.collection('students').doc(userId).update({
+        'fcmToken': token,
+      });
     }
   }
 
   static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+    await Firebase.initializeApp();
     print('Received a background message: ${message.messageId}');
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    await _saveNotificationData(message, _prefs);
+    await _saveNotificationData(message);
   }
 
-  static Future<void> _saveNotificationData(RemoteMessage message, SharedPreferences prefs) async {
-    String? title = message.notification?.title ?? 'No Title';
-    String? body = message.notification?.body ?? 'No Body';
-    String sentTime = DateTime.now().toString();
-
-    String? existingNotifications = prefs.getString('notifications');
-    List<Map<String, String>> notifications = existingNotifications != null
-        ? List<Map<String, String>>.from(json.decode(existingNotifications))
-        : [];
-
-    notifications.add({
-      'title': title,
-      'body': body,
-      'sentTime': sentTime,
-    });
-
-    await prefs.setString('notifications', json.encode(notifications));
-    print('Saved notification: $notifications');
+  static Future<void> _saveNotificationData(RemoteMessage message) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      await FirebaseFirestore.instance
+          .collection('students')
+          .doc(userId)
+          .collection('notifications')
+          .add({
+        'title': message.notification?.title ?? 'No Title',
+        'body': message.notification?.body ?? 'No Body',
+        'sentTime': DateTime.now().toIso8601String(),
+      });
+    }
   }
 }
