@@ -4,16 +4,16 @@ import 'package:license/view_model/examScore.dart';
 import '../res/enum.dart';
 import 'package:license/view/exam_score.dart';
 
-class ExamsPage extends StatefulWidget {
-  const ExamsPage({Key? key, required this.title}) : super(key: key);
+class ExamPage extends StatefulWidget {
+  const ExamPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<ExamsPage> createState() => _ExamsPageState();
+  State<ExamPage> createState() => _ExamPageState();
 }
 
-class _ExamsPageState extends State<ExamsPage> {
+class _ExamPageState extends State<ExamPage> {
   final QuizViewModel viewModel = QuizViewModel();
 
   @override
@@ -22,7 +22,9 @@ class _ExamsPageState extends State<ExamsPage> {
     viewModel.onSubmitQuiz = (score, totalQuestions) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ScorePage(score: score, totalQuestions: totalQuestions)),
+        MaterialPageRoute(
+            builder: (context) =>
+                ScorePage(score: score, totalQuestions: totalQuestions)),
       );
     };
     viewModel.onNextQuestion = () {
@@ -41,7 +43,8 @@ class _ExamsPageState extends State<ExamsPage> {
           },
         ),
         title: Text(
-          'Theory page',style: AppTextStyles.headline,
+          'Theory page',
+          style: AppTextStyles.headline,
         ),
         centerTitle: true,
         toolbarHeight: 83,
@@ -52,7 +55,8 @@ class _ExamsPageState extends State<ExamsPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '1st Exam',style: AppTextStyles.title,
+              '1st Exam',
+              style: AppTextStyles.title,
             ),
             Text(
               viewModel.currentQuestion.question,
@@ -97,7 +101,8 @@ class _ExamsPageState extends State<ExamsPage> {
                 if (viewModel.questionIndex == viewModel.totalQuestions - 1)
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text color
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blue, // Text color
                     ),
                     onPressed: () {
                       viewModel.submitQuiz(context);
@@ -107,7 +112,8 @@ class _ExamsPageState extends State<ExamsPage> {
                 else
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text color
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blue, // Text color
                     ),
                     onPressed: () {
                       setState(() {
@@ -124,5 +130,3 @@ class _ExamsPageState extends State<ExamsPage> {
     );
   }
 }
-
-

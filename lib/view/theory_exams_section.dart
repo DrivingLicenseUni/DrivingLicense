@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:license/view/exams_page.dart';
 
 class ExamsPage extends StatelessWidget {
   final List<String> _examSamples = [
@@ -33,7 +34,16 @@ class ExamsPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
               child: InkWell(
                 borderRadius: BorderRadius.circular(20),
-                onTap: () {},
+                onTap: () {
+                  if (index == 0) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExamPage(title: "1st Exam"),
+                      ),
+                    );
+                  }
+                },
                 child: Container(
                   padding: EdgeInsets.all(25),
                   child: Text(
