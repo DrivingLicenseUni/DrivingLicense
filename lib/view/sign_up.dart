@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/res/types.dart';
 import 'package:license/view_model/create_account.dart';
@@ -140,6 +139,10 @@ class _SignUpFormState extends State<SignUp> {
         fullName: _fullNameController.text,
         phoneNumber: _phoneNumberController.text,
         id: _idController.text,
+        role: "Student",
+        instructorName: '',
+        instructorId: '',
+        profileImageUrl: '',
       );
       await _createAccountViewModel.addStudentToDatabase(student: student);
 
@@ -405,10 +408,10 @@ class _SignUpFormState extends State<SignUp> {
                         (states) => Colors.transparent,
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Login",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),

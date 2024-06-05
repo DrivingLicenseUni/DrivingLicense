@@ -1,7 +1,7 @@
 import "package:license/data/remote/user_data.dart";
 import "package:license/res/types.dart";
 
-class SignUpModel {
+class StudentModel {
   final StudentData _userRepository = StudentData();
 
   Future<void> signInWithEmailAndPassword(
@@ -18,7 +18,15 @@ class SignUpModel {
     try {
       await _userRepository.signOut();
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<String> getStudentId() async {
+    try {
+      return await _userRepository.getStudentId();
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -37,7 +45,7 @@ class SignUpModel {
       await _userRepository.createUserWithEmailAndPassword(
           email: email, password: password);
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow;
     }
   }
 
@@ -57,7 +65,7 @@ class SignUpModel {
     try {
       await _userRepository.addStudentToDatabase(student);
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow;
     }
   }
 
@@ -67,7 +75,7 @@ class SignUpModel {
     try {
       doesIdExist = await _userRepository.isStudentInDatabase(id);
     } catch (e) {
-      throw Exception(e.toString());
+      rethrow;
     }
 
     return doesIdExist;
