@@ -6,7 +6,6 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../res/textstyle.dart';
 
-
 class NotificationView extends StatefulWidget {
   const NotificationView({Key? key}) : super(key: key);
 
@@ -28,9 +27,9 @@ class _NotificationViewState extends State<NotificationView> {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId != null) {
       QuerySnapshot querySnapshot = await _firestore
-          .collection('students')
-          .doc(userId)
           .collection('notifications')
+          .doc(userId)
+          .collection('student_notifications')
           .orderBy('sentTime', descending: true)
           .get();
 
@@ -39,7 +38,7 @@ class _NotificationViewState extends State<NotificationView> {
           'title': doc['title'],
           'body': doc['body'],
           'sentTime': doc['sentTime'],
-          'photoUrl': doc['photoUrl'],
+          'photoUrl': _getPhotoUrlForTitle(doc['title']),
         };
       }).toList();
 
@@ -49,19 +48,30 @@ class _NotificationViewState extends State<NotificationView> {
     }
   }
 
+  String _getPhotoUrlForTitle(String? title) {
+    switch (title) {
+      case 'Appointment Reminder':
+        return 'assets/images/appo_reminder.png';
+      case 'Lesson Progress Update':
+        return 'assets/images/less_pro_update.png';
+      case 'New Study Material':
+        return 'assets/images/new_study_mat.png';
+      default:
+        return '';
+    }
+  }
+
   Future<void> _clearNotificationData() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId != null) {
-      WriteBatch batch = _firestore.batch();
       var snapshots = await _firestore
-          .collection('students')
-          .doc(userId)
           .collection('notifications')
+          .doc(userId)
+          .collection('student_notifications')
           .get();
       for (var doc in snapshots.docs) {
-        batch.delete(doc.reference);
+        await doc.reference.delete();
       }
-      await batch.commit();
     }
 
     setState(() {
@@ -99,36 +109,31 @@ class _NotificationViewState extends State<NotificationView> {
             child: _notifications.isEmpty
                 ? Center(child: Text('No notifications available'))
                 : ListView.builder(
-                  padding: EdgeInsets.all(16.0),
-                  itemCount: _notifications.length,
-                  itemBuilder: (context, index) {
-                    final notification = _notifications[index];
+              padding: EdgeInsets.all(8.0),
+              itemCount: _notifications.length,
+              itemBuilder: (context, index) {
+                final notification = _notifications[index];
 
-                  final DateTime sentTime = DateTime.parse(notification['sentTime']);
-                  final String timeAgo = timeago.format(sentTime, locale: 'en_short');
-                    return Card(
-                      margin: EdgeInsets.symmetric(vertical: 8.0),
-                      color: AppColors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: ListTile(
-                    contentPadding: EdgeInsets.all(16.0),
+                final DateTime sentTime = DateTime.parse(notification['sentTime']);
+                final String timeAgo = timeago.format(sentTime, locale: 'en_short');
+                return Card(
+                  margin: EdgeInsets.symmetric(vertical: 8.0),
+                  color: AppColors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(5.0),
                     leading: notification['photoUrl'] != null && notification['photoUrl'].isNotEmpty
-                        ? Image.network(
+                        ? Image.asset(
                       notification['photoUrl'],
-                      width: 40,
-                      height: 40,
+                      width: 50,
+                      height: 50,
                     )
-                        : Image.asset(
-                      'assets/images/exams.png',
-                      width: 40,
-                      height: 40,
-                    ),
+                        : Container(width: 40, height: 40),
                     title: Text(
                       notification['title'] ?? 'No Title',
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold , color: Colors.black),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,14 +141,18 @@ class _NotificationViewState extends State<NotificationView> {
                         SizedBox(height: 5.0),
                         Text(
                           notification['body'] ?? 'No Body',
-                          style: TextStyle(fontSize: 16.0),
+                          style: AppTextStyles.headline.copyWith(
+                            fontSize: 12.0,
+                            color: AppColors.gray,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         SizedBox(height: 5.0),
                       ],
                     ),
                     trailing: Text(
                       timeAgo,
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(fontSize:12.0 , color: AppColors.primary,fontWeight: FontWeight.bold),
                     ),
                   ),
                 );
