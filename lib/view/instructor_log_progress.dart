@@ -19,7 +19,10 @@ class _InstructorLogProgress extends State<InstructorLogProgress> {
   @override
   void initState() {
     super.initState();
-    _viewModel = ProgressLogViewModel(user: widget.user);
+    _viewModel = ProgressLogViewModel(userId: widget.user['id']!);
+    _viewModel.loadProgress().then((_) {
+      setState(() {}); // Trigger a rebuild once progress is loaded
+    });
   }
 
   @override

@@ -1,43 +1,69 @@
-import 'package:license/model/progress_card_data.dart';
+import 'package:license/view_model/progress_log.dart';
+
 class CardListViewModel {
-  List<ProgressCardData> getCards() {
+  final String userId;
+  late final ProgressLogViewModel progressLogViewModel;
+
+  CardListViewModel(this.userId) {
+    progressLogViewModel = ProgressLogViewModel(userId: userId);
+  }
+
+  Future<List<CardViewData>> getCards() async {
+    await progressLogViewModel.loadProgress();
+    Map<String, double> categoryProgress = progressLogViewModel.categoryProgress;
+
     return [
-      ProgressCardData(
+      CardViewData(
         title: 'Pre-driving Knowledge',
         subtitle: '1 Lesson',
-        progress: 0.1,
+        progress: categoryProgress['Introduction'] ?? 0.0,
         avatarUrl: 'assets/images/Introduction.jpg',
       ),
-      ProgressCardData(
+      CardViewData(
         title: 'Right Turns',
         subtitle: '5 Lessons',
-        progress: 0.2,
+        progress: categoryProgress['Right turns'] ?? 0.0,
         avatarUrl: 'assets/images/right-turn.png',
       ),
-      ProgressCardData(
+      CardViewData(
         title: 'Left Turns',
         subtitle: '5 Lessons',
-        progress: 0.3,
+        progress: categoryProgress['Left turns'] ?? 0.0,
         avatarUrl: 'assets/images/left-turn.png',
       ),
-      ProgressCardData(
+      CardViewData(
         title: 'Reverse Focus',
         subtitle: '3 Lessons',
-        progress: 0.4,
+        progress: categoryProgress['Reverse Focus'] ?? 0.0,
         avatarUrl: 'assets/images/Reverse-focus.webp',
       ),
-      ProgressCardData(
+      CardViewData(
         title: 'Traffic circle',
         subtitle: '4 Lessons',
-        progress: 0.5,
+        progress: categoryProgress['Traffic circle'] ?? 0.0,
         avatarUrl: 'assets/images/traffic-circle.webp',
       ),
-      ProgressCardData(
+      CardViewData(
         title: 'Revision',
         subtitle: '6 Lessons',
-        progress: 0.6,
+        progress: categoryProgress['Revision'] ?? 0.0,
         avatarUrl: 'https://via.placeholder.com/50',
       ),
     ];
   }
 }
+
+class CardViewData {
+  final String title;
+  final String subtitle;
+  final double progress;
+  final String avatarUrl;
+
+  CardViewData({
+    required this.title,
+    required this.subtitle,
+    required this.progress,
+    required this.avatarUrl,
+  });
+}
+

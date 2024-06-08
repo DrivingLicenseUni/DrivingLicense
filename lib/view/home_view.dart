@@ -104,7 +104,6 @@ class _HomeViewState extends State<HomeView> {
               ],
             ),
           ),
-          CardListView(),
           SizedBox(),
           ProfilePage(),
         ][_selectedIndex],
