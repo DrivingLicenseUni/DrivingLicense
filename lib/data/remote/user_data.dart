@@ -212,16 +212,15 @@ class StudentData {
   Future<void> addAppointment(
       DateTime selectedDate, String selectedTime) async {
     try {
-      //String studentId="t5QFxL6kOJFV20Xl37cn";//get it from db
       String studentId = await getStudentId();
 
       DocumentSnapshot studentDoc =
-          await _firestore.collection(collectionName).doc(studentId).get();
+      await _firestore.collection(collectionName).doc(studentId).get();
       if (!studentDoc.exists) {
         throw Exception("Student not found");
       }
       Map<String, dynamic> studentData =
-          studentDoc.data() as Map<String, dynamic>;
+      studentDoc.data() as Map<String, dynamic>;
 
       String studentName = studentData['fullName'];
       String studentProfileImage = studentData['image'];
@@ -245,19 +244,10 @@ class StudentData {
   Future<List<CardData>> getBookedAppointments() async {
     try {
       String studentId = await getStudentId();
-      // print(studentId);
-      //String studentId="t5QFxL6kOJFV20Xl37cn";
-
-      // Timestamp queryDate = Timestamp.fromDate(date);
-      //
-      // DateTime nextDay = date.add(Duration(days: 1));
-      // Timestamp nextDayTimestamp = Timestamp.fromDate(nextDay);
-
       final snapshot = await _firestore
           .collection(collectionName)
           .doc(studentId)
           .collection('appointments')
-          // .where('date', isGreaterThanOrEqualTo: queryDate, isLessThan: nextDayTimestamp)
           .get();
 
       final List<CardData> bookedAppointments = snapshot.docs.map((doc) {
@@ -269,4 +259,31 @@ class StudentData {
       return [];
     }
   }
+
+  Future<void> saveProgress(String studentId, List<Map<String, dynamic>> progressData) async {
+    try {
+      await _firestore.collection(collectionName).doc(studentId).update({
+        'progressData': progressData,
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> loadProgress(String studentId) async {
+    try {
+      DocumentSnapshot doc = await _firestore.collection(collectionName).doc(studentId).get();
+      if (doc.exists && doc.data() != null) {
+        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+        if (data != null && data.containsKey('progressData')) {
+          return List<Map<String, dynamic>>.from(data['progressData']);
+        }
+      }
+      return [];
+    } catch (e) {
+      print('Error loading progress data: $e');
+      throw e;
+    }
+  }
 }
+

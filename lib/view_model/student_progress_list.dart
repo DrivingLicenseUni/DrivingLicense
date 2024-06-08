@@ -1,24 +1,48 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:license/model/participating_user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../model/participating_user.dart';
 
 class StudentProgressListViewModel extends ChangeNotifier {
-  List<UserModel> userList = [
-    UserModel(avatarText: 'A', title: 'User 1', subtitle: 'calculate progress'),
-    UserModel(avatarText: 'B', title: 'User 2', subtitle: '-'),
-    UserModel(avatarText: 'C', title: 'User 3', subtitle: '-'),
-  ];
-  final VoidCallback onUserAdded;
+  List<UserModel> userList = [];
 
-  StudentProgressListViewModel({required this.onUserAdded});
+  StudentProgressListViewModel() {
+    _fetchStudents();
+  }
 
-  void addUser() {
-    userList.add(UserModel(
-      avatarText: String.fromCharCode('A'.codeUnitAt(0) + userList.length),
-      title: 'User ${userList.length + 1}',
-      subtitle: '-',
-    ));
-    // Call the callback to notify the UI that a user is added
-    onUserAdded();
+  Future<void> _fetchStudents() async {
+    try {
+      final instructorId = await _getInstructorId();
+      final snapshot = await FirebaseFirestore.instance
+          .collection('students')
+          .where('instructorId', isEqualTo: instructorId)
+          .get();
+
+      userList = snapshot.docs.map((doc) => UserModel.fromFirestore(doc)).toList();
+    } catch (e) {
+      print('Error fetching students: $e');
+    }
+  }
+
+ /* Future<String> _getInstructorId() async {
+    //Static instructor ID for testing
+    return "3QF7Kae5dh33mUqKPZNp";
+  }*/
+
+  Future<String> _getInstructorId() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) throw Exception('No user logged in');
+
+    final instructorSnapshot = await FirebaseFirestore.instance
+        .collection('instructors')
+        .where('email', isEqualTo: user.email)
+        .limit(1)
+        .get();
+
+    if (instructorSnapshot.docs.isEmpty) throw Exception('Instructor not found');
+
+    return instructorSnapshot.docs[0].id;
   }
 
 

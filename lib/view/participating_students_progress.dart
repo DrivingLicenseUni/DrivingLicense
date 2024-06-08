@@ -4,12 +4,11 @@ import 'package:license/res/textstyle.dart';
 import 'package:license/view_model/student_progress_list.dart';
 import 'package:license/view/instructor_log_progress.dart';
 
-class StudentProgressListView extends StatefulWidget  {
+class StudentProgressListView extends StatefulWidget {
   const StudentProgressListView({Key? key}) : super(key: key);
 
   @override
   _StudentProgressListView createState() => _StudentProgressListView();
-
 }
 
 class _StudentProgressListView extends State<StudentProgressListView> {
@@ -18,9 +17,7 @@ class _StudentProgressListView extends State<StudentProgressListView> {
   @override
   void initState() {
     super.initState();
-    viewModel = StudentProgressListViewModel(onUserAdded: () {
-      setState(() {});
-    });
+    viewModel = StudentProgressListViewModel();
   }
 
   @override
@@ -36,7 +33,9 @@ class _StudentProgressListView extends State<StudentProgressListView> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 64.0),
-        child: ListView.builder(
+        child: viewModel.userList.isEmpty
+            ? Center(child: CircularProgressIndicator())
+            : ListView.builder(
           itemCount: viewModel.userList.length,
           itemBuilder: (context, index) {
             final user = viewModel.userList[index];
@@ -79,10 +78,7 @@ class _StudentProgressListView extends State<StudentProgressListView> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: viewModel.addUser,
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }
+
