@@ -3,6 +3,8 @@ import 'package:license/res/colors.dart';
 import 'package:license/res/types.dart';
 import 'package:license/view_model/instructor_selection.dart';
 
+import '../res/textstyle.dart';
+
 class InstructorDetails extends StatefulWidget {
   final String id;
   const InstructorDetails({super.key, required this.id});
@@ -114,11 +116,7 @@ class _InstructorDetailsState extends State<InstructorDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Instructor Details",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
-        ),
-        centerTitle: true,
+        title: Text('Instructor Details', style: AppTextStyles.headline),
       ),
       body: _isLoading
           ? _loading()

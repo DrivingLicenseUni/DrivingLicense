@@ -42,7 +42,6 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
           ),
           SizedBox(width: 17.0),
         ],
-        centerTitle: true,
         toolbarHeight: 83,
       ),
       body: Column(

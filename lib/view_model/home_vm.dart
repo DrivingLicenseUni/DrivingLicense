@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:license/data/remote/instructor_data.dart';
@@ -38,7 +39,22 @@ class HomeViewModel extends ChangeNotifier {
 
   Future<void> updatePhoneNumber(String studentId, String phoneNumber) async {
     _currentStudent =
-        await _studentData.updatePhoneNumber(studentId, phoneNumber);
+    await _studentData.updatePhoneNumber(studentId, phoneNumber);
     notifyListeners();
   }
+
+  Future<Map<String, dynamic>?> fetchLastLesson(String studentId) async {
+    try {
+      final lessonDoc = await FirebaseFirestore.instance
+          .collection('Lessons')
+          .doc(studentId)
+          .get();
+
+      return lessonDoc.data();
+    } catch (e) {
+      print('Error fetching last lesson: $e');
+      return null;
+    }
+  }
+
 }

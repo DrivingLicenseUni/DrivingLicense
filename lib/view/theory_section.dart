@@ -3,6 +3,8 @@ import 'package:license/view/signs_section.dart';
 import 'package:license/view/theory_exams_section.dart';
 import 'package:license/view/theory_section_buttons.dart';
 
+import '../res/textstyle.dart';
+
 class TheorySection extends StatefulWidget {
   const TheorySection({super.key});
 
@@ -17,7 +19,7 @@ class _TheorySectionState extends State<TheorySection> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Theory Page'),
+        title: Text('Theory Page', style: AppTextStyles.headline),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
