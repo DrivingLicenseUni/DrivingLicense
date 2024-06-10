@@ -104,7 +104,7 @@ class _LoginViewState extends State<LoginView> {
                     const Spacer(),
                     TextButton(
                       onPressed: () {
-                        // Handle "Forgot Password" button press
+                        Navigator.pushNamed(context, "/forgot-password");
                       },
                       child: Text(
                         'Forgot Password?',

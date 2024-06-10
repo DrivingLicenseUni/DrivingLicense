@@ -13,23 +13,10 @@ class ForgotPassword extends StatelessWidget {
         Provider.of<ForgotPasswordViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, size: 30),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 35.0, top: 10),
-            child: Icon(
-              Icons.hotel_class,
-              color: AppColors.primary,
-              size: 50,
-            ),
-          )
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(15.0),
