@@ -7,7 +7,9 @@ import 'package:license/view/notification_view.dart';
 import 'package:license/view/home_page.dart';
 import 'package:license/view/onboarding-v.dart';
 import 'package:license/view/sign_in.dart';
+import 'package:license/view/signs_section.dart';
 import 'package:license/view/student_activity.dart';
+import 'package:license/view/theory_exams_section.dart';
 import 'package:license/view/view_calendar_time_ins.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view/document_upload.dart';
@@ -24,6 +26,7 @@ import 'model/firebase-massaging.dart';
 import 'model/forgot_password_m.dart';
 import 'package:license/view/sign_up.dart';
 import 'package:license/view/stu_progress_page.dart';
+import 'package:license/view/sign_details.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -88,11 +91,11 @@ class MyApp extends StatelessWidget {
               const DatePickerStudent(restorationId: 'main'),
           '/login': (context) => const LoginView(),
           '/home-screen': (context) => HomeScreen(),
-          '/my-activity': (context) => StudentActivityPage(
-                studentId: '',
-              ),
+          '/my-activity': (context) => StudentActivityPage(studentId: ''),
           '/notification-view': (context) => NotificationView(),
-          "/stu-progress": (context) => CardListView()
+          "/stu-progress": (context) => CardListView(),
+          '/theory-exams': (context) => ExamsPage(),
+          "/signs-section": (context) => const SignsSection(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == "/instructor-details") {
@@ -100,6 +103,16 @@ class MyApp extends StatelessWidget {
             final String id = args['id'];
             return MaterialPageRoute(
               builder: (context) => InstructorDetails(id: id),
+            );
+          }
+          if (settings.name == "/sign-details") {
+            final args = settings.arguments as Map<String, dynamic>;
+            final String title = args['title'];
+            final String image = args['image'];
+            final String description = args['description'];
+            return MaterialPageRoute(
+              builder: (context) => SignDetails(
+                  title: title, image: image, description: description),
             );
           }
           return null;

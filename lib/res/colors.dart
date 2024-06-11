@@ -9,4 +9,6 @@ class AppColors {
   static Color get black => const Color.fromRGBO(57, 56, 56, 1);
   static Color get white => const Color.fromRGBO(255, 255, 255, 1.0);
   static Color get placeholder => const Color.fromRGBO(73, 69, 79, 1);
+  static Color get gray => const Color.fromRGBO(125, 120, 120, 1.0);
+
 }
