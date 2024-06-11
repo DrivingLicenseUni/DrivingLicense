@@ -91,7 +91,6 @@ class _NotificationViewState extends State<NotificationView> {
             onPressed: _clearNotificationData,
           ),
         ],
-        centerTitle: true,
       ),
       body: Column(
         children: [

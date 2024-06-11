@@ -57,9 +57,9 @@ class _HomeViewState extends State<HomeView> {
                               CircleAvatar(
                                 radius: 37.0,
                                 backgroundImage:
-                                    student?.profileImageUrl != null
-                                        ? NetworkImage(student!.profileImageUrl)
-                                        : AssetImage("") as ImageProvider,
+                                student?.profileImageUrl != null
+                                    ? NetworkImage(student!.profileImageUrl)
+                                    : AssetImage("") as ImageProvider,
                               ),
                               const SizedBox(width: 10),
                               Column(
@@ -224,7 +224,6 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
-
 class ReminderCard extends StatelessWidget {
   ReminderCard({super.key});
 
@@ -234,96 +233,116 @@ class ReminderCard extends StatelessWidget {
 
     return FutureBuilder<Student?>(
       future: viewModel.fetchCurrentStudent(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+      builder: (context, studentSnapshot) {
+        if (studentSnapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return const Text("Error");
+        } else if (studentSnapshot.hasError) {
+          return const Text("Error fetching student data");
+        } else if (!studentSnapshot.hasData) {
+          return const Text("No student data available");
         } else {
-          final student = snapshot.data!;
-          return FutureBuilder<Instructor>(
+          final student = studentSnapshot.data!;
+          return FutureBuilder<Instructor?>(
             future: viewModel.getInstructorById(student.instructorId!),
             builder: (context, instructorSnapshot) {
-              if (instructorSnapshot.connectionState ==
-                  ConnectionState.waiting) {
+              if (instructorSnapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               } else if (instructorSnapshot.hasError) {
-                return const Text("Error");
+                return const Text("Error fetching instructor data");
+              } else if (!instructorSnapshot.hasData) {
+                return const Text("No instructor data available");
               } else {
                 final instructor = instructorSnapshot.data!;
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 6.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Remind you:",
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.placeholder,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      color: AppColors.primary,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(instructor.image),
-                        ),
-                        title: Text(
-                          student.instructorName!,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Owner',
-                              style: TextStyle(
-                                color: Colors.white70,
+                return FutureBuilder<Map<String, dynamic>?>(
+                  future: viewModel.fetchLastLesson(student.id!),
+                  builder: (context, lessonSnapshot) {
+                    if (lessonSnapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (lessonSnapshot.hasError) {
+                      return const Text("Error fetching lesson data");
+                    } else {
+                      final lesson = lessonSnapshot.data;
+                      final date = lesson?['date'] ?? 'N/A';
+                      final time = lesson?['time'] ?? 'N/A';
+                      final lessonText = lesson != null ? 'Next lesson:' : 'No upcoming lessons';
+
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 6.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Remind you:",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.placeholder,
+                                ),
                               ),
                             ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.calendar_today,
-                                    color: Colors.white70, size: 20),
-                                SizedBox(width: 5),
-                                Text(
-                                  'Sunday, 12 June',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                SizedBox(width: 8),
-                                Icon(Icons.access_time,
-                                    color: Colors.white70, size: 20),
-                                SizedBox(width: 2),
-                                Text(
-                                  '11:00 AM',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
+                          ),
+                          Card(
+                            color: AppColors.primary,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          ],
-                        ),
-                        trailing:
-                            Icon(Icons.arrow_forward_ios, color: Colors.white),
-                      ),
-                    ),
-                  ],
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(instructor.image),
+                              ),
+                              title: Text(
+                                instructor.name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    lessonText,
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.calendar_today,
+                                          color: Colors.white70, size: 20),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        date,
+                                        style: TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Icon(Icons.access_time,
+                                          color: Colors.white70, size: 20),
+                                      SizedBox(width: 2),
+                                      Text(
+                                        time,
+                                        style: TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  },
                 );
               }
             },

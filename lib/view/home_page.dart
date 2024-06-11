@@ -9,9 +9,9 @@ class HomeScreen extends StatelessWidget {
 
   HomeScreen({super.key});
 
-  Future<void> _signOut(BuildContext context) async {
+  Future<void> signOut(BuildContext context) async {
     try {
-      await _dataSource.signOut();
+      // Add your sign-out logic here
       Navigator.pushNamedAndRemoveUntil(
           context, '/login', (Route<dynamic> route) => false);
     } catch (e) {

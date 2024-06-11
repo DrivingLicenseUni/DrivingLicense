@@ -35,14 +35,6 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
           },
         ),
         title: Text('Book a Lesson', style: AppTextStyles.headline),
-        actions: [
-          CircleAvatar(
-            child: Icon(Icons.person),
-            backgroundColor: Colors.grey,
-          ),
-          SizedBox(width: 17.0),
-        ],
-        centerTitle: true,
         toolbarHeight: 83,
       ),
       body: Column(
@@ -59,7 +51,8 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
           ),
           _buildDatePicker(),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -211,7 +204,8 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.volunteer_activism, color: Colors.black, size: 35),
+                        Icon(Icons.volunteer_activism,
+                            color: Colors.black, size: 35),
                         SizedBox(width: 5),
                         Container(
                           height: 30,
@@ -224,16 +218,21 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('To Pay',style:AppTextStyles.labelIconbar),
+                            Text('To Pay', style: AppTextStyles.labelIconbar),
                             Text(
                               '180.00 \$',
-                              style: AppTextStyles.title.copyWith(color: AppColors.primary),
-                            ),],
+                              style: AppTextStyles.title
+                                  .copyWith(color: AppColors.primary),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                     IconButton(
-                      icon: Icon(Icons.close, size: 24,),
+                      icon: Icon(
+                        Icons.close,
+                        size: 24,
+                      ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -256,10 +255,11 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
                       _viewModel.bookNow(context);
                       _showBookingConfirmationDialog();
                     },
-                    child: Text('Cash',
-                      style: AppTextStyles.labelRegular.copyWith(color: AppColors.white),
-                    )
-                ),
+                    child: Text(
+                      'Cash',
+                      style: AppTextStyles.labelRegular
+                          .copyWith(color: AppColors.white),
+                    )),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Row(
@@ -267,7 +267,10 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text('or', style: AppTextStyles.hintitalic,),
+                        child: Text(
+                          'or',
+                          style: AppTextStyles.hintitalic,
+                        ),
                       ),
                     ],
                   ),
@@ -284,10 +287,11 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
                     onPressed: () {
                       // Handle credit card payment
                     },
-                    child: Text('Credit Card',
-                      style: AppTextStyles.labelRegular.copyWith(color: AppColors.white),
-                    )
-                ),
+                    child: Text(
+                      'Credit Card',
+                      style: AppTextStyles.labelRegular
+                          .copyWith(color: AppColors.white),
+                    )),
               ],
             ),
           ),
@@ -319,7 +323,11 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.close, color:  AppColors.black, size: 23,),
+                      icon: Icon(
+                        Icons.close,
+                        color: AppColors.black,
+                        size: 23,
+                      ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -338,7 +346,7 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
                         border: Border.all(color: AppColors.primary, width: 4),
                       ),
                     ),
-                    Icon(Icons.check, color:AppColors.success, size: 40),
+                    Icon(Icons.check, color: AppColors.success, size: 40),
                   ],
                 ),
                 SizedBox(height: 20),
@@ -350,9 +358,10 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
                     letterSpacing: -0.17,
                     fontStyle: FontStyle.normal,
                     decoration: TextDecoration.none,
-                  ), textAlign: TextAlign.center,),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(height: 20),
-
               ],
             ),
           ),
@@ -361,5 +370,3 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
     );
   }
 }
-
-

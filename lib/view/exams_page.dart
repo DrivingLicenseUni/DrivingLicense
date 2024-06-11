@@ -46,7 +46,6 @@ class _ExamPageState extends State<ExamPage> {
           'Theory page',
           style: AppTextStyles.headline,
         ),
-        centerTitle: true,
         toolbarHeight: 83,
       ),
       body: Padding(
