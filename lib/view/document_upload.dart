@@ -5,7 +5,6 @@ import 'package:license/res/colors.dart';
 import 'package:license/res/textstyles.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_document_picker/flutter_document_picker.dart';
 
 class DocumentUpload extends StatefulWidget {
   const DocumentUpload({super.key});
@@ -22,24 +21,23 @@ class DocumentUploadState extends State<DocumentUpload> {
 
     if (permissionStatus.isGranted) {
       // Permission granted, proceed with file picking
-      final pickedFile = await FlutterDocumentPicker.openDocument();
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile =
+          await picker.pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
         setState(() {
-          selectedFile = File(pickedFile);
+          selectedFile = File(pickedFile.path);
         });
       } else {
         // User canceled the file picker
       }
     } else if (permissionStatus.isDenied) {
-      await openAppSettings();
-
       // Permission denied by user, handle accordingly
       print('Permission denied by user');
     } else if (permissionStatus.isPermanentlyDenied) {
       // Permission permanently denied, open app settings to allow permission manually
       print('Permission permanently denied');
-      await openAppSettings();
     }
   }
 
@@ -160,30 +158,62 @@ class FileSelectionContainer extends StatelessWidget {
             borderRadius: BorderRadius.circular(32),
             color: const Color(0xFFFAFAFA),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 23.3,
-                height: 23.3,
-                child: Icon(
-                  selectedFile != null ? Icons.check : Icons.insert_drive_file,
-                  color: AppColors.primary,
+          child: selectedFile != null
+              ? Center(
+                  child: selectedFile!.path.endsWith('.jpg') ||
+                          selectedFile!.path.endsWith('.png')
+                      ? Image.file(
+                          selectedFile!,
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.contain,
+                        )
+                      : Icon(
+                          getFileTypeIcon(selectedFile!.path),
+                          size: 48,
+                          color: AppColors.primary,
+                        ),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 23.3,
+                      height: 23.3,
+                      child: Icon(
+                        Icons.insert_drive_file,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    Text(
+                      'Select file',
+                      style: AppTextStyles.labelLarge,
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                selectedFile != null
-                    ? selectedFile!.path.split('/').last
-                    : 'Select file',
-                style: AppTextStyles.labelLarge,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
         ),
       ),
     );
+  }
+
+  IconData getFileTypeIcon(String filePath) {
+    final extension = filePath.split('.').last.toLowerCase();
+    switch (extension) {
+      case 'pdf':
+        return Icons.picture_as_pdf;
+      case 'doc':
+      case 'docx':
+        return Icons.insert_drive_file;
+      case 'xls':
+      case 'xlsx':
+        return Icons.table_chart;
+      case 'ppt':
+      case 'pptx':
+        return Icons.desktop_windows;
+      default:
+        return Icons.insert_drive_file;
+    }
   }
 }
 
