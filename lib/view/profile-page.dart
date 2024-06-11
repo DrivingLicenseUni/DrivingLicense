@@ -4,6 +4,7 @@ import 'package:license/res/textstyle.dart';
 import 'package:license/res/types.dart';
 import 'package:license/view_model/home_vm.dart';
 import "package:license/view/verify_password.dart";
+import 'home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -138,8 +139,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       return GestureDetector(
                         onTap: _isEditable
                             ? () {
-                                _phoneNumberFocusNode.requestFocus();
-                              }
+                          _phoneNumberFocusNode.requestFocus();
+                        }
                             : _verifyPassword,
                         child: AbsorbPointer(
                           absorbing: !_isEditable,
@@ -166,34 +167,34 @@ class _ProfilePageState extends State<ProfilePage> {
                       return ElevatedButton(
                         onPressed: canSubmit
                             ? () async {
-                                RegExp regExp = RegExp(
-                                    r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$');
+                          RegExp regExp = RegExp(
+                              r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$');
 
-                                if (!regExp
-                                    .hasMatch(_phoneNumberController.text)) {
-                                  setState(() {
-                                    _phoneNumberError =
-                                        "Please enter a valid phone number";
-                                  });
-                                  return;
-                                }
+                          if (!regExp
+                              .hasMatch(_phoneNumberController.text)) {
+                            setState(() {
+                              _phoneNumberError =
+                              "Please enter a valid phone number";
+                            });
+                            return;
+                          }
 
-                                if (_phoneNumberError != null) {
-                                  setState(() {
-                                    _phoneNumberError = null;
-                                  });
-                                }
+                          if (_phoneNumberError != null) {
+                            setState(() {
+                              _phoneNumberError = null;
+                            });
+                          }
 
-                                await _homeViewModel.updatePhoneNumber(
-                                    student.id, _phoneNumberController.text);
-                                _phoneNumberFocusNode.unfocus();
-                                _labelNotifier.value =
-                                    _phoneNumberController.text;
+                          await _homeViewModel.updatePhoneNumber(
+                              student.id, _phoneNumberController.text);
+                          _phoneNumberFocusNode.unfocus();
+                          _labelNotifier.value =
+                              _phoneNumberController.text;
 
-                                setState(() {
-                                  _isEditable = false;
-                                });
-                              }
+                          setState(() {
+                            _isEditable = false;
+                          });
+                        }
                             : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
@@ -208,13 +209,31 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                 ),
+                const SizedBox(height: 20),
               ],
             );
           }
         },
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: ElevatedButton(
+          onPressed: () => HomeScreen().signOut(context),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.warning,
+          ),
+          child: const Text(
+            'Sign Out',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.end,
+          ),
+        ),
+      ),
     );
   }
+
 
   Widget? _textField({
     required FocusNode focusNode,
