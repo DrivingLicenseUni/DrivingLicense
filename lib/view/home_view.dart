@@ -3,12 +3,12 @@ import 'package:license/res/types.dart';
 import 'package:license/view/profile-page.dart';
 import 'package:license/view/selected_instructor_v.dart';
 import 'package:license/view/stu_progress_page.dart';
+import 'package:license/view/student_activity.dart';
 import 'package:license/view/theory_section.dart';
 import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:provider/provider.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view_model/home_vm.dart';
-import 'package:license/view/theory_exams_section.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -19,6 +19,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int _selectedIndex = 0;
+  String _id = "";
 
   onTabTapped(int index) {
     setState(() {
@@ -48,6 +49,8 @@ class _HomeViewState extends State<HomeView> {
                   child: Consumer<HomeViewModel>(
                     builder: (context, viewModel, child) {
                       final student = viewModel.currentStudent;
+                      _id = student?.id ?? "";
+
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,9 +60,9 @@ class _HomeViewState extends State<HomeView> {
                               CircleAvatar(
                                 radius: 37.0,
                                 backgroundImage:
-                                student?.profileImageUrl != null
-                                    ? NetworkImage(student!.profileImageUrl)
-                                    : AssetImage("") as ImageProvider,
+                                    student?.profileImageUrl != null
+                                        ? NetworkImage(student!.profileImageUrl)
+                                        : AssetImage("") as ImageProvider,
                               ),
                               const SizedBox(width: 10),
                               Column(
@@ -104,7 +107,8 @@ class _HomeViewState extends State<HomeView> {
               ],
             ),
           ),
-          SizedBox(),
+          CardListView(userId: _id),
+          StudentActivityPage(studentId: _id),
           ProfilePage(),
         ][_selectedIndex],
         bottomNavigationBar: NavigationBar(
@@ -121,12 +125,12 @@ class _HomeViewState extends State<HomeView> {
             ),
             NavigationDestination(
               icon: Icon(Icons.show_chart),
-              selectedIcon: Icon(Icons.home),
+              selectedIcon: Icon(Icons.show_chart),
               label: 'Progress',
             ),
             NavigationDestination(
-              icon: Icon(Icons.bubble_chart),
-              selectedIcon: Icon(Icons.home),
+              icon: Icon(Icons.bubble_chart_outlined),
+              selectedIcon: Icon(Icons.bubble_chart),
               label: 'Activities',
             ),
             NavigationDestination(
@@ -223,6 +227,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
+
 class ReminderCard extends StatelessWidget {
   ReminderCard({super.key});
 
@@ -244,7 +249,8 @@ class ReminderCard extends StatelessWidget {
           return FutureBuilder<Instructor?>(
             future: viewModel.getInstructorById(student.instructorId!),
             builder: (context, instructorSnapshot) {
-              if (instructorSnapshot.connectionState == ConnectionState.waiting) {
+              if (instructorSnapshot.connectionState ==
+                  ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               } else if (instructorSnapshot.hasError) {
                 return const Text("Error fetching instructor data");
@@ -253,9 +259,10 @@ class ReminderCard extends StatelessWidget {
               } else {
                 final instructor = instructorSnapshot.data!;
                 return FutureBuilder<Map<String, dynamic>?>(
-                  future: viewModel.fetchLastLesson(student.id!),
+                  future: viewModel.fetchLastLesson(student.id),
                   builder: (context, lessonSnapshot) {
-                    if (lessonSnapshot.connectionState == ConnectionState.waiting) {
+                    if (lessonSnapshot.connectionState ==
+                        ConnectionState.waiting) {
                       return const CircularProgressIndicator();
                     } else if (lessonSnapshot.hasError) {
                       return const Text("Error fetching lesson data");
@@ -263,7 +270,9 @@ class ReminderCard extends StatelessWidget {
                       final lesson = lessonSnapshot.data;
                       final date = lesson?['date'] ?? 'N/A';
                       final time = lesson?['time'] ?? 'N/A';
-                      final lessonText = lesson != null ? 'Next lesson:' : 'No upcoming lessons';
+                      final lessonText = lesson != null
+                          ? 'Next lesson:'
+                          : 'No upcoming lessons';
 
                       return Column(
                         children: [
@@ -302,8 +311,7 @@ class ReminderCard extends StatelessWidget {
                                 ),
                               ),
                               subtitle: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
                                     lessonText,
@@ -320,8 +328,7 @@ class ReminderCard extends StatelessWidget {
                                       SizedBox(width: 5),
                                       Text(
                                         date,
-                                        style: TextStyle(
-                                            color: Colors.white),
+                                        style: TextStyle(color: Colors.white),
                                       ),
                                       SizedBox(width: 8),
                                       Icon(Icons.access_time,
@@ -329,8 +336,7 @@ class ReminderCard extends StatelessWidget {
                                       SizedBox(width: 2),
                                       Text(
                                         time,
-                                        style: TextStyle(
-                                            color: Colors.white),
+                                        style: TextStyle(color: Colors.white),
                                       ),
                                     ],
                                   ),

@@ -23,14 +23,6 @@ class StudentActivityPage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () {
-              // Notification button action
-            },
-          ),
-        ],
       ),
       body: FutureBuilder<StudentModel?>(
         future: studentViewModel.fetchStudentData(studentId),
@@ -42,17 +34,9 @@ class StudentActivityPage extends StatelessWidget {
           } else if (!studentSnapshot.hasData || studentSnapshot.data == null) {
             return const Center(child: Text('No student data found'));
           } else {
-            final StudentModel student = studentSnapshot.data!;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(student.profileImageUrl),
-                    radius: 30,
-                  ),
-                ),
                 Expanded(
                   child: FutureBuilder<List<LessonCardModel>>(
                     future: studentViewModel.fetchStudentLessons(studentId),
@@ -88,26 +72,6 @@ class StudentActivityPage extends StatelessWidget {
               ],
             );
           }
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, // Set to the appropriate index
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Activities',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '',
-          ),
-        ],
-        onTap: (index) {
-          // Handle bottom navigation bar tap
         },
       ),
     );

@@ -1,33 +1,33 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:license/res/colors.dart';
+import 'package:license/view/changed_password_v.dart';
+import 'package:license/view/document_upload.dart';
+import 'package:license/view/forgot_password_v.dart';
+import 'package:license/view/home_page.dart';
 import 'package:license/view/instructor_dashboard_.dart';
+import 'package:license/view/instructor_details.dart';
 import 'package:license/view/logo-view.dart';
 import 'package:license/view/notification_view.dart';
-import 'package:license/view/home_page.dart';
 import 'package:license/view/onboarding-v.dart';
+import 'package:license/view/select_instructor.dart';
+import 'package:license/view/sign_details.dart';
 import 'package:license/view/participating_students_progress.dart';
 import 'package:license/view/sign_in.dart';
+import 'package:license/view/sign_up.dart';
 import 'package:license/view/signs_section.dart';
 import 'package:license/view/student_activity.dart';
 import 'package:license/view/theory_exams_section.dart';
 import 'package:license/view/view_calendar_time_ins.dart';
-import 'package:license/res/colors.dart';
-import 'package:license/view/document_upload.dart';
-import 'package:license/view/instructor_details.dart';
-import 'package:license/view/select_instructor.dart';
-import 'package:license/view/forgot_password_v.dart';
-import 'package:license/view/changed_password_v.dart';
 import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:license/view_model/forgot_password_vm.dart';
 import 'package:license/view_model/student_activity_vm.dart';
 import 'package:provider/provider.dart';
+
 import 'data/remote/forgot_password_d.dart';
 import 'model/firebase-massaging.dart';
 import 'model/forgot_password_m.dart';
-import 'package:license/view/sign_up.dart';
-import 'package:license/view/stu_progress_page.dart';
-import 'package:license/view/sign_details.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -44,25 +44,81 @@ Future<void> main() async {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   User? user = auth.currentUser;
-  runApp(MyApp());
+  runApp(MyApp(user: user));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final User? user;
+  const MyApp({super.key, this.user});
 
   @override
   Widget build(BuildContext context) {
-
-
-    return MaterialApp(
-      title: 'Driving License',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ForgotPasswordViewModel(
+            ForgotPasswordModel(
+              ForgotPasswordRemoteData(),
+            ),
+          ),
+        ),
+        ChangeNotifierProvider(create: (_) => StudentViewModel()),
+      ],
+      child: MaterialApp(
+        title: 'Driving License',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+          primaryColor: AppColors.primary,
+          focusColor: AppColors.primary,
+          useMaterial3: true,
+        ),
+        restorationScopeId: 'app',
+        home: LogoView(
+          user: user,
+        ),
+        navigatorKey: navigatorKey,
+        routes: {
+          "/dashboard": (context) => const InstructorDashboardView(),
+          "/forgot-password": (context) => ForgotPassword(),
+          '/password-changed': (context) => const PasswordChanged(),
+          "/signup": (context) => const SignUp(),
+          "/select-instructor": (context) => const SelectInstructor(),
+          "/document-upload": (context) => const DocumentUpload(),
+          "/logo-view": (context) => LogoView(user: user),
+          "/onboarding-view": (context) => const OnboardingView(),
+          "/instructor-calendar": (context) =>
+              const DatePickerInstructor(restorationId: 'main'),
+          "/book-appointment": (context) =>
+              const DatePickerStudent(restorationId: 'main'),
+          '/login': (context) => const LoginView(),
+          '/home-screen': (context) => HomeScreen(),
+          '/my-activity': (context) => StudentActivityPage(studentId: ''),
+          '/notification-view': (context) => NotificationView(),
+          "/stu-progress": (context) => StudentProgressListView(),
+          '/theory-exams': (context) => ExamsPage(),
+          "/signs-section": (context) => const SignsSection(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == "/instructor-details") {
+            final args = settings.arguments as Map<String, dynamic>;
+            final String id = args['id'];
+            return MaterialPageRoute(
+              builder: (context) => InstructorDetails(id: id),
+            );
+          }
+          if (settings.name == "/sign-details") {
+            final args = settings.arguments as Map<String, dynamic>;
+            final String title = args['title'];
+            final String image = args['image'];
+            final String description = args['description'];
+            return MaterialPageRoute(
+              builder: (context) => SignDetails(
+                  title: title, image: image, description: description),
+            );
+          }
+          return null;
+        },
       ),
-      restorationScopeId: 'app',
-      home: const StudentProgressListView(),
-
     );
   }
 }
