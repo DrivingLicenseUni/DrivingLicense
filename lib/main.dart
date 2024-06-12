@@ -2,32 +2,33 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:license/view/date_picker_student.dart';
+import 'package:license/res/colors.dart';
+import 'package:license/view/changed_password_v.dart';
+import 'package:license/view/document_upload.dart';
+import 'package:license/view/forgot_password_v.dart';
+import 'package:license/view/home_page.dart';
 import 'package:license/view/instructor_dashboard_.dart';
+import 'package:license/view/instructor_details.dart';
 import 'package:license/view/logo-view.dart';
 import 'package:license/view/notification_view.dart';
-import 'package:license/view/home_page.dart';
 import 'package:license/view/onboarding-v.dart';
+import 'package:license/view/select_instructor.dart';
+import 'package:license/view/sign_details.dart';
+import 'package:license/view/participating_students_progress.dart';
 import 'package:license/view/sign_in.dart';
+import 'package:license/view/sign_up.dart';
 import 'package:license/view/signs_section.dart';
 import 'package:license/view/student_activity.dart';
 import 'package:license/view/theory_exams_section.dart';
+// import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:license/view/view_calendar_time_ins.dart';
-import 'package:license/res/colors.dart';
-import 'package:license/view/document_upload.dart';
-import 'package:license/view/instructor_details.dart';
-import 'package:license/view/select_instructor.dart';
 
-import 'package:license/view/forgot_password_v.dart';
-import 'package:license/view/changed_password_v.dart';
 import 'package:license/view_model/forgot_password_vm.dart';
 import 'package:license/view_model/student_activity_vm.dart';
 import 'package:provider/provider.dart';
 import 'data/remote/forgot_password_d.dart';
 import 'model/firebase-massaging.dart';
 import 'model/forgot_password_m.dart';
-import 'package:license/view/sign_up.dart';
-import 'package:license/view/stu_progress_page.dart';
-import 'package:license/view/sign_details.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -95,7 +96,7 @@ class MyApp extends StatelessWidget {
           '/home-screen': (context) => HomeScreen(),
           '/my-activity': (context) => StudentActivityPage(studentId: ''),
           '/notification-view': (context) => NotificationView(),
-          "/stu-progress": (context) => CardListView(),
+          "/stu-progress": (context) => StudentProgressListView(),
           '/theory-exams': (context) => ExamsPage(),
           "/signs-section": (context) => const SignsSection(),
         },

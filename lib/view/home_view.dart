@@ -3,12 +3,12 @@ import 'package:license/res/types.dart';
 import 'package:license/view/profile-page.dart';
 import 'package:license/view/selected_instructor_v.dart';
 import 'package:license/view/stu_progress_page.dart';
+import 'package:license/view/student_activity.dart';
 import 'package:license/view/theory_section.dart';
 import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:provider/provider.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view_model/home_vm.dart';
-import 'package:license/view/theory_exams_section.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -19,6 +19,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int _selectedIndex = 0;
+  String _id = "";
 
   onTabTapped(int index) {
     setState(() {
@@ -48,6 +49,8 @@ class _HomeViewState extends State<HomeView> {
                   child: Consumer<HomeViewModel>(
                     builder: (context, viewModel, child) {
                       final student = viewModel.currentStudent;
+                      _id = student?.id ?? "";
+
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,8 +107,8 @@ class _HomeViewState extends State<HomeView> {
               ],
             ),
           ),
-          CardListView(),
-          SizedBox(),
+          CardListView(userId: _id),
+          StudentActivityPage(studentId: _id),
           ProfilePage(),
         ][_selectedIndex],
         bottomNavigationBar: NavigationBar(
@@ -122,12 +125,12 @@ class _HomeViewState extends State<HomeView> {
             ),
             NavigationDestination(
               icon: Icon(Icons.show_chart),
-              selectedIcon: Icon(Icons.home),
+              selectedIcon: Icon(Icons.show_chart),
               label: 'Progress',
             ),
             NavigationDestination(
-              icon: Icon(Icons.bubble_chart),
-              selectedIcon: Icon(Icons.home),
+              icon: Icon(Icons.bubble_chart_outlined),
+              selectedIcon: Icon(Icons.bubble_chart),
               label: 'Activities',
             ),
             NavigationDestination(
@@ -234,96 +237,117 @@ class ReminderCard extends StatelessWidget {
 
     return FutureBuilder<Student?>(
       future: viewModel.fetchCurrentStudent(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+      builder: (context, studentSnapshot) {
+        if (studentSnapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return const Text("Error");
+        } else if (studentSnapshot.hasError) {
+          return const Text("Error fetching student data");
+        } else if (!studentSnapshot.hasData) {
+          return const Text("No student data available");
         } else {
-          final student = snapshot.data!;
-          return FutureBuilder<Instructor>(
+          final student = studentSnapshot.data!;
+          return FutureBuilder<Instructor?>(
             future: viewModel.getInstructorById(student.instructorId!),
             builder: (context, instructorSnapshot) {
               if (instructorSnapshot.connectionState ==
                   ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               } else if (instructorSnapshot.hasError) {
-                return const Text("Error");
+                return const Text("Error fetching instructor data");
+              } else if (!instructorSnapshot.hasData) {
+                return const Text("No instructor data available");
               } else {
                 final instructor = instructorSnapshot.data!;
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 6.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Remind you:",
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.placeholder,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Card(
-                      color: AppColors.primary,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(instructor.image),
-                        ),
-                        title: Text(
-                          student.instructorName!,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Owner',
-                              style: TextStyle(
-                                color: Colors.white70,
+                return FutureBuilder<Map<String, dynamic>?>(
+                  future: viewModel.fetchLastLesson(student.id),
+                  builder: (context, lessonSnapshot) {
+                    if (lessonSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (lessonSnapshot.hasError) {
+                      return const Text("Error fetching lesson data");
+                    } else {
+                      final lesson = lessonSnapshot.data;
+                      final date = lesson?['date'] ?? 'N/A';
+                      final time = lesson?['time'] ?? 'N/A';
+                      final lessonText = lesson != null
+                          ? 'Next lesson:'
+                          : 'No upcoming lessons';
+
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 6.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Remind you:",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.placeholder,
+                                ),
                               ),
                             ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.calendar_today,
-                                    color: Colors.white70, size: 20),
-                                SizedBox(width: 5),
-                                Text(
-                                  'Sunday, 12 June',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                SizedBox(width: 8),
-                                Icon(Icons.access_time,
-                                    color: Colors.white70, size: 20),
-                                SizedBox(width: 2),
-                                Text(
-                                  '11:00 AM',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
+                          ),
+                          Card(
+                            color: AppColors.primary,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          ],
-                        ),
-                        trailing:
-                            Icon(Icons.arrow_forward_ios, color: Colors.white),
-                      ),
-                    ),
-                  ],
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(instructor.image),
+                              ),
+                              title: Text(
+                                instructor.name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    lessonText,
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.calendar_today,
+                                          color: Colors.white70, size: 20),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        date,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Icon(Icons.access_time,
+                                          color: Colors.white70, size: 20),
+                                      SizedBox(width: 2),
+                                      Text(
+                                        time,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  },
                 );
               }
             },

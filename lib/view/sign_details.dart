@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:license/res/colors.dart';
 
+import '../res/textstyle.dart';
+
 class SignDetails extends StatefulWidget {
   final String _title;
   final String _image;
@@ -23,7 +25,7 @@ class _SignDetailsState extends State<SignDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Details"),
+        title: Text('Sign Details', style: AppTextStyles.headline),
       ),
       body: Column(
         children: [

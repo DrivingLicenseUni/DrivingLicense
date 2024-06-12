@@ -4,6 +4,7 @@ import 'package:license/res/textstyle.dart';
 import 'package:license/res/types.dart';
 import 'package:license/view_model/home_vm.dart';
 import "package:license/view/verify_password.dart";
+import 'home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -90,7 +91,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       Center(
                         child: CircleAvatar(
                           radius: 59,
-                          backgroundImage: AssetImage(student.profileImageUrl),
+                          backgroundImage:
+                              NetworkImage(student.profileImageUrl),
                         ),
                       ),
                       SizedBox(
@@ -208,10 +210,27 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                 ),
+                const SizedBox(height: 20),
               ],
             );
           }
         },
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: ElevatedButton(
+          onPressed: () => HomeScreen().signOut(context),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.warning,
+          ),
+          child: const Text(
+            'Sign Out',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.end,
+          ),
+        ),
       ),
     );
   }

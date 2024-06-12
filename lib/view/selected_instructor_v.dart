@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view_model/instructor_selection.dart';
 import '../data/remote/user_data.dart';
+import '../res/textstyle.dart';
 import '../res/types.dart';
 
 class SelectInstructor extends StatefulWidget {
@@ -88,11 +89,7 @@ class _SelectInstructorState extends State<SelectInstructor> {
           SizedBox(height: 10),
           Text(
             instructor.name,
-            style: TextStyle(
-              fontSize: 22,
-              color: AppColors.black,
-              fontWeight: FontWeight.w500,
-            ),
+              style: AppTextStyles.headline
           ),
           TextButton(
             style: ButtonStyle(
@@ -109,12 +106,11 @@ class _SelectInstructorState extends State<SelectInstructor> {
             },
             child: Text(
               'View Details',
-              style: TextStyle(
+              style: AppTextStyles.title.copyWith(
                 color: AppColors.primary,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
               ),
             ),
+
           ),
         ],
       ),
@@ -131,11 +127,7 @@ class _SelectInstructorState extends State<SelectInstructor> {
           )
         : Scaffold(
             appBar: AppBar(
-              title: const Text(
-                'View instructor',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30),
-              ),
-              centerTitle: true,
+              title: Text('View instructor', style: AppTextStyles.headline),
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () => Navigator.of(context).pop(),
@@ -146,12 +138,11 @@ class _SelectInstructorState extends State<SelectInstructor> {
               children: [
                 Container(
                   margin: const EdgeInsets.fromLTRB(30, 25, 0, 0),
-                  child: const Text(
-                    'Our all instructor :-',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w400,
-                      color: Color.fromRGBO(57, 56, 56, 1),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Our all instructor :',
+                      style: TextStyle(fontSize: 25),
                     ),
                   ),
                 ),

@@ -1,5 +1,8 @@
 import "package:flutter/material.dart";
+import "package:license/res/colors.dart";
 import "package:license/res/textstyles.dart";
+import "package:license/res/types.dart";
+import "package:license/view_model/signs_data.dart";
 
 class SignsSection extends StatefulWidget {
   const SignsSection({super.key});
@@ -17,43 +20,7 @@ class _SignsSectionState extends State<SignsSection> {
       child: Column(
         children: [
           SizedBox(height: 40),
-          _buildHeaderDropdown(),
           _buildSignsSectionPage(context),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeaderDropdown() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: DropdownButtonFormField<String>(
-        value: _selectedHeader,
-        onChanged: (newValue) {
-          setState(() {
-            _selectedHeader = newValue;
-          });
-        },
-        decoration: InputDecoration(
-          labelText: 'Filter by Header',
-        ),
-        items: [
-          DropdownMenuItem(
-            value: null,
-            child: Text('All'),
-          ),
-          DropdownMenuItem(
-            value: 'Mandatory Signs',
-            child: Text('Mandatory Signs'),
-          ),
-          DropdownMenuItem(
-            value: 'Cautionary Signs',
-            child: Text('Cautionary Signs'),
-          ),
-          DropdownMenuItem(
-            value: 'Informatory Signs',
-            child: Text('Informatory Signs'),
-          ),
         ],
       ),
     );
@@ -61,82 +28,59 @@ class _SignsSectionState extends State<SignsSection> {
 
   Widget _buildSignsSectionPage(BuildContext context) {
     return Column(
-      children: [
-        SizedBox(height: 10),
-        _buildSignsSections(
-          "Mandatory Signs",
-          [
-            _SignData(
-              title: 'Turn Left Prohibited',
-              image: 'assets/images/turn-left-prohibited.jpg',
-              description:
-                  'A "Turn Left Prohibited" sign, showing a left arrow with a red slash, indicates that left turns are not allowed at that location, enhancing traffic flow and safety.',
-              header: 'Mandatory Signs',
-            ),
-            _SignData(
-              title: 'No Entry',
-              image: 'assets/images/no-entry-traffic.png',
-              description:
-                  'A "No Entry" traffic sign, usually a red circle with a white horizontal bar, indicates that vehicles are not allowed to enter the roadway beyond the sign, ensuring restricted access for safety and traffic management.',
-              header: 'Mandatory Signs',
-            ),
-          ],
-        ),
-        _buildSignsSections(
-          "Cautionary Signs",
-          [
-            _SignData(
-              title: 'Left Reverse Bend',
-              image: 'assets/images/left-reverse-bend.png',
-              description: 'Left Reverse Bend',
-              header: 'Cautionary Signs',
-            ),
-            _SignData(
-              title: 'Narrow Bridge',
-              image: 'assets/images/narrow-road-ahead.png',
-              description: 'Narrow Road Ahead',
-              header: 'Cautionary Signs',
-            ),
-          ],
-        ),
-        _buildSignsSections(
-          "Informatory Signs",
-          [
-            _SignData(
-              title: 'Hospital',
-              image: 'assets/images/hospital.png',
-              description: 'A nearby hospital',
-              header: 'Informatory Signs',
-            ),
-            _SignData(
-              title: 'Narrow Bridge',
-              image: 'assets/images/fuel-station.png',
-              description: 'Petrol Pump',
-              header: 'Informatory Signs',
-            ),
-          ],
-        ),
-      ],
+      children: signsData.entries.map((entry) {
+        return _buildSignsSections(entry.key, entry.value);
+      }).toList(),
     );
   }
 
-  Widget _buildSignsSections(String mainTitle, List<_SignData> signs) {
+  Widget _buildSignsSections(String mainTitle, List<SignData> signs) {
+    List<SignData> filteredSigns = signs
+        .where(
+            (sign) => _selectedHeader == null || sign.header == _selectedHeader)
+        .toList();
+
     return Column(
       children: [
         if (_selectedHeader == null || _selectedHeader == mainTitle)
-          Text(
-            mainTitle,
-            style: AppTextStyles.title,
+          TextButton(
+            child: Text(
+              mainTitle,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                height: 1.4,
+                letterSpacing: 0.02,
+                fontStyle: FontStyle.normal,
+                decoration: TextDecoration.none,
+              ),
+            ),
+            onPressed: () {
+              setState(() {
+                if (_selectedHeader == mainTitle) {
+                  _selectedHeader = null;
+                } else {
+                  _selectedHeader = mainTitle;
+                }
+              });
+            },
+            style: ButtonStyle(
+              overlayColor: MaterialStateProperty.all(
+                AppColors.secondaryLightBlue,
+              ),
+            ),
           ),
         if (_selectedHeader == null || _selectedHeader == mainTitle)
           SizedBox(height: 16),
-        Row(
-          children: signs
-              .where((sign) =>
-                  _selectedHeader == null || sign.header == _selectedHeader)
-              .map(
-                (sign) => Expanded(
-                  child: GestureDetector(
+        if (filteredSigns.isNotEmpty)
+          Container(
+            height: 200,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: filteredSigns.map((sign) {
+                  return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(
                         context,
@@ -148,38 +92,29 @@ class _SignsSectionState extends State<SignsSection> {
                         },
                       );
                     },
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          sign.image,
-                          width: 150,
-                          height: 150,
-                        ),
-                        Text(
-                          sign.title,
-                          style: AppTextStyles.labelRegular,
-                        ),
-                      ],
+                    child: Container(
+                      width: 150,
+                      margin: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            sign.image,
+                            width: 150,
+                            height: 150,
+                          ),
+                          Text(
+                            sign.title,
+                            style: AppTextStyles.labelRegular,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
       ],
     );
   }
-}
-
-class _SignData {
-  final String title;
-  final String image;
-  final String description;
-  final String header;
-
-  _SignData(
-      {required this.title,
-      required this.image,
-      required this.description,
-      required this.header});
 }
