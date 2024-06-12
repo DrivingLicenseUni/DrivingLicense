@@ -91,7 +91,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       Center(
                         child: CircleAvatar(
                           radius: 59,
-                          backgroundImage: AssetImage(student.profileImageUrl),
+                          backgroundImage:
+                              NetworkImage(student.profileImageUrl),
                         ),
                       ),
                       SizedBox(
@@ -139,8 +140,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       return GestureDetector(
                         onTap: _isEditable
                             ? () {
-                          _phoneNumberFocusNode.requestFocus();
-                        }
+                                _phoneNumberFocusNode.requestFocus();
+                              }
                             : _verifyPassword,
                         child: AbsorbPointer(
                           absorbing: !_isEditable,
@@ -167,34 +168,34 @@ class _ProfilePageState extends State<ProfilePage> {
                       return ElevatedButton(
                         onPressed: canSubmit
                             ? () async {
-                          RegExp regExp = RegExp(
-                              r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$');
+                                RegExp regExp = RegExp(
+                                    r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$');
 
-                          if (!regExp
-                              .hasMatch(_phoneNumberController.text)) {
-                            setState(() {
-                              _phoneNumberError =
-                              "Please enter a valid phone number";
-                            });
-                            return;
-                          }
+                                if (!regExp
+                                    .hasMatch(_phoneNumberController.text)) {
+                                  setState(() {
+                                    _phoneNumberError =
+                                        "Please enter a valid phone number";
+                                  });
+                                  return;
+                                }
 
-                          if (_phoneNumberError != null) {
-                            setState(() {
-                              _phoneNumberError = null;
-                            });
-                          }
+                                if (_phoneNumberError != null) {
+                                  setState(() {
+                                    _phoneNumberError = null;
+                                  });
+                                }
 
-                          await _homeViewModel.updatePhoneNumber(
-                              student.id, _phoneNumberController.text);
-                          _phoneNumberFocusNode.unfocus();
-                          _labelNotifier.value =
-                              _phoneNumberController.text;
+                                await _homeViewModel.updatePhoneNumber(
+                                    student.id, _phoneNumberController.text);
+                                _phoneNumberFocusNode.unfocus();
+                                _labelNotifier.value =
+                                    _phoneNumberController.text;
 
-                          setState(() {
-                            _isEditable = false;
-                          });
-                        }
+                                setState(() {
+                                  _isEditable = false;
+                                });
+                              }
                             : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
@@ -233,7 +234,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
 
   Widget? _textField({
     required FocusNode focusNode,

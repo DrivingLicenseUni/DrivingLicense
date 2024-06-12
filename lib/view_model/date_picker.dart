@@ -35,9 +35,7 @@ class DatePickerViewModel extends ChangeNotifier {
 
   Future<void> updateInstructor(Instructor instructor) async {
     await _appointment.updateInstructor(instructor);
-    loadAvailableTimes(_selectedDate.day).then((value) {
-      _availableTimesInDate = value;
-    });
+    loadAvailableTimes(_selectedDate.day).then((value) {});
   }
 
   Future<List<String>> loadAvailableTimes(int day) async {
