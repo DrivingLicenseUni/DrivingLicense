@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:license/res/colors.dart";
 import "package:license/res/textstyles.dart";
 import "package:license/res/types.dart";
 import "package:license/view_model/signs_data.dart";
@@ -19,43 +20,7 @@ class _SignsSectionState extends State<SignsSection> {
       child: Column(
         children: [
           SizedBox(height: 40),
-          _buildHeaderDropdown(),
           _buildSignsSectionPage(context),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeaderDropdown() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: DropdownButtonFormField<String>(
-        value: _selectedHeader,
-        onChanged: (newValue) {
-          setState(() {
-            _selectedHeader = newValue;
-          });
-        },
-        decoration: InputDecoration(
-          labelText: 'Filter by Header',
-        ),
-        items: [
-          DropdownMenuItem(
-            value: null,
-            child: Text('All'),
-          ),
-          DropdownMenuItem(
-            value: 'Mandatory Signs',
-            child: Text('Mandatory Signs'),
-          ),
-          DropdownMenuItem(
-            value: 'Cautionary Signs',
-            child: Text('Cautionary Signs'),
-          ),
-          DropdownMenuItem(
-            value: 'Informatory Signs',
-            child: Text('Informatory Signs'),
-          ),
         ],
       ),
     );
@@ -78,9 +43,33 @@ class _SignsSectionState extends State<SignsSection> {
     return Column(
       children: [
         if (_selectedHeader == null || _selectedHeader == mainTitle)
-          Text(
-            mainTitle,
-            style: AppTextStyles.title,
+          TextButton(
+            child: Text(
+              mainTitle,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                height: 1.4,
+                letterSpacing: 0.02,
+                fontStyle: FontStyle.normal,
+                decoration: TextDecoration.none,
+              ),
+            ),
+            onPressed: () {
+              setState(() {
+                if (_selectedHeader == mainTitle) {
+                  _selectedHeader = null;
+                } else {
+                  _selectedHeader = mainTitle;
+                }
+              });
+            },
+            style: ButtonStyle(
+              overlayColor: MaterialStateProperty.all(
+                AppColors.secondaryLightBlue,
+              ),
+            ),
           ),
         if (_selectedHeader == null || _selectedHeader == mainTitle)
           SizedBox(height: 16),
