@@ -26,6 +26,7 @@ class LessonCardModel {
     );
   }
 }
+
 class StudentModel {
   final String id;
   final String fullName;

@@ -20,19 +20,13 @@ class StudentViewModel extends ChangeNotifier {
     }
   }
 
-  Future<List<LessonCardModel>> fetchStudentLessons(String studentId) async {
-    try {
-      QuerySnapshot snapshot = await _firestore
-          .collection('students')
-          .doc(studentId)
-          .collection('lessons')
-          .get();
-      return snapshot.docs
-          .map((doc) => LessonCardModel.fromFirestore(doc))
-          .toList();
-    } catch (e) {
-      print('Error fetching student lessons: $e');
-      return [];
-    }
+  Stream<List<LessonCardModel>> fetchStudentLessons(String studentId) {
+    return _firestore
+        .collection('lessons')
+        .where('studentId', isEqualTo: studentId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => LessonCardModel.fromFirestore(doc))
+            .toList());
   }
 }

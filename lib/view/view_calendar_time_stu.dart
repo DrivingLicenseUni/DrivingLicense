@@ -251,7 +251,6 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      _viewModel.bookNow(context);
                       _showBookingConfirmationDialog();
                     },
                     child: Text('Cash',

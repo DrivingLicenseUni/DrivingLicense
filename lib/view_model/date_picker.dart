@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:license/data/remote/booking.dart';
 import 'package:license/model/appointment.dart';
 import 'package:license/res/types.dart';
 
@@ -108,28 +107,17 @@ class DatePickerViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void bookNow(BuildContext context) {
+  void bookNow(BuildContext context, String s) {
     if (_selectedTime != null) {
       try {
-        final bookingService = BookingService();
-        bookingService.confirmBooking(
-          'studentId', // Replace with the actual student ID
-          _selectedDate as String,
-          _selectedTime!,
-          'instructorId', // Replace with the actual instructor ID
-          'topic', // Replace with the actual topic
-        );
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Booking for $_selectedDate at $_selectedTime'),
-          ),
+              content: Text('Booking for $_selectedDate at $_selectedTime')),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('An error occurred while booking the appointment'),
-          ),
+              content: Text('An error occurred while booking the appointment')),
         );
       }
     } else {

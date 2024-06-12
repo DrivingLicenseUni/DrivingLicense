@@ -54,10 +54,9 @@ class StudentActivityPage extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: FutureBuilder<List<LessonCardModel>>(
-                    future: studentViewModel.fetchStudentLessons(studentId),
-                    builder: (context,
-                        AsyncSnapshot<List<LessonCardModel>> lessonSnapshot) {
+                  child: StreamBuilder<List<LessonCardModel>>(
+                    stream: studentViewModel.fetchStudentLessons(studentId),
+                    builder: (context, lessonSnapshot) {
                       if (lessonSnapshot.connectionState ==
                           ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -88,26 +87,6 @@ class StudentActivityPage extends StatelessWidget {
               ],
             );
           }
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, // Set to the appropriate index
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Activities',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '',
-          ),
-        ],
-        onTap: (index) {
-          // Handle bottom navigation bar tap
         },
       ),
     );
