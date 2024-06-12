@@ -38,10 +38,9 @@ class StudentActivityPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: FutureBuilder<List<LessonCardModel>>(
-                    future: studentViewModel.fetchStudentLessons(studentId),
-                    builder: (context,
-                        AsyncSnapshot<List<LessonCardModel>> lessonSnapshot) {
+                  child: StreamBuilder<List<LessonCardModel>>(
+                    stream: studentViewModel.fetchStudentLessons(studentId),
+                    builder: (context, lessonSnapshot) {
                       if (lessonSnapshot.connectionState ==
                           ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());

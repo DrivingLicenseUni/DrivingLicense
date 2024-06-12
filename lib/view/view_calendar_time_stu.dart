@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:license/view_model/date_picker.dart';
 import 'package:license/res/textstyle.dart';
 import 'package:license/res/colors.dart';
-import '../view_model/home_vm.dart';
-import 'home_view.dart';
 
 class DatePickerStudent extends StatefulWidget {
   const DatePickerStudent({Key? key, this.restorationId}) : super(key: key);
@@ -252,7 +250,6 @@ class _DatePickerStudentState extends State<DatePickerStudent> {
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      _viewModel.bookNow(context);
                       _showBookingConfirmationDialog();
                     },
                     child: Text(

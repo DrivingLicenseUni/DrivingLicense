@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:license/model/appointment.dart';
 import 'package:license/res/types.dart';
 
-import '../data/remote/instructor_data.dart';
 import '../data/remote/user_data.dart';
 
 class DatePickerViewModel extends ChangeNotifier {
@@ -106,7 +105,7 @@ class DatePickerViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void bookNow(BuildContext context) {
+  void bookNow(BuildContext context, String s) {
     if (_selectedTime != null) {
       try {
         ScaffoldMessenger.of(context).showSnackBar(

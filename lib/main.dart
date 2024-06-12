@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:license/view/date_picker_student.dart';
 import 'package:license/res/colors.dart';
 import 'package:license/view/changed_password_v.dart';
 import 'package:license/view/document_upload.dart';
@@ -19,12 +20,12 @@ import 'package:license/view/sign_up.dart';
 import 'package:license/view/signs_section.dart';
 import 'package:license/view/student_activity.dart';
 import 'package:license/view/theory_exams_section.dart';
+// import 'package:license/view/view_calendar_time_stu.dart';
 import 'package:license/view/view_calendar_time_ins.dart';
-import 'package:license/view/view_calendar_time_stu.dart';
+
 import 'package:license/view_model/forgot_password_vm.dart';
 import 'package:license/view_model/student_activity_vm.dart';
 import 'package:provider/provider.dart';
-
 import 'data/remote/forgot_password_d.dart';
 import 'model/firebase-massaging.dart';
 import 'model/forgot_password_m.dart';
@@ -38,7 +39,8 @@ Future<void> main() async {
           apiKey: "AIzaSyDjHqEsPzBzePyIdPu9S17ehvrHSb2deOc",
           appId: "1:486459417909:android:d9f6011ad27e7f79f5587c",
           messagingSenderId: "486459417909",
-          projectId: "drivinglicense-437ff"));
+          projectId: "drivinglicense-437ff",
+          storageBucket: "drivinglicense-437ff.appspot.com"));
 
   await FirebaseApi().initNotifications();
 
