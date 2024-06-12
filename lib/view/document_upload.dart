@@ -5,6 +5,8 @@ import 'package:license/res/colors.dart';
 import 'package:license/res/textstyles.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DocumentUpload extends StatefulWidget {
   const DocumentUpload({super.key});
@@ -41,6 +43,40 @@ class DocumentUploadState extends State<DocumentUpload> {
     }
   }
 
+  Future<void> uploadFile() async {
+    if (selectedFile != null) {
+      try {
+        // Upload the file to Firebase Storage
+        String fileName =
+            'uploads/${DateTime.now().millisecondsSinceEpoch}_${selectedFile!.path.split('/').last}';
+        Reference storageReference =
+            FirebaseStorage.instance.ref().child(fileName);
+        UploadTask uploadTask = storageReference.putFile(selectedFile!);
+        TaskSnapshot snapshot = await uploadTask;
+
+        // Get the file URL
+        String fileURL = await snapshot.ref.getDownloadURL();
+
+        // Save the file URL in Firestore
+        await FirebaseFirestore.instance
+            .collection('uploads')
+            .add({'url': fileURL});
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('File uploaded successfully')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error uploading file: $e')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No file selected')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,9 +98,9 @@ class DocumentUploadState extends State<DocumentUpload> {
               );
 
               if (image != null) {
-                // Handle the captured image
-                print('Captured image: ${image.path}');
-                // You can display the image, upload it, or perform any other desired action
+                setState(() {
+                  selectedFile = File(image.path);
+                });
               } else {
                 // User canceled the image capture
                 print('No image captured.');
@@ -73,13 +109,7 @@ class DocumentUploadState extends State<DocumentUpload> {
           ),
           ContinueButton(
             onPressed: () {
-              // Add your continue functionality here
-              print('Continue button pressed');
-              if (selectedFile != null) {
-                print('Selected file: ${selectedFile!.path}');
-              } else {
-                print('No file selected');
-              }
+              uploadFile();
             },
           ),
         ],
@@ -136,10 +166,10 @@ class FileSelectionContainer extends StatelessWidget {
   final File? selectedFile;
 
   const FileSelectionContainer({
-    Key? key,
+    super.key,
     required this.onTap,
     this.selectedFile,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -174,16 +204,16 @@ class FileSelectionContainer extends StatelessWidget {
                           color: AppColors.primary,
                         ),
                 )
-              : Column(
+              : const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       width: 23.3,
                       height: 23.3,
                       child: Icon(
                         Icons.insert_drive_file,
-                        color: AppColors.primary,
+                        color: Color.fromRGBO(46, 96, 247, 1),
                       ),
                     ),
                     Text(
@@ -257,7 +287,7 @@ class OrDivider extends StatelessWidget {
 class CameraButton extends StatelessWidget {
   final VoidCallback onTap;
 
-  const CameraButton({Key? key, required this.onTap}) : super(key: key);
+  const CameraButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +300,7 @@ class CameraButton extends StatelessWidget {
           onPressed: onTap,
           style: ButtonStyle(
             backgroundColor:
-                MaterialStateProperty.all(AppColors.secondaryLight),
+                MaterialStateProperty.all(AppColors.secondaryLightBlue),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -278,7 +308,7 @@ class CameraButton extends StatelessWidget {
               const Icon(
                 Icons.camera_alt,
                 size: 16,
-                color: AppColors.primary,
+                color: Color.fromRGBO(46, 96, 247, 1),
               ),
               const SizedBox(width: 8),
               Text(
@@ -304,7 +334,7 @@ class CameraButton extends StatelessWidget {
 class ContinueButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const ContinueButton({Key? key, required this.onPressed}) : super(key: key);
+  const ContinueButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
