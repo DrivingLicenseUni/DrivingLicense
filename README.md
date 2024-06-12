@@ -1,16 +1,34 @@
-# license
+# License
 
-A new Flutter project.
+A mobile application for a driving school, with the sole purpose of making the student have a better connection with the school and their own instructor.
 
-## Getting Started
+The application contains many pages
 
-This project is a starting point for a Flutter application.
- 
-A few resources to get you started if this is your first Flutter project:
+## Pages
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Sign Up
+For school registration and account creation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Login
+For logging in
+
+### Home
+This page contains many other pages inside it, and has many components that are crucial for the application
+
+### Notification
+A way for the user to check their notifications
+
+### Theory and Exams
+The theory section where the user to check the theoretical material
+
+### Booking
+To check the instructor's calendar and choose the available time with payment
+
+### Progress
+For the user to check their progress with the lessons
+
+### Activities
+To check the activities the user is going to do in the lessons
+
+### Profile Page
+The profile page of the user
